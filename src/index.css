@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  /* Design Tokens mapped to Tailwind Classes */
+  --color-primary: #0c3e26;       /* Deep Forest Emerald */
+  --color-secondary: #cfa152;     /* Warm Champagne Gold */
+  --color-accent: #10b981;        /* Bright Mint Green */
+  
+  --color-bg-base: #f4f6f5;       /* Soft Light Ivory-Gray */
+  --color-bg-surface: #ffffff;    /* Pure White */
+  --color-bg-elevated: #fbfdfc;   /* Elevated White Surface */
+
+  --color-text-primary: #111827;  /* Dark Slate/Charcoal */
+  --color-text-muted: #4b5563;    /* Muted Slate Gray */
+  --color-text-disabled: #9ca3af; /* Light Gray */
+
+  --color-success-base: #059669;
+  --color-warning-base: #d97706;
+  --color-error-base: #dc2626;
+
+  /* Fonts */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Spacing Scale (4px base unit) */
+  --spacing-space-1: 4px;
+  --spacing-space-2: 8px;
+  --spacing-space-3: 12px;
+  --spacing-space-4: 16px;
+  --spacing-space-6: 24px;
+  --spacing-space-8: 32px;
+  --spacing-space-12: 48px;
+  --spacing-space-16: 64px;
+  --spacing-space-24: 96px;
+  --spacing-space-32: 128px;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  /* Shadow System */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Transitions */
+  --animate-spin-slow: spin 15s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+/* Base resets & focus state defaults */
+@layer base {
+  body {
+    background-color: var(--color-bg-base);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Keyboard Navigable - Visible Focus State */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex="0"]:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 4px;
+  }
+
+  /* Support prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-delay: -1ms !important;
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      background-attachment: initial !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+    }
+  }
+}
+
+/* Custom layout primitives utilities */
+.container-custom {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Premium Glossy Utilities */
+.glossy-gold {
+  background: linear-gradient(135deg, #f3d49b 0%, #cfa152 40%, #b28437 100%);
+  box-shadow: 0 4px 20px rgba(207, 161, 82, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glossy-gold:hover {
+  background: linear-gradient(135deg, #f7e0b5 0%, #dcae62 40%, #cfa152 100%);
+  box-shadow: 0 6px 24px rgba(207, 161, 82, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.glossy-emerald {
+  background: linear-gradient(135deg, #15663e 0%, #0c3e26 40%, #052616 100%);
+  box-shadow: 0 4px 20px rgba(12, 62, 38, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glossy-emerald:hover {
+  background: linear-gradient(135deg, #1a7a4b 0%, #115334 40%, #0c3e26 100%);
+  box-shadow: 0 6px 24px rgba(12, 62, 38, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+}
+
