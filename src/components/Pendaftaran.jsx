@@ -50,8 +50,8 @@ export default function Pendaftaran() {
         <div className="space-y-8">
           {/* Alur */}
           <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 shadow-sm">
-            <h3 className="font-display text-xl font-bold text-primary mb-4 flex items-center gap-2">
-              <Milestone className="w-5 h-5 text-secondary" /> Alur Pendaftaran
+            <h3 className="text-heading-lg text-primary mb-4 flex items-center gap-2">
+              <Milestone className="icon-sm text-secondary" /> Alur Pendaftaran
             </h3>
             <ol className="space-y-4">
               {alur.map((step, idx) => (
@@ -67,13 +67,13 @@ export default function Pendaftaran() {
 
           {/* Syarat */}
           <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 shadow-sm">
-            <h3 className="font-display text-xl font-bold text-primary mb-4 flex items-center gap-2">
-              <ClipboardList className="w-5 h-5 text-secondary" /> Syarat & Berkas
+            <h3 className="text-heading-lg text-primary mb-4 flex items-center gap-2">
+              <ClipboardList className="icon-sm text-secondary" /> Syarat & Berkas
             </h3>
             <ul className="space-y-3">
               {syarat.map((item, idx) => (
                 <li key={idx} className="flex gap-2.5 text-xs leading-relaxed text-text-muted">
-                  <ShieldCheck className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                  <ShieldCheck className="icon-xs text-accent shrink-0 mt-0.5" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -85,8 +85,8 @@ export default function Pendaftaran() {
         <div className="space-y-8">
           {/* Rincian Biaya */}
           <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 shadow-sm space-y-4">
-            <h3 className="font-display text-xl font-bold text-primary flex items-center gap-2">
-              <Download className="w-5 h-5 text-secondary" /> Rincian Biaya Administrasi
+            <h3 className="text-heading-lg text-primary flex items-center gap-2">
+              <Download className="icon-sm text-secondary" /> Rincian Biaya Administrasi
             </h3>
             <p className="text-text-muted text-xs leading-relaxed">
               Silakan unduh dokumen panduan dan rincian pembiayaan administrasi pendaftaran santri baru melalui tautan di bawah ini:
@@ -96,27 +96,27 @@ export default function Pendaftaran() {
                 href="https://drive.google.com/file/d/1Sfs6EcAzYpryACiCOrx4sXUWYtY46C3Q/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-3 px-4 glossy-emerald text-bg-surface rounded-lg text-xs font-bold transition-all cursor-pointer focus:outline-none"
+                className="btn-secondary focus-ring"
               >
                 Unduh Biaya Putra
-                <Download className="w-4 h-4" />
+                <Download className="icon-xs" />
               </a>
               <a
                 href="https://drive.google.com/file/d/1FYcClryJVb7sqIb8Ph2XhZFAwNRxR6H3/view?usp=drive_link"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-3 px-4 border-2 border-primary/20 hover:border-primary text-primary hover:bg-primary/5 rounded-lg text-xs font-bold transition-all hover:scale-[1.02] cursor-pointer focus:outline-none"
+                className="flex items-center justify-center gap-2 py-3 px-4 border-2 border-primary/20 hover:border-primary text-primary hover:bg-primary/5 rounded-lg text-xs font-bold transition-standard hover:scale-[1.02] focus:outline-none focus-ring"
               >
                 Unduh Biaya Putri
-                <Download className="w-4 h-4" />
+                <Download className="icon-xs" />
               </a>
             </div>
           </div>
 
           {/* Formulir Pendaftaran */}
           <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 shadow-sm space-y-4">
-            <h3 className="font-display text-xl font-bold text-primary flex items-center gap-2">
-              <Send className="w-5 h-5 text-secondary" /> Formulir Pendaftaran Online
+            <h3 className="text-heading-lg text-primary flex items-center gap-2">
+              <Send className="icon-sm text-secondary" /> Formulir Pendaftaran Online
             </h3>
             <p className="text-text-muted text-xs leading-relaxed">
               Pendaftaran secara daring dapat dilakukan dengan mengisi Google Form resmi di bawah ini sesuai jenis kelamin calon santri:
@@ -126,19 +126,19 @@ export default function Pendaftaran() {
                 href="https://forms.gle/5ZkMT3buNXGpgRHX6"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-3 px-4 glossy-gold text-primary font-bold rounded-lg text-xs transition-all cursor-pointer focus:outline-none"
+                className="btn-primary focus-ring"
               >
                 Form Pendaftaran Putra
-                <ExternalLink className="w-4 h-4" />
+                <ExternalLink className="icon-xs" />
               </a>
               <a
                 href="https://forms.gle/mr9fBiMJHQQMfrPC9"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-3 px-4 glossy-emerald text-bg-surface font-bold rounded-lg text-xs transition-all cursor-pointer focus:outline-none"
+                className="btn-secondary focus-ring"
               >
                 Form Pendaftaran Putri
-                <ExternalLink className="w-4 h-4" />
+                <ExternalLink className="icon-xs" />
               </a>
             </div>
             <div className="text-[11px] text-text-muted border-t border-primary/10 pt-3 mt-2">

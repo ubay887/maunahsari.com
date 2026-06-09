@@ -12,10 +12,6 @@ export default function Hero({ onNavigate }) {
       <div className="container-custom relative z-10 grid lg:grid-cols-12 gap-8 items-center">
         {/* Left Column: Heading copy & CTAs */}
         <div className="lg:col-span-7 text-left space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-bg-surface/10 rounded-full border border-bg-surface/20 text-xs font-semibold tracking-wider text-secondary uppercase animate-pulse">
-            <BookOpen className="w-4 h-4 text-secondary" />
-            <span>Penerimaan Santri Baru 2026/2027</span>
-          </div>
 
           <div className="space-y-2">
             <span className="block text-xs md:text-sm font-semibold tracking-widest text-secondary uppercase leading-none">
@@ -34,17 +30,17 @@ export default function Hero({ onNavigate }) {
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <button
               onClick={() => onNavigate('pendaftaran')}
-              className="px-6 py-3 glossy-gold text-primary font-bold rounded-lg cursor-pointer transition-all duration-300 flex items-center gap-2 group focus:outline-none"
+              className="btn-primary focus-ring"
             >
               Daftar Santri Baru
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="icon-xs group-hover:translate-x-1 transition-transform" />
             </button>
             <button
               onClick={() => onNavigate('profil')}
-              className="px-6 py-3 border border-bg-surface/30 hover:border-secondary hover:bg-bg-surface/5 text-bg-surface hover:text-secondary font-semibold rounded-lg cursor-pointer transition-all duration-300 flex items-center gap-1.5 focus:outline-none"
+              className="hidden md:flex px-6 py-3 border border-bg-surface/30 hover:border-secondary hover:bg-bg-surface/5 text-bg-surface hover:text-secondary font-semibold rounded-lg transition-standard items-center gap-1.5 focus:outline-none focus-ring"
             >
               Pelajari Profil Kami
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="icon-xs" />
             </button>
           </div>
         </div>

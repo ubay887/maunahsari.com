@@ -41,32 +41,32 @@ export default function Footer({ onNavigate }) {
           <h4 className="text-xs font-bold text-secondary uppercase tracking-widest">Akses Cepat</h4>
           <ul className="text-xs space-y-2">
             <li>
-              <button onClick={() => handleNav('beranda')} className="hover:text-secondary hover:underline cursor-pointer focus:outline-none">
+              <button onClick={() => handleNav('beranda')} className="hover:text-secondary hover:underline transition-standard focus:outline-none focus-ring">
                 Beranda
               </button>
             </li>
             <li>
-              <button onClick={() => handleNav('profil')} className="hover:text-secondary hover:underline cursor-pointer focus:outline-none">
+              <button onClick={() => handleNav('profil')} className="hover:text-secondary hover:underline transition-standard focus:outline-none focus-ring">
                 Profil Pesantren
               </button>
             </li>
             <li>
-              <button onClick={() => handleNav('pendaftaran')} className="hover:text-secondary hover:underline cursor-pointer focus:outline-none">
+              <button onClick={() => handleNav('pendaftaran')} className="hover:text-secondary hover:underline transition-standard focus:outline-none focus-ring">
                 Pendaftaran (PSB)
               </button>
             </li>
             <li>
-              <button onClick={() => handleNav('putra')} className="hover:text-secondary hover:underline cursor-pointer focus:outline-none">
+              <button onClick={() => handleNav('putra')} className="hover:text-secondary hover:underline transition-standard focus:outline-none focus-ring">
                 Pondok Putra
               </button>
             </li>
             <li>
-              <button onClick={() => handleNav('putri')} className="hover:text-secondary hover:underline cursor-pointer focus:outline-none">
+              <button onClick={() => handleNav('putri')} className="hover:text-secondary hover:underline transition-standard focus:outline-none focus-ring">
                 Pondok Putri
               </button>
             </li>
             <li>
-              <button onClick={() => handleNav('alumni')} className="hover:text-secondary hover:underline cursor-pointer focus:outline-none">
+              <button onClick={() => handleNav('alumni')} className="hover:text-secondary hover:underline transition-standard focus:outline-none focus-ring">
                 Alumni (HAMAS)
               </button>
             </li>
@@ -78,17 +78,17 @@ export default function Footer({ onNavigate }) {
           <h4 className="text-xs font-bold text-secondary uppercase tracking-widest">Sekretariat</h4>
           <div className="text-xs text-bg-base/70 space-y-2.5">
             <div className="flex items-start gap-2.5">
-              <MapPin className="w-4 h-4 text-secondary shrink-0 mt-0.5" />
+              <MapPin className="icon-xs text-secondary shrink-0 mt-0.5" />
               <span>
                 Jl. KH. Agus Salim No.8, Bandar Kidul, Kec. Mojoroto, Kota Kediri, Jawa Timur 64118
               </span>
             </div>
             <div className="flex items-center gap-2.5">
-              <Phone className="w-4 h-4 text-secondary shrink-0" />
+              <Phone className="icon-xs text-secondary shrink-0" />
               <span>0812-4530-6020 (Putra)</span>
             </div>
             <div className="flex items-center gap-2.5">
-              <Phone className="w-4 h-4 text-secondary shrink-0" />
+              <Phone className="icon-xs text-secondary shrink-0" />
               <span>0856-4571-7767 (Putri)</span>
             </div>
           </div>
@@ -99,10 +99,10 @@ export default function Footer({ onNavigate }) {
       <div className="bg-[#092c1b] py-6 border-t border-bg-surface/10">
         <div className="container-custom flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
           <div className="text-bg-base/50">
-            &copy; {currentYear} Pesantren Tahfidhul Qur'an Ma'unah Sari. All rights reserved.
+            &copy; {currentYear} PPTQ Ma'unah Sari. Hak Cipta Dilindungi.
           </div>
           <div className="flex items-center gap-1 text-bg-base/40">
-            Made with <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 inline" /> for Huffadh Al-Qur'an.
+            Dibuat dengan <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 inline" /> untuk Para Huffadh Al-Qur'an
           </div>
         </div>
       </div>

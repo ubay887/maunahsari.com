@@ -46,8 +46,8 @@ export default function PondokPutri() {
 
       {/* Program Pendidikan */}
       <div className="space-y-6">
-        <h3 className="font-display text-2xl font-bold text-primary border-b border-primary/10 pb-2 flex items-center gap-2">
-          <BookOpen className="w-6 h-6 text-secondary" /> Program Pembelajaran
+        <h3 className="text-display-md text-primary border-b border-primary/10 pb-2 flex items-center gap-2">
+          <BookOpen className="icon-md text-secondary" /> Program Pembelajaran
         </h3>
         <div className="grid md:grid-cols-2 gap-6">
           {programs.map((prog, idx) => (
@@ -67,8 +67,8 @@ export default function PondokPutri() {
       <div className="grid md:grid-cols-2 gap-8 items-start">
         {/* Kegiatan Harian */}
         <div className="space-y-6">
-          <h3 className="font-display text-xl font-bold text-primary border-b border-primary/10 pb-2 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-secondary" /> Kegiatan Harian
+          <h3 className="text-heading-lg text-primary border-b border-primary/10 pb-2 flex items-center gap-2">
+            <Clock className="icon-sm text-secondary" /> Kegiatan Harian
           </h3>
           <div className="space-y-4">
             {kegiatan.map((item, idx) => (
@@ -87,21 +87,21 @@ export default function PondokPutri() {
 
         {/* Fasilitas & Ketentuan Kuota */}
         <div className="space-y-6">
-          <h3 className="font-display text-xl font-bold text-primary border-b border-primary/10 pb-2 flex items-center gap-2">
-            <Award className="w-5 h-5 text-secondary" /> Fasilitas & Ketentuan
+          <h3 className="text-heading-lg text-primary border-b border-primary/10 pb-2 flex items-center gap-2">
+            <Award className="icon-sm text-secondary" /> Fasilitas & Ketentuan
           </h3>
           <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 shadow-sm space-y-4">
             <div className="space-y-2">
               <span className="text-xs font-bold text-primary uppercase block">Fasilitas Utama Santriwati Mukim:</span>
               <ul className="grid grid-cols-2 gap-2 text-xs text-text-muted">
-                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-accent shrink-0" /> Kotak Almari Pribadi</li>
-                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-accent shrink-0" /> Konsumsi Makan 2x Sehari</li>
+                <li className="flex items-center gap-2"><CheckCircle className="icon-xs text-accent shrink-0" /> Kotak Almari Pribadi</li>
+                <li className="flex items-center gap-2"><CheckCircle className="icon-xs text-accent shrink-0" /> Konsumsi Makan 2x Sehari</li>
               </ul>
             </div>
 
             <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg space-y-2">
               <span className="text-xs font-bold text-amber-800 flex items-center gap-1">
-                <HelpCircle className="w-4 h-4 shrink-0" /> Ketentuan Kuota:
+                <HelpCircle className="icon-xs shrink-0" /> Ketentuan Kuota:
               </span>
               <p className="text-[11px] text-amber-700 leading-relaxed">
                 Kuota pendaftaran santriwati baru ditetapkan berdasarkan jumlah kotak almari asrama putri yang tersedia. Sangat dianjurkan calon wali santriwati untuk berkoordinasi terlebih dahulu dengan narahubung putri sebelum menjadwalkan kunjungan.

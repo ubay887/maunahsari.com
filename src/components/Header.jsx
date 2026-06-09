@@ -35,7 +35,7 @@ export default function Header({ activePage, setActivePage }) {
         {/* Brand Logo */}
         <button
           onClick={() => handleNavClick('beranda')}
-          className="flex items-center gap-2 group cursor-pointer focus:outline-none"
+          className="flex items-center gap-2 group focus:outline-none focus-ring transition-standard"
           aria-label="Kembali ke Beranda"
         >
           <img
@@ -66,7 +66,7 @@ export default function Header({ activePage, setActivePage }) {
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`relative py-2 px-1 text-sm font-semibold tracking-wide cursor-pointer transition-colors duration-200 focus:outline-none ${
+              className={`relative py-2 px-1 text-sm font-semibold tracking-wide transition-standard focus:outline-none focus-ring ${
                 activePage === item.id
                   ? isHome
                     ? 'text-white'
@@ -87,13 +87,13 @@ export default function Header({ activePage, setActivePage }) {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`md:hidden p-2 rounded-lg cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-secondary/50 ${
+          className={`md:hidden p-2 rounded-lg transition-standard focus:outline-none focus-ring ${
             isHome ? 'text-white/80 hover:text-white' : 'text-text-muted hover:text-primary'
           }`}
           aria-expanded={isOpen}
           aria-label="Toggle navigation menu"
         >
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {isOpen ? <X className="icon-md" /> : <Menu className="icon-md" />}
         </button>
       </div>
 
@@ -109,7 +109,7 @@ export default function Header({ activePage, setActivePage }) {
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`w-full text-left py-3 px-4 rounded-lg font-semibold tracking-wide cursor-pointer transition-all duration-200 ${
+                className={`w-full text-left py-3 px-4 rounded-lg font-semibold tracking-wide transition-standard focus:outline-none focus-ring ${
                   activePage === item.id
                     ? isHome
                       ? 'bg-white/10 text-white border-l-4 border-secondary'

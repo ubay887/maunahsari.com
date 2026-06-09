@@ -27,13 +27,13 @@ export default function Beranda({ onNavigate }) {
       <div className="container-custom">
         <div className="bg-bg-surface border border-primary/10 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row gap-6 items-center">
           <div className="bg-primary/5 p-4 rounded-xl text-primary shrink-0">
-            <BookOpen className="w-12 h-12 text-secondary" />
+            <BookOpen className="icon-lg text-secondary" />
           </div>
           <div className="text-left space-y-2 flex-grow">
             <span className="inline-block px-2.5 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-md uppercase tracking-wider">
               INFO TERBARU
             </span>
-            <h3 className="font-display text-2xl font-bold text-primary">
+            <h3 className="text-display-md text-primary">
               Pendaftaran Santri Baru Tahun Ajaran 2026/2027
             </h3>
             <p className="text-text-muted text-sm leading-relaxed max-w-3xl">
@@ -42,10 +42,10 @@ export default function Beranda({ onNavigate }) {
           </div>
           <button
             onClick={() => onNavigate('pendaftaran')}
-            className="px-5 py-3 glossy-gold text-primary font-bold rounded-lg transition-all duration-300 flex items-center gap-1.5 shrink-0 cursor-pointer focus:outline-none"
+            className="btn-primary focus-ring shrink-0"
           >
             Selengkapnya
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="icon-xs" />
           </button>
         </div>
       </div>
@@ -58,13 +58,13 @@ export default function Beranda({ onNavigate }) {
       {/* Spiritual Quotes Grid */}
       <div className="bg-primary/5 py-12 border-y border-primary/5">
         <div className="container-custom">
-          <h3 className="font-display text-xl md:text-2xl text-primary font-bold mb-8 text-center">
+          <h3 className="text-display-md text-primary mb-8 text-center">
             Pesan dan Kalam Mutiara Masyayikh
           </h3>
           <div className="grid md:grid-cols-2 gap-8">
             {/* Quote 1 */}
             <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 md:p-8 shadow-sm text-left relative space-y-4 flex flex-col justify-between">
-              <Quote className="w-10 h-10 text-secondary/30 absolute top-4 right-4" />
+              <Quote className="icon-lg text-secondary/30 absolute top-4 right-4" />
               <blockquote className="text-text-muted text-sm italic leading-relaxed pt-2">
                 "Ngaji itu harus dengan sungguh-sungguh. Kalau sudah selesai mengaji, harus dirawat dengan sungguh-sungguh (kudu diopeni sing tenanan), tetap harus dideres (diulang), sisihkan waktu untuk muroja'ah."
               </blockquote>
@@ -83,7 +83,7 @@ export default function Beranda({ onNavigate }) {
 
             {/* Quote 2 */}
             <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 md:p-8 shadow-sm text-left relative space-y-4 flex flex-col justify-between">
-              <Quote className="w-10 h-10 text-secondary/30 absolute top-4 right-4" />
+              <Quote className="icon-lg text-secondary/30 absolute top-4 right-4" />
               <blockquote className="text-text-muted text-sm italic leading-relaxed pt-2">
                 "Sebelum mulai menghafal Al-Qur'an, alangkah baiknya mengkhatamkan atau melancarkan bacaan bin-nadhor terlebih dahulu. Dahulukan yang fardhu 'ain sebelum fardhu kifayah."
               </blockquote>
@@ -127,7 +127,7 @@ export default function Beranda({ onNavigate }) {
         ].map((item, idx) => (
           <div
             key={idx}
-            className="bg-bg-surface border border-primary/5 hover:border-secondary rounded-2xl overflow-hidden text-left shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between"
+            className="bg-bg-surface border border-primary/5 hover:border-secondary rounded-2xl overflow-hidden text-left shadow-sm hover:shadow-md transition-standard flex flex-col justify-between"
           >
             <img src={item.image} alt={item.title} className="w-full h-40 object-cover" />
             <div className="p-6 flex-grow flex flex-col justify-between">
@@ -137,10 +137,10 @@ export default function Beranda({ onNavigate }) {
               </div>
               <button
                 onClick={() => onNavigate(item.target)}
-                className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-secondary hover:text-primary transition-colors cursor-pointer focus:outline-none"
+                className="btn-tertiary mt-4 focus-ring"
               >
                 Kunjungi Laman
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="icon-xs" />
               </button>
             </div>
           </div>

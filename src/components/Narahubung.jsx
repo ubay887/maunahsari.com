@@ -85,7 +85,7 @@ export default function Narahubung() {
       <div className="grid md:grid-cols-2 gap-8 items-start">
         {/* Phone / WA Contacts */}
         <div className="space-y-6">
-          <h3 className="font-display text-xl font-bold text-primary border-b border-primary/10 pb-2">
+          <h3 className="text-heading-lg text-primary border-b border-primary/10 pb-2">
             Kontak Administrasi
           </h3>
           <div className="space-y-4">
@@ -93,7 +93,7 @@ export default function Narahubung() {
               <div key={idx} className="bg-bg-surface border border-primary/5 rounded-2xl p-5 shadow-sm space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-xs font-bold text-secondary uppercase tracking-wider">{contact.role}</span>
-                  <MessageCircle className="w-5 h-5 text-accent" />
+                  <MessageCircle className="icon-sm text-accent" />
                 </div>
                 <div className="text-lg font-bold text-primary font-mono">{contact.phone}</div>
                 <p className="text-xs text-text-muted leading-relaxed">{contact.desc}</p>
@@ -101,10 +101,10 @@ export default function Narahubung() {
                   href={contact.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 glossy-emerald text-bg-surface rounded-lg text-xs font-bold cursor-pointer transition-all focus:outline-none"
+                  className="btn-secondary focus-ring"
                 >
                   Hubungi via WhatsApp
-                  <MessageCircle className="w-4 h-4" />
+                  <MessageCircle className="icon-xs" />
                 </a>
               </div>
             ))}
@@ -113,7 +113,7 @@ export default function Narahubung() {
 
         {/* Social Media & Blog */}
         <div className="space-y-6">
-          <h3 className="font-display text-xl font-bold text-primary border-b border-primary/10 pb-2">
+          <h3 className="text-heading-lg text-primary border-b border-primary/10 pb-2">
             Media Publikasi & Sosial
           </h3>
           
@@ -127,9 +127,9 @@ export default function Narahubung() {
                   href={media.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`bg-bg-surface border border-primary/5 rounded-2xl p-4 shadow-sm flex flex-col justify-between hover:border-secondary transition-all duration-300 group cursor-pointer focus:outline-none`}
+                  className={`bg-bg-surface border border-primary/5 rounded-2xl p-4 shadow-sm flex flex-col justify-between hover:border-secondary transition-standard group focus:outline-none focus-ring`}
                 >
-                  <Icon className={`w-6 h-6 text-text-muted transition-colors ${media.color} group-hover:scale-105`} />
+                  <Icon className={`icon-md text-text-muted transition-colors ${media.color} group-hover:scale-105`} />
                   <div className="mt-4 text-left">
                     <span className="block text-[10px] text-text-muted uppercase font-bold tracking-wide">{media.name}</span>
                     <span className="block text-xs font-semibold text-primary truncate">{media.handle}</span>
@@ -150,10 +150,10 @@ export default function Narahubung() {
               href="https://khobarunamaunahsari.blogspot.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 glossy-gold text-primary font-bold rounded-lg text-xs cursor-pointer transition-all focus:outline-none"
+              className="btn-primary focus-ring"
             >
               Kunjungi Blog Majalah
-              <Globe className="w-4 h-4" />
+              <Globe className="icon-xs" />
             </a>
           </div>
         </div>

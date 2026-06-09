@@ -60,7 +60,7 @@ export default function Alumni() {
             <span className="text-[10px] font-bold text-secondary tracking-wider uppercase block">
               Menjaga Sanad Keilmuan & Ukhuwah
             </span>
-            <h3 className="font-display text-xl md:text-2xl font-bold text-primary">
+            <h3 className="text-display-md text-primary">
               "Sambung Sanad, Khidmah Tanpa Batas"
             </h3>
             <p className="text-text-muted text-sm leading-relaxed">
@@ -88,8 +88,8 @@ export default function Alumni() {
           {/* Heatmap & Distribution Panel */}
           <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
             <div className="flex justify-between items-center border-b border-primary/10 pb-3">
-              <h3 className="font-display text-lg font-bold text-primary flex items-center gap-2">
-                <Globe className="w-5 h-5 text-secondary" /> Peta Sebaran Alumni
+              <h3 className="text-heading-lg text-primary flex items-center gap-2">
+                <Globe className="icon-sm text-secondary" /> Peta Sebaran Alumni
               </h3>
               <span className="text-[10px] text-text-muted uppercase font-bold">Interaktif</span>
             </div>
@@ -180,7 +180,7 @@ export default function Alumni() {
                   <button
                     key={region.id}
                     onClick={() => setActiveRegion(region.id)}
-                    className={`flex items-center justify-between p-3 rounded-lg border text-left cursor-pointer transition-all duration-300 ${
+                    className={`flex items-center justify-between p-3 rounded-lg border text-left transition-standard focus:outline-none focus-ring ${
                       activeRegion === region.id
                         ? 'border-secondary bg-primary/5 shadow-sm'
                         : 'border-primary/5 bg-bg-surface hover:border-primary/20'
@@ -190,7 +190,7 @@ export default function Alumni() {
                       <span className="block text-xs font-bold text-primary leading-none">{region.name}</span>
                       <span className="block text-[10px] text-text-muted">{region.count} Huffadh</span>
                     </div>
-                    <ChevronRight className={`w-4 h-4 text-secondary transition-transform ${activeRegion === region.id ? 'translate-x-1' : ''}`} />
+                    <ChevronRight className={`icon-xs text-secondary transition-transform ${activeRegion === region.id ? 'translate-x-1' : ''}`} />
                   </button>
                 ))}
               </div>
@@ -305,10 +305,10 @@ export default function Alumni() {
 
                 <button
                   type="submit"
-                  className="w-full py-3 mt-2 glossy-gold text-primary font-bold rounded-lg cursor-pointer transition-all flex items-center justify-center gap-1.5 focus:outline-none"
+                  className="btn-primary w-full focus-ring"
                 >
                   Kirim Data Alumni
-                  <Send className="w-4 h-4" />
+                  <Send className="icon-xs" />
                 </button>
               </form>
             )}

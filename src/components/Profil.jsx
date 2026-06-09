@@ -29,13 +29,13 @@ export default function Profil() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 py-2.5 px-2.5 md:px-6 text-xs md:text-sm font-semibold tracking-wide border-b-2 transition-all duration-200 cursor-pointer focus:outline-none ${
+              className={`flex items-center gap-1.5 py-2.5 px-2.5 md:px-6 text-xs md:text-sm font-semibold tracking-wide border-b-2 transition-standard focus:outline-none focus-ring ${
                 activeTab === tab.id
                   ? 'border-secondary text-primary'
                   : 'border-transparent text-text-muted hover:text-primary'
               }`}
             >
-              <Icon className="w-4 h-4 shrink-0" />
+              <Icon className="icon-xs shrink-0" />
               <span>{tab.label}</span>
             </button>
           );
@@ -47,7 +47,7 @@ export default function Profil() {
         {/* TAB 1: Sejarah & Lokasi */}
         {activeTab === 'sejarah' && (
           <div className="space-y-6">
-            <h3 className="font-display text-2xl font-bold text-primary border-b border-primary/10 pb-2">
+            <h3 className="text-display-md text-primary border-b border-primary/10 pb-2">
               Sejarah Berdiri Pesantren
             </h3>
             <div className="text-text-muted text-sm space-y-4 leading-relaxed">
@@ -62,8 +62,8 @@ export default function Profil() {
               </p>
             </div>
 
-            <h3 className="font-display text-2xl font-bold text-primary border-b border-primary/10 pb-2 pt-4 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-secondary" /> Lokasi Geografis
+            <h3 className="text-display-md text-primary border-b border-primary/10 pb-2 pt-4 flex items-center gap-2">
+              <MapPin className="icon-sm text-secondary" /> Lokasi Geografis
             </h3>
             <div className="text-text-muted text-sm space-y-2">
               <p>
@@ -84,7 +84,7 @@ export default function Profil() {
           <div className="space-y-6">
             <div>
               <span className="text-xs text-secondary font-bold uppercase tracking-wider block">Mengenal Muassis</span>
-              <h3 className="font-display text-2xl font-bold text-primary">
+              <h3 className="text-display-md text-primary">
                 KH. Muhammad Mubassyir Mundzir Bin KH. Imam Bachri
               </h3>
             </div>
@@ -116,7 +116,7 @@ export default function Profil() {
           <div className="space-y-6">
             <div>
               <span className="text-xs text-secondary font-bold uppercase tracking-wider block">Pengasuh Periode 1990 - Sekarang</span>
-              <h3 className="font-display text-2xl font-bold text-primary">
+              <h3 className="text-display-md text-primary">
                 KH. R. Abdul Hamid Abdul Qodir
               </h3>
               <p className="text-xs text-text-muted mt-1">
@@ -138,7 +138,7 @@ export default function Profil() {
             <div className="grid sm:grid-cols-2 gap-6 pt-2 border-t border-primary/10">
               <div className="space-y-2">
                 <span className="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1">
-                  <BookOpenCheck className="w-4 h-4 text-secondary" /> Karya Tulis
+                  <BookOpenCheck className="icon-xs text-secondary" /> Karya Tulis
                 </span>
                 <ul className="text-xs text-text-muted space-y-1.5 list-disc list-inside">
                   <li>Al-Ma'unah Fii Tafsiri Suratil Fatihah</li>
@@ -150,7 +150,7 @@ export default function Profil() {
 
               <div className="space-y-2">
                 <span className="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1">
-                  <Award className="w-4 h-4 text-secondary" /> Aktivitas Organisasi
+                  <Award className="icon-xs text-secondary" /> Aktivitas Organisasi
                 </span>
                 <ul className="text-xs text-text-muted space-y-1.5 list-disc list-inside">
                   <li>Rais Syuriah PCNU Kota Kediri (2016-Sekarang)</li>

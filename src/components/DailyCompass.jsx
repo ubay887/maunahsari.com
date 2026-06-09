@@ -51,7 +51,7 @@ export default function DailyCompass() {
         <span className="text-xs font-semibold text-secondary tracking-widest uppercase">
           Signature Experience
         </span>
-        <h2 className="font-display text-2xl md:text-3xl text-primary font-bold mt-1">
+        <h2 className="text-display-md text-primary mt-1">
           Kompas Rutinitas Santri
         </h2>
         <p className="text-text-muted text-sm max-w-lg mx-auto mt-2">
@@ -91,14 +91,14 @@ export default function DailyCompass() {
                   key={item.id}
                   onClick={() => setActiveId(item.id)}
                   style={style}
-                  className={`absolute w-12 h-12 rounded-full flex items-center justify-center shadow-md border cursor-pointer transition-all duration-300 ${
+                  className={`absolute w-12 h-12 rounded-full flex items-center justify-center shadow-md border transition-standard focus:outline-none focus-ring ${
                     activeId === item.id
                       ? 'bg-primary border-secondary text-secondary scale-110 ring-4 ring-secondary/20'
                       : 'bg-bg-surface border-primary/10 text-primary hover:border-secondary hover:text-secondary'
                   }`}
                   aria-label={`Lihat kegiatan ${item.title}`}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="icon-sm" />
                 </button>
               );
             })}
@@ -109,7 +109,7 @@ export default function DailyCompass() {
         <div className="flex flex-col justify-center bg-bg-surface/50 border border-primary/5 rounded-xl p-6 shadow-sm backdrop-blur-sm">
           <div className="flex items-center gap-3 border-b border-primary/10 pb-4 mb-4">
             <div className="p-2.5 bg-primary/5 rounded-lg text-primary">
-              <Clock className="w-5 h-5" />
+              <Clock className="icon-sm" />
             </div>
             <div>
               <span className="text-xs text-secondary font-mono font-bold uppercase tracking-wider block">
@@ -121,7 +121,7 @@ export default function DailyCompass() {
             </div>
           </div>
 
-          <h3 className="font-display font-bold text-xl text-primary mb-2">
+          <h3 className="text-heading-lg text-primary mb-2">
             {activeItem.title}
           </h3>
           <p className="text-text-muted text-sm leading-relaxed mb-4">
