@@ -1,6 +1,6 @@
-import React from 'react';
-import { ChevronRight, ArrowRight, BookOpen, Quote, ShieldCheck, Heart } from 'lucide-react';
+import { ChevronRight, ArrowRight, BookOpen, Quote } from 'lucide-react';
 import DailyCompass from './DailyCompass';
+import IslamicPattern, { SectionDivider, OrnamentalCorner } from './IslamicPattern';
 
 // Local Assets
 import gusHamidImg from '../assets/gus_hamid.png';
@@ -13,7 +13,12 @@ export default function Beranda({ onNavigate }) {
   return (
     <div className="space-y-12 py-8 md:py-12">
       {/* Welcome Banner */}
-      <div className="text-center space-y-2 max-w-2xl mx-auto px-4">
+      <div className="text-center space-y-2 max-w-2xl mx-auto px-4 relative">
+        {/* Subtle arabesque pattern behind text */}
+        <div className="absolute inset-0 pointer-events-none -z-10">
+          <IslamicPattern variant="arabesque" opacity={0.02} />
+        </div>
+
         <span className="text-xs font-semibold text-secondary tracking-widest uppercase block">
           Laman Informasi Resmi
         </span>
@@ -25,8 +30,8 @@ export default function Beranda({ onNavigate }) {
 
       {/* Info Terbaru: Pendaftaran Santri Baru 2026/2027 */}
       <div className="container-custom">
-        <div className="bg-bg-surface border border-primary/10 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row gap-6 items-center">
-          <div className="bg-primary/5 p-4 rounded-xl text-primary shrink-0">
+        <div className="bg-bg-surface border border-primary/10 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row gap-6 items-center card-interactive">
+          <div className="bg-primary/5 p-4 rounded-xl text-primary shrink-0 animate-bounce-subtle">
             <BookOpen className="icon-lg text-secondary" />
           </div>
           <div className="text-left space-y-2 flex-grow">
@@ -51,24 +56,35 @@ export default function Beranda({ onNavigate }) {
       </div>
 
       {/* Interactive Compass Component (Signature Element) */}
+      <SectionDivider variant="ornamental" />
+
       <div className="container-custom">
         <DailyCompass />
       </div>
 
+      <SectionDivider variant="ornamental" />
+
       {/* Spiritual Quotes Grid */}
-      <div className="bg-primary/5 py-12 border-y border-primary/5">
-        <div className="container-custom">
+      <div className="bg-primary/5 py-12 border-y border-primary/5 relative overflow-hidden">
+        {/* Islamic Geometric Pattern Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <IslamicPattern variant="geometric" opacity={0.03} />
+        </div>
+
+        <div className="container-custom relative z-10">
           <h3 className="text-display-md text-primary mb-8 text-center">
             Pesan dan Kalam Mutiara Masyayikh
           </h3>
           <div className="grid md:grid-cols-2 gap-8">
             {/* Quote 1 */}
-            <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 md:p-8 shadow-sm text-left relative space-y-4 flex flex-col justify-between">
+            <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 md:p-8 shadow-sm text-left relative space-y-4 flex flex-col justify-between overflow-hidden">
+              <OrnamentalCorner position="top-left" size="sm" className="text-secondary/25" />
+              <OrnamentalCorner position="bottom-right" size="sm" className="text-secondary/25" />
               <Quote className="icon-lg text-secondary/30 absolute top-4 right-4" />
-              <blockquote className="text-text-muted text-sm italic leading-relaxed pt-2">
+              <blockquote className="text-text-muted text-sm italic leading-relaxed pt-2 z-10">
                 "Ngaji itu harus dengan sungguh-sungguh. Kalau sudah selesai mengaji, harus dirawat dengan sungguh-sungguh (kudu diopeni sing tenanan), tetap harus dideres (diulang), sisihkan waktu untuk muroja'ah."
               </blockquote>
-              <div className="border-t border-primary/10 pt-3 flex items-center gap-3">
+              <div className="border-t border-primary/10 pt-3 flex items-center gap-3 z-10">
                 <img
                   src={gusHamidImg}
                   alt="KH. R. Abdul Hamid Abdul Qodir"
@@ -82,12 +98,14 @@ export default function Beranda({ onNavigate }) {
             </div>
 
             {/* Quote 2 */}
-            <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 md:p-8 shadow-sm text-left relative space-y-4 flex flex-col justify-between">
+            <div className="bg-bg-surface border border-primary/5 rounded-2xl p-6 md:p-8 shadow-sm text-left relative space-y-4 flex flex-col justify-between overflow-hidden">
+              <OrnamentalCorner position="top-left" size="sm" className="text-secondary/25" />
+              <OrnamentalCorner position="bottom-right" size="sm" className="text-secondary/25" />
               <Quote className="icon-lg text-secondary/30 absolute top-4 right-4" />
-              <blockquote className="text-text-muted text-sm italic leading-relaxed pt-2">
+              <blockquote className="text-text-muted text-sm italic leading-relaxed pt-2 z-10">
                 "Sebelum mulai menghafal Al-Qur'an, alangkah baiknya mengkhatamkan atau melancarkan bacaan bin-nadhor terlebih dahulu. Dahulukan yang fardhu 'ain sebelum fardhu kifayah."
               </blockquote>
-              <div className="border-t border-primary/10 pt-3 flex items-center gap-3">
+              <div className="border-t border-primary/10 pt-3 flex items-center gap-3 z-10">
                 <img
                   src={agusKhalafImg}
                   alt="Agus Khalaf Muhammad Abha"
@@ -104,6 +122,8 @@ export default function Beranda({ onNavigate }) {
       </div>
 
       {/* Navigation Sections Grid */}
+      <SectionDivider />
+
       <div className="container-custom grid sm:grid-cols-3 gap-6">
         {[
           {
@@ -127,7 +147,8 @@ export default function Beranda({ onNavigate }) {
         ].map((item, idx) => (
           <div
             key={idx}
-            className="bg-bg-surface border border-primary/5 hover:border-secondary rounded-2xl overflow-hidden text-left shadow-sm hover:shadow-md transition-standard flex flex-col justify-between"
+            className="bg-bg-surface border border-primary/5 hover:border-secondary rounded-2xl overflow-hidden text-left shadow-sm hover:shadow-md transition-standard flex flex-col justify-between card-interactive animate-fade-in-up"
+            style={{ animationDelay: `${idx * 100}ms` }}
           >
             <img src={item.image} alt={item.title} className="w-full h-40 object-cover" />
             <div className="p-6 flex-grow flex flex-col justify-between">

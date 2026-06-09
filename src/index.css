@@ -384,3 +384,235 @@
   outline-offset: 4px;
 }
 
+/* ============================================
+   DYNAMIC ANIMATIONS & MICRO-INTERACTIONS
+   Making the design more lively and engaging
+   ============================================ */
+
+/* Entrance Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+.animate-fade-in-down {
+  animation: fade-in-down 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out forwards;
+}
+
+/* Staggered Animation Delays */
+.stagger-1 { animation-delay: 100ms; }
+.stagger-2 { animation-delay: 200ms; }
+.stagger-3 { animation-delay: 300ms; }
+.stagger-4 { animation-delay: 400ms; }
+.stagger-5 { animation-delay: 500ms; }
+
+/* Hover Glow Effect */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 8px 32px rgba(207, 161, 82, 0.4);
+  }
+  50% {
+    box-shadow: 0 8px 40px rgba(207, 161, 82, 0.6), 0 0 20px rgba(207, 161, 82, 0.3);
+  }
+}
+
+.hover-glow:hover {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Card Interactive Enhancements */
+.card-interactive {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.card-interactive:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(12, 62, 38, 0.12), 0 0 0 1px rgba(207, 161, 82, 0.2);
+}
+
+.card-interactive:active {
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* Subtle Tilt on Hover (3D effect) */
+.card-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.card-tilt:hover {
+  transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
+}
+
+/* Gradient Text Utilities */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #f3d49b 0%, #cfa152 50%, #b28437 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+.text-gradient-emerald {
+  background: linear-gradient(135deg, #15663e 0%, #0c3e26 50%, #10b981 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Section Gradient Overlays */
+.section-gradient-emerald {
+  background: linear-gradient(135deg,
+    rgba(12, 62, 38, 0.03) 0%,
+    transparent 50%,
+    rgba(207, 161, 82, 0.03) 100%
+  );
+}
+
+.section-gradient-radial {
+  background: radial-gradient(
+    circle at 30% 50%,
+    rgba(207, 161, 82, 0.08) 0%,
+    transparent 60%
+  );
+}
+
+/* Scroll-Triggered Animations */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-on-scroll.animate-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Floating Animation (for decorative elements) */
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.animate-float-gentle {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+/* Bounce Animation (for emphasized elements) */
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 1s ease-in-out;
+}
+
+/* Shimmer Effect (for loading or emphasis) */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(207, 161, 82, 0.2) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Enhanced Button Hover States */
+.btn-primary:hover,
+.btn-secondary:hover {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Icon Spin on Hover */
+.icon-spin-hover {
+  transition: transform 0.4s ease;
+}
+
+.icon-spin-hover:hover {
+  transform: rotate(15deg) scale(1.1);
+}
+
+/* Underline Grow Effect */
+.underline-grow {
+  position: relative;
+  display: inline-block;
+}
+
+.underline-grow::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-secondary);
+  transition: width 0.3s ease;
+}
+
+.underline-grow:hover::after {
+  width: 100%;
+}
+

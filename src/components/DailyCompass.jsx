@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Clock, BookOpen, Sun, Moon } from 'lucide-react';
+import { IslamicRosette } from './IslamicPattern';
 
 const scheduleItems = [
   {
@@ -43,8 +44,8 @@ export default function DailyCompass() {
   return (
     <div className="bg-bg-elevated border border-primary/5 rounded-2xl p-6 md:p-8 shadow-md relative overflow-hidden">
       {/* Background Islamic Watermark Pattern */}
-      <div className="absolute inset-0 opacity-3 pointer-events-none flex items-center justify-center">
-        <div className="w-96 h-96 rounded-full border-4 border-dashed border-secondary/20 animate-spin-slow"></div>
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
+        <IslamicRosette className="text-secondary/15 animate-spin-slow" size="xl" />
       </div>
 
       <div className="text-center mb-8 relative z-10">

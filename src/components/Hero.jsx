@@ -1,13 +1,28 @@
-import React from 'react';
-import { ArrowRight, ChevronRight, BookOpen } from 'lucide-react';
+import { ArrowRight, ChevronRight } from 'lucide-react';
+import IslamicPattern, { OrnamentalCorner } from './IslamicPattern';
+import { useParallax } from '../hooks/useParallax';
 
 export default function Hero({ onNavigate }) {
+  const { parallaxY } = useParallax(0.3);
+
   return (
     <section className="relative overflow-hidden bg-primary text-bg-surface pt-28 pb-16 lg:pt-36 lg:pb-24 border-b-4 border-secondary shadow-lg">
+      {/* Islamic Pattern Background with Parallax */}
+      <div
+        className="absolute inset-0 opacity-5 pointer-events-none"
+        style={{ transform: `translateY(${parallaxY}px)` }}
+      >
+        <IslamicPattern variant="star" opacity={1} />
+      </div>
+
       {/* Decorative BG Grid & Circles */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#092c1b_1px,transparent_1px),linear-gradient(to_bottom,#092c1b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20 pointer-events-none"></div>
-      <div className="absolute top-1/2 left-0 w-80 h-80 bg-secondary/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none translate-x-1/3 translate-y-1/3"></div>
+      <div className="absolute top-1/2 left-0 w-80 h-80 bg-secondary/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2"
+        style={{ transform: `translateY(${-parallaxY * 0.5}px)` }}
+      ></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none translate-x-1/3 translate-y-1/3"
+        style={{ transform: `translate(33%, 33%) translateY(${parallaxY * 0.3}px)` }}
+      ></div>
 
       <div className="container-custom relative z-10 grid lg:grid-cols-12 gap-8 items-center">
         {/* Left Column: Heading copy & CTAs */}
@@ -17,9 +32,9 @@ export default function Hero({ onNavigate }) {
             <span className="block text-xs md:text-sm font-semibold tracking-widest text-secondary uppercase leading-none">
               Selamat Datang di Portal Resmi
             </span>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-bg-surface leading-tight">
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-bg-surface leading-tight animate-fade-in-down">
               Pesantren Tahfidhul Qur'an <br />
-              <span className="text-secondary italic">Ma'unah Sari</span>
+              <span className="text-gradient-gold animate-float-gentle inline-block">Ma'unah Sari</span>
             </h1>
           </div>
 
@@ -27,10 +42,10 @@ export default function Hero({ onNavigate }) {
             Laman informasi resmi seputar program Tahfidhul Qur'an, pendaftaran santri baru, profil kepengasuhan, dan kegiatan harian di PPTQ Ma'unah Sari, Bandar Kidul, Kota Kediri.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 pt-2">
+          <div className="flex flex-wrap items-center gap-4 pt-2 animate-fade-in-up stagger-2">
             <button
               onClick={() => onNavigate('pendaftaran')}
-              className="btn-primary focus-ring"
+              className="btn-primary focus-ring hover-glow"
             >
               Daftar Santri Baru
               <ArrowRight className="icon-xs group-hover:translate-x-1 transition-transform" />
@@ -46,10 +61,16 @@ export default function Hero({ onNavigate }) {
         </div>
 
         {/* Right Column: Decorative Visual Callout Card */}
-        <div className="lg:col-span-5 flex justify-center">
-          <div className="relative w-full max-w-sm glass-panel rounded-2xl p-6 space-y-6">
+        <div className="lg:col-span-5 flex justify-center animate-fade-in-up stagger-3">
+          <div className="relative w-full max-w-sm glass-panel rounded-2xl p-6 space-y-6 card-tilt">
+            {/* Elegant Islamic Corner Ornaments */}
+            <OrnamentalCorner position="top-left" size="md" className="text-secondary/40" />
+            <OrnamentalCorner position="top-right" size="md" className="text-secondary/40" />
+            <OrnamentalCorner position="bottom-left" size="md" className="text-secondary/40" />
+            <OrnamentalCorner position="bottom-right" size="md" className="text-secondary/40" />
+
             {/* Top gold geometric tag */}
-            <div className="absolute -top-3 left-6 px-3 py-1 glossy-gold text-primary font-bold text-xs rounded-full uppercase tracking-wider">
+            <div className="absolute -top-3 -right-3 px-4 py-2 glossy-gold text-primary font-bold text-xs rounded-full uppercase tracking-wider shadow-lg rotate-12 hover:rotate-0 transition-transform duration-300">
               Sarat Barokah
             </div>
 
