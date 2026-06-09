@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the official website for **PPTQ Ma'unah Sari**, a Tahfidhul Qur'an boarding school (pesantren) in Kediri, Indonesia. The site is a single-page application built with React 19 and Vite 8, featuring custom client-side routing and a design system focused on Islamic educational institution branding.
+This is the official website for **PTQ Ma'unah Sari**, a Tahfidhul Qur'an boarding school (pesantren) in Kediri, Indonesia. The site is a single-page application built with React 19 and Vite 8, featuring custom client-side routing and a design system focused on Islamic educational institution branding.
 
 **Tech Stack:**
 - React 19.2.6 (with React DOM)

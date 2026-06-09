@@ -40,7 +40,7 @@ export default function Header({ activePage, setActivePage }) {
         >
           <img
             src={logoImg}
-            alt="Logo PPTQ Ma'unah Sari"
+            alt="Logo PTQ Ma'unah Sari"
             className="w-10 h-10 object-contain rounded-full border border-primary/10 bg-bg-base p-0.5 group-hover:scale-105 transition-transform duration-300 shadow-sm"
           />
           <div className="text-left">
@@ -49,7 +49,7 @@ export default function Header({ activePage, setActivePage }) {
                 isHome ? 'text-white' : 'text-primary'
               }`}
             >
-              PPTQ Ma'unah Sari
+              PTQ Ma'unah Sari
             </span>
             <span className="hidden sm:block text-[9px] font-bold text-secondary tracking-wider uppercase mt-1">
               Bandar Kidul - Mojoroto - Kota Kediri

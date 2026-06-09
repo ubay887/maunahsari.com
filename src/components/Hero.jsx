@@ -1,5 +1,5 @@
 import { ArrowRight, ChevronRight } from 'lucide-react';
-import IslamicPattern, { OrnamentalCorner } from './IslamicPattern';
+import IslamicPattern, { OrnamentalCorner, IslamicRosette } from './IslamicPattern';
 import { useParallax } from '../hooks/useParallax';
 
 export default function Hero({ onNavigate }) {
@@ -7,13 +7,29 @@ export default function Hero({ onNavigate }) {
 
   return (
     <section className="relative overflow-hidden bg-primary text-bg-surface pt-28 pb-16 lg:pt-36 lg:pb-24 border-b-4 border-secondary shadow-lg">
-      {/* Islamic Pattern Background with Parallax */}
-      <div
-        className="absolute inset-0 opacity-5 pointer-events-none"
+      {/* Dynamic Rosette Watermarks (Elegant, minimal, and premium background details) */}
+      <div 
+        className="absolute -right-36 -bottom-36 w-[400px] h-[400px] md:w-[600px] md:h-[600px] text-secondary/10 pointer-events-none flex items-center justify-center overflow-hidden z-0 select-none"
         style={{ transform: `translateY(${parallaxY}px)` }}
       >
-        <IslamicPattern variant="star" opacity={1} />
+        <IslamicRosette size="full" className="animate-spin-slow" opacity={0.6} />
       </div>
+      <div 
+        className="absolute -left-28 -top-28 w-[300px] h-[300px] md:w-[450px] md:h-[450px] text-secondary/5 pointer-events-none flex items-center justify-center overflow-hidden z-0 select-none"
+        style={{ transform: `translateY(${-parallaxY * 0.5}px)` }}
+      >
+        <IslamicRosette size="full" className="animate-spin-slow" style={{ animationDirection: 'reverse', animationDuration: '35s' }} opacity={0.4} />
+      </div>
+
+      {/* Alternative Sparse Repeating Grid Option (uncomment to use) */}
+      {/* 
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none z-0"
+        style={{ transform: `translateY(${parallaxY}px)` }}
+      >
+        <IslamicPattern variant="sparse-star" opacity={1} />
+      </div>
+      */}
 
       {/* Decorative BG Grid & Circles */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#092c1b_1px,transparent_1px),linear-gradient(to_bottom,#092c1b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20 pointer-events-none"></div>
@@ -39,7 +55,7 @@ export default function Hero({ onNavigate }) {
           </div>
 
           <p className="text-bg-base/80 text-sm md:text-base max-w-xl leading-relaxed">
-            Laman informasi resmi seputar program Tahfidhul Qur'an, pendaftaran santri baru, profil kepengasuhan, dan kegiatan harian di PPTQ Ma'unah Sari, Bandar Kidul, Kota Kediri.
+            Laman informasi resmi seputar program Tahfidhul Qur'an, pendaftaran santri baru, profil kepengasuhan, dan kegiatan harian di PTQ Ma'unah Sari, Bandar Kidul, Kota Kediri.
           </p>
 
           <div className="flex flex-wrap items-center gap-4 pt-2 animate-fade-in-up stagger-2">
@@ -85,7 +101,7 @@ export default function Hero({ onNavigate }) {
                   KH. R. Abdul Hamid Abdul Qodir
                 </span>
                 <span className="block text-[10px] text-bg-base/60 uppercase">
-                  Pengasuh PPTQ Ma'unah Sari
+                  Pengasuh PTQ Ma'unah Sari
                 </span>
               </div>
             </div>

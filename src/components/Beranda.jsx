@@ -92,7 +92,7 @@ export default function Beranda({ onNavigate }) {
                 />
                 <div>
                   <span className="block text-sm font-bold text-primary">KH. R. Abdul Hamid Abdul Qodir</span>
-                  <span className="block text-[11px] text-text-muted uppercase tracking-wider">Pengasuh PPTQ Ma'unah Sari</span>
+                  <span className="block text-[11px] text-text-muted uppercase tracking-wider">Pengasuh PTQ Ma'unah Sari</span>
                 </div>
               </div>
             </div>

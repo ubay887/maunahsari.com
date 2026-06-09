@@ -1,6 +1,6 @@
-# Style Guide - PPTQ Ma'unah Sari Website
+# Style Guide - PTQ Ma'unah Sari Website
 
-> Panduan konsistensi desain dan implementasi untuk website PPTQ Ma'unah Sari
+> Panduan konsistensi desain dan implementasi untuk website PTQ Ma'unah Sari
 
 ---
 

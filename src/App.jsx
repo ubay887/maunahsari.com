@@ -38,37 +38,37 @@ export default function App() {
 
   // Dynamic SEO Title and Meta Description Update
   useEffect(() => {
-    let title = "PPTQ Ma'unah Sari Kediri - Portal Resmi Pesantren";
-    let desc = "Laman informasi resmi seputar program Tahfidhul Qur'an, pendaftaran santri baru, profil kepengasuhan, dan kegiatan harian di PPTQ Ma'unah Sari, Kediri.";
+    let title = "PTQ Ma'unah Sari Kediri - Portal Resmi Pesantren";
+    let desc = "Laman informasi resmi seputar program Tahfidhul Qur'an, pendaftaran santri baru, profil kepengasuhan, dan kegiatan harian di PTQ Ma'unah Sari, Kediri.";
     
     switch (activePage) {
       case 'beranda':
-        title = "PPTQ Ma'unah Sari Kediri - Portal Resmi Pesantren";
-        desc = "Laman informasi resmi seputar program Tahfidhul Qur'an, pendaftaran santri baru, profil kepengasuhan, dan kegiatan harian di PPTQ Ma'unah Sari, Kediri.";
+        title = "PTQ Ma'unah Sari Kediri - Portal Resmi Pesantren";
+        desc = "Laman informasi resmi seputar program Tahfidhul Qur'an, pendaftaran santri baru, profil kepengasuhan, dan kegiatan harian di PTQ Ma'unah Sari, Kediri.";
         break;
       case 'profil':
-        title = "Profil Lengkap PPTQ Ma'unah Sari Kediri - Sejarah & Kepengasuhan";
-        desc = "Mengenal sejarah berdirinya PPTQ Ma'unah Sari Kediri sejak 1967 M oleh KH. M. Mubassyir Mundzir dan riwayat kepengasuhan KH. R. Abdul Hamid Abdul Qodir.";
+        title = "Profil Lengkap PTQ Ma'unah Sari Kediri - Sejarah & Kepengasuhan";
+        desc = "Mengenal sejarah berdirinya PTQ Ma'unah Sari Kediri sejak 1967 M oleh KH. M. Mubassyir Mundzir dan riwayat kepengasuhan KH. R. Abdul Hamid Abdul Qodir.";
         break;
       case 'pendaftaran':
-        title = "Pendaftaran Santri Baru (PSB) 2026/2027 - PPTQ Ma'unah Sari";
-        desc = "Informasi alur, syarat, berkas, rincian biaya administrasi, dan link pendaftaran online santri baru putra/putri PPTQ Ma'unah Sari Kediri.";
+        title = "Pendaftaran Santri Baru (PSB) 2026/2027 - PTQ Ma'unah Sari";
+        desc = "Informasi alur, syarat, berkas, rincian biaya administrasi, dan link pendaftaran online santri baru putra/putri PTQ Ma'unah Sari Kediri.";
         break;
       case 'putra':
-        title = "Pondok Putra - Program Tahfidhul Qur'an PPTQ Ma'unah Sari";
-        desc = "Program pendidikan Al-Qur'an putra: Bil-Hifdhi, Bin-Nadhor, Qira'ah Sab'ah, dan Riyadloh 41 hari di PPTQ Ma'unah Sari Kediri.";
+        title = "Pondok Putra - Program Tahfidhul Qur'an PTQ Ma'unah Sari";
+        desc = "Program pendidikan Al-Qur'an putra: Bil-Hifdhi, Bin-Nadhor, Qira'ah Sab'ah, dan Riyadloh 41 hari di PTQ Ma'unah Sari Kediri.";
         break;
       case 'putri':
-        title = "Pondok Putri - Program Tahfidhul Qur'an PPTQ Ma'unah Sari";
-        desc = "Program pendidikan Al-Qur'an putri: Bil-Hifdhi, Bin-Nadhor, Qira'ah Sab'ah, dan Riyadloh Berkala di PPTQ Ma'unah Sari Lil-Banat.";
+        title = "Pondok Putri - Program Tahfidhul Qur'an PTQ Ma'unah Sari";
+        desc = "Program pendidikan Al-Qur'an putri: Bil-Hifdhi, Bin-Nadhor, Qira'ah Sab'ah, dan Riyadloh Berkala di PTQ Ma'unah Sari Lil-Banat.";
         break;
       case 'narahubung':
-        title = "Hubungi Kami - Narahubung Resmi & Media Sosial PPTQ Ma'unah Sari";
-        desc = "Layanan komunikasi resmi kantor putra/putri PPTQ Ma'unah Sari Kediri. Kontak WhatsApp, Instagram, Facebook, YouTube, dan blog majalah santri.";
+        title = "Hubungi Kami - Narahubung Resmi & Media Sosial PTQ Ma'unah Sari";
+        desc = "Layanan komunikasi resmi kantor putra/putri PTQ Ma'unah Sari Kediri. Kontak WhatsApp, Instagram, Facebook, YouTube, dan blog majalah santri.";
         break;
       case 'alumni':
-        title = "Himpunan Alumni Ma'unah Sari (HAMAS) - PPTQ Ma'unah Sari";
-        desc = "Portal Himpunan Alumni Ma'unah Sari (HAMAS). Data sebaran alumni dan silaturahim alumni PPTQ Ma'unah Sari Kediri.";
+        title = "Himpunan Alumni Ma'unah Sari (HAMAS) - PTQ Ma'unah Sari";
+        desc = "Portal Himpunan Alumni Ma'unah Sari (HAMAS). Data sebaran alumni dan silaturahim alumni PTQ Ma'unah Sari Kediri.";
         break;
     }
     

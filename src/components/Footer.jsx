@@ -19,12 +19,12 @@ export default function Footer({ onNavigate }) {
           <div className="flex items-center gap-3">
             <img
               src={sealLogo}
-              alt="Logo Arab PPTQ Ma'unah Sari"
+              alt="Logo Arab PTQ Ma'unah Sari"
               className="w-16 h-16 object-contain rounded-full bg-bg-surface p-1 shadow-md border border-secondary/20"
             />
             <div>
               <span className="block font-display text-lg font-bold text-bg-surface tracking-wider leading-none">
-                PPTQ Ma'unah Sari
+                PTQ Ma'unah Sari
               </span>
               <span className="block text-[10px] text-secondary font-semibold uppercase tracking-wider mt-1.5">
                 Pesantren Tahfidhul Qur'an
@@ -99,7 +99,7 @@ export default function Footer({ onNavigate }) {
       <div className="bg-[#092c1b] py-6 border-t border-bg-surface/10">
         <div className="container-custom flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
           <div className="text-bg-base/50">
-            &copy; {currentYear} PPTQ Ma'unah Sari. Hak Cipta Dilindungi.
+            &copy; {currentYear} PTQ Ma'unah Sari. Hak Cipta Dilindungi.
           </div>
           <div className="flex items-center gap-1 text-bg-base/40">
             Dibuat dengan <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 inline" /> untuk Para Huffadh Al-Qur'an

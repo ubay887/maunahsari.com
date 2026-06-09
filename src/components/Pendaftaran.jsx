@@ -39,7 +39,7 @@ export default function Pendaftaran() {
       <div className="w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-md border border-primary/5 bg-bg-surface p-2">
         <img
           src={psbBanner}
-          alt="Poster Resmi Pendaftaran Santri Baru PPTQ Ma'unah Sari"
+          alt="Poster Resmi Pendaftaran Santri Baru PTQ Ma'unah Sari"
           className="w-full h-auto object-contain rounded-xl"
         />
       </div>

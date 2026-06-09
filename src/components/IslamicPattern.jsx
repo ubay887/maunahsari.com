@@ -69,6 +69,53 @@ export default function IslamicPattern({
     );
   }
 
+  if (variant === "sparse-star") {
+    return (
+      <svg
+        className={`w-full h-full ${className}`}
+        style={{ opacity }}
+        viewBox="0 0 200 200"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <defs>
+          <g id="rub-el-hizb-sparse">
+            <rect x="-16" y="-16" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="0.4" />
+            <rect x="-16" y="-16" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="0.4" transform="rotate(45)" />
+            <circle cx="0" cy="0" r="10" fill="none" stroke="currentColor" strokeWidth="0.3" strokeDasharray="1 2" />
+            <circle cx="0" cy="0" r="2" fill="currentColor" />
+          </g>
+          
+          <pattern
+            id="islamic-sparse-star-pattern"
+            x="0"
+            y="0"
+            width="200"
+            height="200"
+            patternUnits="userSpaceOnUse"
+          >
+            {/* Very faint connecting lines */}
+            <g className="text-secondary/15">
+              <line x1="0" y1="100" x2="200" y2="100" stroke="currentColor" strokeWidth="0.3" strokeDasharray="2 4" />
+              <line x1="100" y1="0" x2="100" y2="200" stroke="currentColor" strokeWidth="0.3" strokeDasharray="2 4" />
+              <line x1="0" y1="0" x2="200" y2="200" stroke="currentColor" strokeWidth="0.3" strokeDasharray="2 4" />
+              <line x1="200" y1="0" x2="0" y2="200" stroke="currentColor" strokeWidth="0.3" strokeDasharray="2 4" />
+            </g>
+            
+            {/* Sparse Stars */}
+            <g className="text-secondary/60">
+              <use href="#rub-el-hizb-sparse" x="100" y="100" />
+              <use href="#rub-el-hizb-sparse" x="0" y="0" />
+              <use href="#rub-el-hizb-sparse" x="200" y="0" />
+              <use href="#rub-el-hizb-sparse" x="0" y="200" />
+              <use href="#rub-el-hizb-sparse" x="200" y="200" />
+            </g>
+          </pattern>
+        </defs>
+        <rect width="200" height="200" fill="url(#islamic-sparse-star-pattern)" />
+      </svg>
+    );
+  }
+
   if (variant === "geometric") {
     return (
       <svg
@@ -352,11 +399,11 @@ export function OrnamentalCorner({
     lg: "w-16 h-16"
   };
 
-  const rotationClasses = {
-    "top-left": "",
-    "top-right": "rotate-90",
-    "bottom-right": "rotate-180",
-    "bottom-left": "-rotate-90"
+  const rotations = {
+    "top-left": "none",
+    "top-right": "rotate(90deg)",
+    "bottom-right": "rotate(180deg)",
+    "bottom-left": "rotate(-90deg)"
   };
 
   const positionClasses = {
@@ -368,7 +415,8 @@ export function OrnamentalCorner({
 
   return (
     <svg
-      className={`absolute ${positionClasses[position]} ${rotationClasses[position]} ${sizeClasses[size]} text-secondary/40 pointer-events-none ${className}`}
+      className={`absolute ${positionClasses[position]} ${sizeClasses[size]} text-secondary/40 pointer-events-none ${className}`}
+      style={{ transform: rotations[position], transformOrigin: 'center', margin: 0 }}
       viewBox="0 0 48 48"
       fill="none"
       stroke="currentColor"

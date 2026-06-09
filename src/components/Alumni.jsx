@@ -67,7 +67,7 @@ export default function Alumni() {
               Hubungan santri dengan Masyayikh tidak akan pernah putus meski raga telah meninggalkan gerbang pesantren. Keberkahan ilmu mengalir dari sejauh mana jalinan silaturahim dan khidmah kepada almamater tetap terawat.
             </p>
             <p className="text-text-muted text-sm leading-relaxed">
-              **Himpunan Alumni Ma'unah Sari (HAMAS)** merupakan wadah resmi silaturahim, sinergi, dan kolaborasi bagi seluruh alumni penghafal Al-Qur'an PPTQ Ma'unah Sari Kediri. Kami mengajak seluruh alumni untuk mendaftarkan diri ke dalam **Database Alumni Nasional** guna memetakan sebaran dakwah, mendukung program pembangunan pondok, serta memudahkan agenda silaturahim akbar/korwil.
+              **Himpunan Alumni Ma'unah Sari (HAMAS)** merupakan wadah resmi silaturahim, sinergi, dan kolaborasi bagi seluruh alumni penghafal Al-Qur'an PTQ Ma'unah Sari Kediri. Kami mengajak seluruh alumni untuk mendaftarkan diri ke dalam **Database Alumni Nasional** guna memetakan sebaran dakwah, mendukung program pembangunan pondok, serta memudahkan agenda silaturahim akbar/korwil.
             </p>
             <div className="border-t border-primary/10 pt-4 grid grid-cols-3 gap-2 text-center">
               <div>
