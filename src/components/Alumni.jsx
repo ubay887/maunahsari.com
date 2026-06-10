@@ -72,32 +72,15 @@ export default function Alumni() {
     setIsScanning(true);
     setIsNearbyActive(true);
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          // Add minor noise for privacy masking
-          const offsetLat = (Math.random() - 0.5) * 0.006;
-          const offsetLng = (Math.random() - 0.5) * 0.006;
-          setTimeout(() => {
-            setCoords({ lat: latitude + offsetLat, lng: longitude + offsetLng });
-            setIsScanning(false);
-          }, 2500);
-        },
-        (error) => {
-          console.warn('GPS access denied, falling back to pesantren coords:', error);
-          setTimeout(() => {
-            setCoords({ lat: -7.82284, lng: 112.01162 });
-            setIsScanning(false);
-          }, 2500);
-        }
-      );
-    } else {
-      setTimeout(() => {
-        setCoords({ lat: -7.82284, lng: 112.01162 });
-        setIsScanning(false);
-      }, 2500);
-    }
+    // Simulasi koordinat dekat dengan pesantren (Kediri) untuk keperluan demo
+    // User diposisikan dengan offset kecil (sekitar ~200-300 meter) agar terasa natural
+    const simulatedLat = -7.82284 + (Math.random() - 0.5) * 0.003;
+    const simulatedLng = 112.01162 + (Math.random() - 0.5) * 0.003;
+
+    setTimeout(() => {
+      setCoords({ lat: simulatedLat, lng: simulatedLng });
+      setIsScanning(false);
+    }, 2500);
   };
 
   const filteredAlumni = useMemo(() => {
