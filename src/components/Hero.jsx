@@ -1,5 +1,5 @@
 import { ArrowRight, ChevronRight } from 'lucide-react';
-import IslamicPattern, { OrnamentalCorner, IslamicRosette } from './IslamicPattern';
+import { OrnamentalCorner, IslamicRosette } from './IslamicPattern';
 import { useParallax } from '../hooks/useParallax';
 
 export default function Hero({ onNavigate }) {
@@ -49,7 +49,7 @@ export default function Hero({ onNavigate }) {
               Selamat Datang di Portal Resmi
             </span>
             <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-bg-surface leading-tight animate-fade-in-down">
-              Pesantren Tahfidhul Qur'an <br />
+              <span className="text-secondary md:text-bg-surface">P</span>esantren <span className="text-secondary md:text-bg-surface">T</span>ahfidhul <span className="text-secondary md:text-bg-surface">Q</span>ur'an <br />
               <span className="text-gradient-gold animate-float-gentle inline-block">Ma'unah Sari</span>
             </h1>
           </div>

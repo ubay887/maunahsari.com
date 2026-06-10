@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
@@ -9,28 +9,45 @@ import PondokPutra from './components/PondokPutra';
 import PondokPutri from './components/PondokPutri';
 import Narahubung from './components/Narahubung';
 import Alumni from './components/Alumni';
+import ArtikelList from './components/ArtikelList';
+import ArtikelDetail from './components/ArtikelDetail';
+import { articles } from './data/articles';
 
 export default function App() {
   const getPageFromPath = () => {
     const path = window.location.pathname.replace(/^\/|\/$/g, '');
     if (!path) return 'beranda';
     if (path === 'pendaftaran-santri-baru-20262027') return 'pendaftaran';
+    if (path === 'artikel') return 'artikel';
+    if (path.startsWith('artikel/')) return 'artikel-detail';
     return path;
   };
 
-  const [activePage, setActivePageState] = useState(getPageFromPath);
+  const getArticleSlugFromPath = () => {
+    const path = window.location.pathname.replace(/^\/|\/$/g, '');
+    if (path.startsWith('artikel/')) {
+      return path.substring('artikel/'.length);
+    }
+    return null;
+  };
 
-  const setActivePage = (pageId) => {
+  const [activePage, setActivePageState] = useState(getPageFromPath);
+  const [activeArticleSlug, setActiveArticleSlug] = useState(getArticleSlugFromPath);
+
+  const setActivePage = (pageId, articleSlug = null) => {
     let path = `/${pageId}`;
     if (pageId === 'beranda') path = '/';
+    if (pageId === 'artikel-detail' && articleSlug) path = `/artikel/${articleSlug}`;
     window.history.pushState({}, '', path);
     setActivePageState(pageId);
+    setActiveArticleSlug(articleSlug);
   };
 
   // Sync state with browser back/forward buttons
   useEffect(() => {
     const handlePopState = () => {
       setActivePageState(getPageFromPath());
+      setActiveArticleSlug(getArticleSlugFromPath());
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
@@ -64,12 +81,27 @@ export default function App() {
         break;
       case 'narahubung':
         title = "Hubungi Kami - Narahubung Resmi & Media Sosial PTQ Ma'unah Sari";
-        desc = "Layanan komunikasi resmi kantor putra/putri PTQ Ma'unah Sari Kediri. Kontak WhatsApp, Instagram, Facebook, YouTube, dan blog majalah santri.";
+        desc = "Layanan komunikasi resmi kantor putra/putri PTQ Ma'unah Sari Kediri. Kontak WhatsApp, Instagram, Facebook, YouTube, dan blog magalah santri.";
         break;
       case 'alumni':
         title = "Himpunan Alumni Ma'unah Sari (HAMAS) - PTQ Ma'unah Sari";
         desc = "Portal Himpunan Alumni Ma'unah Sari (HAMAS). Data sebaran alumni dan silaturahim alumni PTQ Ma'unah Sari Kediri.";
         break;
+      case 'artikel':
+        title = "Kabar & Catatan Santri - PTQ Ma'unah Sari Kediri";
+        desc = "Membaca warta terbaru, artikel keislaman, sejarah, dan tips menghafal Al-Qur'an dari santri PTQ Ma'unah Sari Kediri.";
+        break;
+      case 'artikel-detail': {
+        const article = articles.find(a => a.slug === activeArticleSlug);
+        if (article) {
+          title = `${article.title} - PTQ Ma'unah Sari`;
+          desc = article.excerpt;
+        } else {
+          title = "Baca Artikel - PTQ Ma'unah Sari Kediri";
+          desc = "Membaca kabar dan tulisan ilmiah dari santri PTQ Ma'unah Sari Kediri.";
+        }
+        break;
+      }
     }
     
     document.title = title;
@@ -77,7 +109,7 @@ export default function App() {
     if (metaDesc) {
       metaDesc.setAttribute('content', desc);
     }
-  }, [activePage]);
+  }, [activePage, activeArticleSlug]);
 
   // Simple page router rendering matching page content
   const renderPageContent = () => {
@@ -96,6 +128,10 @@ export default function App() {
         return <Narahubung />;
       case 'alumni':
         return <Alumni />;
+      case 'artikel':
+        return <ArtikelList onNavigate={setActivePage} />;
+      case 'artikel-detail':
+        return <ArtikelDetail articleSlug={activeArticleSlug} onNavigate={setActivePage} />;
       default:
         return <Beranda onNavigate={setActivePage} />;
     }

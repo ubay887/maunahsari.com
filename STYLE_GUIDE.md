@@ -221,10 +221,10 @@ This provides a consistent secondary-colored outline for keyboard navigation.
 
 | Term | Usage | Notes |
 |------|-------|-------|
-| **PPTQ Ma'unah Sari** | Official abbreviated name | Most common usage |
+| **PTQ Ma'unah Sari** | Official abbreviated name | Most common usage |
 | **Pesantren Tahfidhul Qur'an Ma'unah Sari** | Full formal name | Use in formal contexts |
 | **Ma'unah Sari** | Short informal name | Use in casual/familiar contexts |
-| **PTQ Ma'unah Sari** | ❌ AVOID | Inconsistent abbreviation |
+| **PPTQ Ma'unah Sari** | ❌ AVOID | Inconsistent abbreviation |
 
 ### Academic Terms
 
