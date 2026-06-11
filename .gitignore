@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Ai skills dan claude config
+CLAUDE.md
+.claude/*
+.agents/*
+.kiro/*
+skills-lock.json
