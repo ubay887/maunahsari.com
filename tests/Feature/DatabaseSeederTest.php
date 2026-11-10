@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Applicant;
+use App\Models\Program;
 use App\Models\User;
 use App\UserRole;
+use Database\Seeders\DemoApplicantSeeder;
 use Database\Seeders\DemoUserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -60,9 +62,29 @@ class DatabaseSeederTest extends TestCase
 
         $applicantUser = User::where('email', 'applicant@example.test')->firstOrFail();
         $this->assertSame(UserRole::Applicant, $applicantUser->role);
-        $this->assertSame(1, Applicant::where('user_id', $applicantUser->id)->count());
+        $this->assertDatabaseEmpty('applicants');
+    }
 
+    public function test_default_seeding_only_creates_master_data_and_users(): void
+    {
         $this->seed();
+
+        $this->assertDatabaseHas('programs', ['id' => Program::query()->value('id')]);
+        $this->assertDatabaseHas('registration_periods', ['academic_year' => '2026/2027']);
+        $this->assertDatabaseEmpty('articles');
+        $this->assertDatabaseEmpty('events');
+        $this->assertDatabaseEmpty('site_pages');
+        $this->assertDatabaseEmpty('applicants');
+        $this->assertDatabaseEmpty('alumni_profiles');
+    }
+
+    public function test_demo_applicant_seeder_gives_the_demo_account_one_applicant_record(): void
+    {
+        $this->seed();
+        $this->seed(DemoApplicantSeeder::class);
+        $this->seed(DemoApplicantSeeder::class);
+
+        $applicantUser = User::where('email', 'applicant@example.test')->firstOrFail();
 
         $this->assertSame(1, Applicant::where('user_id', $applicantUser->id)->count());
     }

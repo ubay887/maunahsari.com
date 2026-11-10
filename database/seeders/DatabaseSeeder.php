@@ -12,25 +12,23 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      *
-     * Data referensi dan konten situs aman dijalankan di produksi. Akun demo dan
-     * event contoh hanya terisi di local/testing; data alumni dan PSB demo
-     * dipanggil terpisah lewat {@see DemoSeeder}.
+     * Data awal hanya data master (peran, wilayah, program, periode PSB) dan akun
+     * pengguna. Akun demo hanya terisi di local/testing. Artikel, acara, konten
+     * halaman, serta data alumni dan PSB contoh dijalankan terpisah lewat
+     * {@see DemoSeeder} atau seeder masing-masing.
      */
     public function run(): void
     {
         $this->call([
-            // Referensi: peran admin, wilayah Indonesia, program, periode PSB.
+            // Data master: peran admin, wilayah Indonesia, program, periode PSB.
             RoleSeeder::class,
             \Laravolt\Indonesia\Seeds\DatabaseSeeder::class,
             AlumniRegionSeeder::class,
             ProgramSeeder::class,
             RegistrationPeriodSeeder::class,
-            // Konten situs: artikel memerlukan penulis admin, jadi menyusul akun demo.
+            // Pengguna.
             DemoUserSeeder::class,
             DemoRoleAccountSeeder::class,
-            ArticleSeeder::class,
-            EventSeeder::class,
-            SitePageSeeder::class,
         ]);
     }
 }

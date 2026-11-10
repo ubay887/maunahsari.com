@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 /**
  * Seluruh data contoh untuk pengembangan: `php artisan db:seed --class=DemoSeeder`.
  * Semua seeder di dalamnya menolak berjalan di luar local/testing, dan urutannya
- * mengikuti ketergantungan data (akun, alumni, riwayat alumni, PSB, santri, audit).
+ * mengikuti ketergantungan data (akun, konten situs, alumni, riwayat alumni, PSB, santri, audit).
  */
 class DemoSeeder extends Seeder
 {
@@ -19,6 +19,11 @@ class DemoSeeder extends Seeder
 
         $this->call([
             DemoUserSeeder::class,
+            DemoRoleAccountSeeder::class,
+            DemoApplicantSeeder::class,
+            ArticleSeeder::class,
+            EventSeeder::class,
+            SitePageSeeder::class,
             AlumniDemoSeeder::class,
             AlumniConsentSeeder::class,
             AlumniContactSeeder::class,
