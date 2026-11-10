@@ -64,7 +64,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->index(['verification_status', 'map_mode', 'regency_id']);
-            $table->index(['verification_status', 'directory_visible', 'angkatan']);
+            $table->index(['verification_status', 'directory_visible', 'angkatan'], 'alumni_profiles_status_visible_angkatan_index');
         });
         Schema::create('contact_requests', function (Blueprint $table): void {
             $table->id();
@@ -77,7 +77,7 @@ return new class extends Migration
             $table->timestamps();
             $table->index(['requester_profile_id', 'created_at']);
         });
-        DB::statement("CREATE UNIQUE INDEX contact_requests_pending_unique ON contact_requests (requester_profile_id, target_profile_id) WHERE status = 'pending'");
+        $this->createPendingContactRequestIndex();
         Schema::create('consent_records', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
@@ -114,5 +114,23 @@ return new class extends Migration
         foreach (['alumni_import_batches', 'audit_logs', 'consent_records', 'contact_requests', 'alumni_profiles', 'regencies', 'provinces'] as $table) {
             Schema::dropIfExists($table);
         }
+    }
+
+    /**
+     * Only one pending request per requester and target. MySQL has no partial indexes, so a
+     * virtual column that is NULL unless pending (NULLs never collide) stands in for the WHERE.
+     */
+    private function createPendingContactRequestIndex(): void
+    {
+        if (in_array(DB::getDriverName(), ['mysql', 'mariadb'], true)) {
+            Schema::table('contact_requests', function (Blueprint $table): void {
+                $table->unsignedTinyInteger('pending_flag')->nullable()->virtualAs("CASE WHEN status = 'pending' THEN 1 END");
+                $table->unique(['requester_profile_id', 'target_profile_id', 'pending_flag'], 'contact_requests_pending_unique');
+            });
+
+            return;
+        }
+
+        DB::statement("CREATE UNIQUE INDEX contact_requests_pending_unique ON contact_requests (requester_profile_id, target_profile_id) WHERE status = 'pending'");
     }
 };
