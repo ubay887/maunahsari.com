@@ -1,0 +1,306 @@
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:is(.dark *));
+
+#page-content {
+    view-transition-name: page-content;
+}
+
+.admin-page-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--foreground) 22%, transparent)
+        transparent;
+}
+
+.admin-page-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.admin-page-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.admin-page-scroll::-webkit-scrollbar-thumb {
+    background: color-mix(in oklch, var(--foreground) 22%, transparent);
+    border-radius: 9999px;
+}
+
+.sidebar-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(
+            in oklch,
+            var(--sidebar-foreground) 22%,
+            transparent
+        )
+        transparent;
+}
+
+.sidebar-scrollbar:hover,
+.sidebar-scrollbar:focus-within {
+    scrollbar-color: color-mix(
+            in oklch,
+            var(--sidebar-foreground) 38%,
+            transparent
+        )
+        transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--sidebar-foreground) 22%, transparent);
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in oklch, var(--sidebar-foreground) 38%, transparent);
+}
+
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-group(page-content) {
+    animation: none;
+}
+
+::view-transition-old(page-content) {
+    animation: page-fade-out 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+::view-transition-new(page-content) {
+    animation: page-fade-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes page-fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(page-content),
+    ::view-transition-new(page-content) {
+        animation-duration: 100ms;
+    }
+}
+
+@theme {
+    --font-sans:
+        'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+    --font-display: 'Playfair Display', Georgia, serif;
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-gold: var(--gold);
+    --color-gold-foreground: var(--gold-foreground);
+    --color-gold-contrast: var(--gold-contrast);
+
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+
+    --color-invert: var(--invert);
+    --color-invert-foreground: var(--invert-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+    --background: oklch(0.975 0.005 155);
+    --foreground: oklch(0.2 0.02 155);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.2 0.02 155);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.2 0.02 155);
+    --primary: oklch(0.3 0.08 160);
+    --primary-foreground: oklch(0.97 0.005 155);
+    --secondary: oklch(0.94 0.02 155);
+    --secondary-foreground: oklch(0.3 0.08 160);
+    --muted: oklch(0.94 0.01 155);
+    --muted-foreground: oklch(0.45 0.02 155);
+    --accent: oklch(0.94 0.025 155);
+    --accent-foreground: oklch(0.3 0.08 160);
+    --gold: oklch(0.72 0.14 70);
+    --gold-foreground: oklch(0.48 0.11 60);
+    --gold-contrast: oklch(0.24 0.06 55);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: var(--color-red-800);
+    --info: var(--color-violet-500);
+    --info-foreground: var(--color-violet-900);
+    --success: var(--color-emerald-500);
+    --success-foreground: var(--color-emerald-900);
+    --warning: var(--color-yellow-500);
+    --warning-foreground: var(--color-yellow-900);
+    --invert: var(--color-zinc-900);
+    --invert-foreground: var(--color-zinc-50);
+    --border: oklch(0.9 0.01 155);
+    --input: oklch(0.9 0.01 155);
+    --ring: oklch(0.72 0.14 70);
+    --chart-1: oklch(0.45 0.12 160);
+    --chart-2: oklch(0.72 0.14 70);
+    --chart-3: oklch(0.55 0.12 180);
+    --chart-4: oklch(0.65 0.14 160);
+    --chart-5: oklch(0.58 0.14 60);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.96 0.01 155);
+    --sidebar-foreground: oklch(0.2 0.02 155);
+    --sidebar-primary: oklch(0.3 0.08 160);
+    --sidebar-primary-foreground: oklch(0.97 0.005 155);
+    --sidebar-accent: oklch(0.92 0.025 155);
+    --sidebar-accent-foreground: oklch(0.3 0.08 160);
+    --sidebar-border: oklch(0.9 0.01 155);
+    --sidebar-ring: oklch(0.72 0.14 70);
+}
+
+.dark {
+    --background: oklch(0.15 0.02 155);
+    --foreground: oklch(0.95 0.005 155);
+    --card: oklch(0.21 0.025 155);
+    --card-foreground: oklch(0.95 0.005 155);
+    --popover: oklch(0.23 0.025 155);
+    --popover-foreground: oklch(0.95 0.005 155);
+    --primary: oklch(0.7 0.14 160);
+    --primary-foreground: oklch(0.15 0.02 155);
+    --secondary: oklch(0.25 0.03 155);
+    --secondary-foreground: oklch(0.95 0.005 155);
+    --muted: oklch(0.22 0.02 155);
+    --muted-foreground: oklch(0.7 0.02 155);
+    --accent: oklch(0.25 0.03 155);
+    --accent-foreground: oklch(0.95 0.005 155);
+    --gold: oklch(0.75 0.14 70);
+    --gold-foreground: oklch(0.8 0.13 75);
+    --gold-contrast: oklch(0.15 0.02 55);
+    --destructive: var(--color-red-400);
+    --destructive-foreground: var(--color-red-600);
+    --info: var(--color-violet-500);
+    --info-foreground: var(--color-violet-600);
+    --success: var(--color-emerald-500);
+    --success-foreground: var(--color-emerald-600);
+    --warning: var(--color-yellow-500);
+    --warning-foreground: var(--color-yellow-600);
+    --invert: var(--color-zinc-700);
+    --invert-foreground: var(--color-zinc-50);
+    --border: oklch(0.32 0.025 155);
+    --input: oklch(0.32 0.025 155);
+    --ring: oklch(0.75 0.14 70);
+    --chart-1: oklch(0.7 0.14 160);
+    --chart-2: oklch(0.75 0.14 70);
+    --chart-3: oklch(0.65 0.12 180);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --sidebar: oklch(0.18 0.02 155);
+    --sidebar-foreground: oklch(0.95 0.005 155);
+    --sidebar-primary: oklch(0.7 0.14 160);
+    --sidebar-primary-foreground: oklch(0.15 0.02 155);
+    --sidebar-accent: oklch(0.25 0.03 155);
+    --sidebar-accent-foreground: oklch(0.95 0.005 155);
+    --sidebar-border: oklch(0.32 0.025 155);
+    --sidebar-ring: oklch(0.75 0.14 70);
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+/* Pita hijau (hero, statistik, footer): selalu gelap di light maupun dark mode. */
+@utility surface-forest {
+    background-color: oklch(0.3 0.08 160);
+    color: oklch(0.97 0.005 155);
+}
+
+@theme inline {
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-invert: var(--invert);
+    --color-invert-foreground: var(--invert-foreground);
+}
+
+/* Cetak: kertas A4 putih, tanpa latar tema gelap. */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 14mm;
+    }
+
+    html,
+    body {
+        background: #fff !important;
+    }
+}

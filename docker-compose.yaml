@@ -1,0 +1,103 @@
+# Coolify "Docker Compose" build pack: web + queue worker + scheduler from one image.
+#
+# Coolify reads variables referenced as ${NAME} here and shows them in the
+# Environment Variables tab. `${NAME:?}` makes a variable required, `${NAME:-x}`
+# gives it a default. TLS is terminated by Coolify's proxy (Traefik/Caddy), which
+# routes to port 8080 of `app` through SERVICE_FQDN_APP_8080: set the domain on
+# the `app` service in Coolify and use the same https URL for APP_URL.
+#
+# Only `app` runs migrations (AUTORUN_ENABLED); workers must never set it.
+
+x-build: &build
+  context: .
+  target: production
+  args:
+    VITE_APP_NAME: ${APP_NAME:-PTQ Ma'unah Sari}
+
+x-app-environment: &app-environment
+  APP_NAME: ${APP_NAME:-PTQ Ma'unah Sari}
+  APP_ENV: production
+  APP_DEBUG: "false"
+  APP_KEY: ${APP_KEY:?}
+  APP_URL: ${APP_URL:?}
+  APP_LOCALE: ${APP_LOCALE:-en}
+  APP_FALLBACK_LOCALE: ${APP_FALLBACK_LOCALE:-en}
+  LOG_CHANNEL: stderr
+  LOG_LEVEL: ${LOG_LEVEL:-warning}
+  DB_CONNECTION: ${DB_CONNECTION:-mysql}
+  DB_HOST: ${DB_HOST:?}
+  DB_PORT: ${DB_PORT:-3306}
+  DB_DATABASE: ${DB_DATABASE:?}
+  DB_USERNAME: ${DB_USERNAME:?}
+  DB_PASSWORD: ${DB_PASSWORD:?}
+  SESSION_DRIVER: ${SESSION_DRIVER:-database}
+  SESSION_SECURE_COOKIE: ${SESSION_SECURE_COOKIE:-true}
+  CACHE_STORE: ${CACHE_STORE:-database}
+  QUEUE_CONNECTION: ${QUEUE_CONNECTION:-database}
+  FILESYSTEM_DISK: ${FILESYSTEM_DISK:-local}
+  MAIL_MAILER: ${MAIL_MAILER:-log}
+  MAIL_SCHEME: ${MAIL_SCHEME:-null}
+  MAIL_HOST: ${MAIL_HOST:-127.0.0.1}
+  MAIL_PORT: ${MAIL_PORT:-2525}
+  MAIL_USERNAME: ${MAIL_USERNAME:-null}
+  MAIL_PASSWORD: ${MAIL_PASSWORD:-null}
+  MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-hello@example.com}
+  MAIL_FROM_NAME: ${APP_NAME:-PTQ Ma'unah Sari}
+  ALUMNI_REGISTRATION_ENABLED: ${ALUMNI_REGISTRATION_ENABLED:-true}
+  ALUMNI_CONTACT_NAME: ${ALUMNI_CONTACT_NAME:-Pengurus Alumni Maunahsari}
+  ALUMNI_CONTACT_EMAIL: ${ALUMNI_CONTACT_EMAIL:-}
+  ALUMNI_CONTACT_WHATSAPP: ${ALUMNI_CONTACT_WHATSAPP:-}
+  ALUMNI_MINIMUM_GROUP: ${ALUMNI_MINIMUM_GROUP:-3}
+  ALUMNI_CONTACT_DAILY_LIMIT: ${ALUMNI_CONTACT_DAILY_LIMIT:-10}
+  ALUMNI_TILE_URL: ${ALUMNI_TILE_URL:-}
+  ALUMNI_TILE_DARK_URL: ${ALUMNI_TILE_DARK_URL:-}
+
+services:
+  app:
+    build: *build
+    environment:
+      <<: *app-environment
+      SERVICE_FQDN_APP_8080: ""
+      AUTORUN_ENABLED: "true"
+      AUTORUN_LARAVEL_MIGRATION_TIMEOUT: ${AUTORUN_LARAVEL_MIGRATION_TIMEOUT:-60}
+    volumes:
+      - app-storage:/var/www/html/storage/app
+    restart: unless-stopped
+
+  queue:
+    build: *build
+    command: ["php", "artisan", "queue:work", "--tries=3", "--timeout=90", "--sleep=3", "--max-time=3600"]
+    stop_signal: SIGTERM
+    stop_grace_period: 100s
+    environment:
+      <<: *app-environment
+      AUTORUN_ENABLED: "false"
+    volumes:
+      - app-storage:/var/www/html/storage/app
+    healthcheck:
+      test: ["CMD", "healthcheck-queue"]
+      start_period: 10s
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+
+  scheduler:
+    build: *build
+    command: ["php", "artisan", "schedule:work"]
+    stop_signal: SIGTERM
+    environment:
+      <<: *app-environment
+      AUTORUN_ENABLED: "false"
+    volumes:
+      - app-storage:/var/www/html/storage/app
+    healthcheck:
+      test: ["CMD", "healthcheck-schedule"]
+      start_period: 10s
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  app-storage:

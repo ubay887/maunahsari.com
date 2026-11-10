@@ -1,0 +1,67 @@
+# VCS and editor
+.git
+.gitattributes
+.github
+.idea
+.vscode
+.fleet
+.nova
+.zed
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+auth.json
+
+# Dependencies and build output are produced inside the image
+node_modules
+vendor
+public/build
+public/hot
+public/storage
+public/fonts-manifest.dev.json
+bootstrap/ssr
+bootstrap/cache/*.php
+
+# Runtime state
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/pail
+database/*.sqlite
+database/*.sqlite-journal
+
+# Tests and tooling
+tests
+.phpunit.cache
+.phpunit.result.cache
+phpunit.xml
+phpstan.neon
+
+# AI agent tooling and project notes
+.agents
+.claude
+.codex
+.cursor
+.gemini
+.grok
+.opencode
+.junie
+.kiro
+.mcp.json
+opencode.json
+opencode.jsonc
+boost.json
+skills-lock.json
+AGENTS.md
+CLAUDE.md
+ALUMNI.md
+ARTICLES.md
+
+# Docker files do not need to be inside the image
+Dockerfile
+docker-compose*.yaml
+docker-compose*.yml
+.dockerignore
