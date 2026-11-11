@@ -185,7 +185,7 @@ Dipilih **Leaflet 1.9.4**, dimuat dinamis di effect browser, tanpa wrapper React
 
 Rujukan API: [Leaflet 1.9.4](https://leafletjs.com/reference-1.9.4.html).
 
-Penyedia yang disiapkan: **MapTiler raster**, sesuai [panduan resmi Leaflet](https://docs.maptiler.com/leaflet/examples/raster-tiles-in-leaflet-js/) dan [ketentuan atribusi data](https://www.maptiler.com/copyright/). Pilih akun/paket yang sesuai trafik dan ketentuannya; key dan paket produksi belum disediakan dalam tugas.
+Penyedia default: **tile standar OpenStreetMap** (`https://tile.openstreetmap.org`), tanpa key dan tanpa akun pihak ketiga. Pemakaiannya tunduk pada [kebijakan tile OSM](https://operations.osmfoundation.org/policies/tiles/) (cocok untuk trafik kecil hingga menengah, atribusi wajib). Untuk trafik besar, ganti ke penyedia komersial atau self-hosted lewat `ALUMNI_TILE_URL`, misalnya [MapTiler raster](https://docs.maptiler.com/leaflet/examples/raster-tiles-in-leaflet-js/) dengan [ketentuan atribusinya](https://www.maptiler.com/copyright/).
 
 Contoh `.env`:
 
@@ -194,14 +194,14 @@ ALUMNI_CONTACT_NAME="Pengurus Alumni Maunahsari"
 ALUMNI_CONTACT_EMAIL=alumni@example.org
 ALUMNI_CONTACT_WHATSAPP=6281234567890
 ALUMNI_REGISTRATION_ENABLED=true
-ALUMNI_MINIMUM_GROUP=3
 ALUMNI_CONTACT_DAILY_LIMIT=10
-ALUMNI_TILE_URL="https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=YOUR_KEY"
-ALUMNI_TILE_DARK_URL="https://api.maptiler.com/maps/dataviz-dark/{z}/{x}/{y}.png?key=YOUR_KEY"
-ALUMNI_TILE_ATTRIBUTION="<a href='https://www.maptiler.com/copyright/'>&copy; MapTiler</a> <a href='https://www.openstreetmap.org/copyright'>&copy; OpenStreetMap contributors</a>"
+# Opsional, default sudah OpenStreetMap. Isi hanya untuk mengganti penyedia, contoh MapTiler:
+# ALUMNI_TILE_URL="https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=YOUR_KEY"
+# ALUMNI_TILE_DARK_URL="https://api.maptiler.com/maps/dataviz-dark/{z}/{x}/{y}.png?key=YOUR_KEY"
+# ALUMNI_TILE_ATTRIBUTION="<a href='https://www.maptiler.com/copyright/'>&copy; MapTiler</a> <a href='https://www.openstreetmap.org/copyright'>&copy; OpenStreetMap contributors</a>"
 ```
 
-Gunakan kontak nyata dan key yang dikelola pengurus. Contoh kontak di atas fiktif. URL tile tidak memiliki default server publik OpenStreetMap. Saat URL belum diisi, UI menjelaskan bahwa tile belum tersedia, tetapi marker pusat wilayah dan ringkasan tetap dirender. Atribusi penyedia ditampilkan oleh Leaflet. URL dark mode dapat diatur terpisah.
+Gunakan kontak nyata yang dikelola pengurus. Contoh kontak di atas fiktif. Bila `ALUMNI_TILE_URL` kosong, dipakai tile OpenStreetMap. Jika tile gagal dimuat, UI menjelaskan bahwa peta dasar belum tersedia, tetapi marker pusat wilayah dan ringkasan tetap dirender. Atribusi penyedia ditampilkan oleh Leaflet. URL dark mode dapat diatur terpisah; bila kosong, peta dark memakai tile yang sama.
 
 Cache agregat memakai cache aplikasi (lokal: database), TTL 10 menit, key filter ter-hash dan versi cache. Observer saved/deleted setelah commit mengganti versi saat profil/privasi/verifikasi berubah.
 
@@ -210,7 +210,7 @@ Cache agregat memakai cache aplikasi (lokal: database), TTL 10 menit, key filter
 1. `hidden` dan NULL dikeluarkan dari peta, direktori, dan radar. `anonymous` masuk agregat tetapi tidak menjadi kartu individu. Ini mengikuti batas paling ketat pada kriteria tes pengguna. Admin dan pemilik tetap dapat mengelola data sendiri secara sah.
 2. Direktori/radar/kartu peta memerlukan `approved`, `map_mode=visible`, dan `directory_visible=true`. Pengunjung tidak memperoleh profil individual. Level field `public` tidak membuat halaman profil publik baru; peta publik tetap agregat.
 3. Kontak tidak menjadi field kartu, bahkan bila field lain bersifat publik. Persetujuan kontak diperlukan, aksesnya diaudit dan `no-store`; penarikan izin tampil menutup akses kontak berikutnya melalui endpoint.
-4. Ambang minimum dapat dinaikkan lewat env dan dibatasi minimal 3. Kota kecil digabung ke provinsi; jumlah di bawah ambang menjadi NULL dengan label “kurang dari N”. Ringkasan provinsi tidak menampilkan total tepat yang dapat langsung membongkar sisa kecil; ringkasan angkatan memakai pita jumlah.
+4. Ambang minimum kelompok minimal 3. Kota kecil digabung ke provinsi; jumlah di bawah ambang menjadi NULL dengan label “kurang dari N”. Ringkasan provinsi tidak menampilkan total tepat yang dapat langsung membongkar sisa kecil; ringkasan angkatan memakai pita jumlah.
 5. Radius dihitung antar pusat kota/kabupaten di Indonesia dengan haversine. Tidak memakai geolokasi perangkat. Radius 25/50/100 km dan label pita, tanpa jarak individu yang presisi.
 6. `angkatan` berupa string (maksimal 40 karakter), terpisah dari tahun masuk/keluar. Enum `App/Pondok.php` dipakai ulang.
 7. PSB, `santris`, dan `programs` memang tersedia. `santri_id` memakai foreign key nullable; tidak perlu fallback kolom tanpa foreign key. Pengaitan dilakukan manual melalui ID atau kandidat nama, tanpa auto-link.
