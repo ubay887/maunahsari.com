@@ -7,6 +7,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Komponen shadcn memakai data-checked/data-unchecked (Base UI); Radix hanya mengisi data-state. */
+@custom-variant data-checked (&:is([data-state="checked"], [data-checked]));
+@custom-variant data-unchecked (&:is([data-state="unchecked"], [data-unchecked]));
+
 #page-content {
     view-transition-name: page-content;
 }
