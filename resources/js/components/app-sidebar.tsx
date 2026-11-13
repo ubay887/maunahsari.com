@@ -10,10 +10,10 @@ import {
     Palette,
     PanelsTopLeft,
     UserRound,
+    UserRoundCog,
     Layers,
     BookOpen,
     ArrowUpRight,
-    Upload,
     Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -35,7 +35,6 @@ import {
     index as alumniIndex,
     statistics as alumniStatistics,
 } from '@/routes/admin/alumni';
-import { index as alumniImport } from '@/routes/admin/alumni/import';
 import { index as articlesIndex } from '@/routes/admin/articles';
 import { dashboard as psbDashboard } from '@/routes/admin/psb';
 import { index as applicantIndex } from '@/routes/admin/psb/applicants';
@@ -45,6 +44,7 @@ import { index as programIndex } from '@/routes/admin/psb/programs';
 import { index as santriIndex } from '@/routes/admin/santri';
 import { index as eventsIndex } from '@/routes/admin/events';
 import { index as siteIndex } from '@/routes/admin/site';
+import { index as usersIndex } from '@/routes/admin/users';
 import { edit as editAppearance } from '@/routes/appearance';
 import { edit as editProfile } from '@/routes/profile';
 import type { NavItem } from '@/types';
@@ -77,12 +77,14 @@ export function AppSidebar() {
         eventAccess,
         psbAccess,
         siteAccess,
+        userAdminAccess,
     } = usePage<{
         alumniAdminAccess?: { canManage: boolean };
         articleAccess?: { canWrite: boolean };
         eventAccess?: { canManage: boolean };
         psbAccess?: { canManage: boolean };
         siteAccess?: { canManage: boolean };
+        userAdminAccess?: { canManage: boolean };
     }>().props;
     const { url } = usePage();
     const { setOpenMobile } = useSidebar();
@@ -98,19 +100,13 @@ export function AppSidebar() {
             title: 'Daftar alumni',
             href: alumniIndex(),
             icon: Users,
-            isActive: alumniSection === 'list' || alumniSection === 'create',
+            isActive: alumniSection === 'list',
         },
         {
             title: 'Antrean verifikasi',
             href: alumniIndex({ query: { verification_status: 'pending' } }),
             icon: BadgeCheck,
             isActive: alumniSection === 'queue',
-        },
-        {
-            title: 'Impor data',
-            href: alumniImport(),
-            icon: Upload,
-            isActive: alumniSection === 'import',
         },
     ];
     const publicationItems: NavItem[] = [
@@ -167,6 +163,18 @@ export function AppSidebar() {
                     />
                 )}
                 <NavMain items={publicationItems} label="Publikasi" />
+                {userAdminAccess?.canManage && (
+                    <NavMain
+                        items={[
+                            {
+                                title: 'Pengguna',
+                                href: usersIndex(),
+                                icon: UserRoundCog,
+                            },
+                        ]}
+                        label="Sistem"
+                    />
+                )}
                 <NavMain items={settingsNavItems} label="Pengaturan" />
             </SidebarContent>
             <SidebarFooter>

@@ -7,6 +7,7 @@ use App\Models\Applicant;
 use App\Models\Article;
 use App\Models\Event;
 use App\Models\SitePage;
+use App\Models\User;
 use App\Services\SiteContent;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -51,10 +52,11 @@ class HandleInertiaRequests extends Middleware
             'articleAccess' => ['canWrite' => $request->user()?->can('viewAny', Article::class) ?? false],
             'psbAccess' => ['canManage' => $request->user()?->can('viewAny', Applicant::class) ?? false],
             'alumniAdminAccess' => ['canManage' => $request->user()?->can('viewAny', AlumniProfile::class) ?? false],
+            'userAdminAccess' => ['canManage' => $request->user()?->can('viewAny', User::class) ?? false],
             'eventAccess' => ['canManage' => $request->user()?->can('viewAny', Event::class) ?? false],
             'articleFlash' => fn (): ?string => $request->hasSession() ? $request->session()->get('success') : null,
             'auth' => [
-                'user' => $request->user()?->only(['id', 'name', 'email', 'role', 'email_verified_at', 'created_at', 'updated_at']),
+                'user' => $request->user()?->only(['id', 'name', 'email', 'role', 'created_at', 'updated_at']),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
