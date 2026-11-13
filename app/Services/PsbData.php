@@ -32,7 +32,16 @@ class PsbData
         return array_values(ProgramQuota::with(['program', 'registrationPeriod'])->where('registration_period_id', $periodId)->orderBy('program_id')->orderBy('pondok')->get()->map(function (ProgramQuota $quota) use ($counts): array {
             $usedCount = $counts[$quota->program_id.'-'.$quota->pondok->value] ?? 0;
 
-            return [...$quota->toArray(), 'used' => $usedCount, 'remaining' => max(0, $quota->capacity - $usedCount), 'available' => $quota->is_open && $quota->registrationPeriod->isCurrentlyOpen() && $quota->program->is_active && $usedCount < $quota->capacity];
+            $reason = match (true) {
+                ! $quota->is_open => 'closed',
+                ! $quota->registrationPeriod->isCurrentlyOpen() => 'period_closed',
+                ! $quota->program->is_active => 'program_inactive',
+                $quota->capacity === 0 => 'no_capacity',
+                $usedCount >= $quota->capacity => 'full',
+                default => null,
+            };
+
+            return [...$quota->toArray(), 'used' => $usedCount, 'remaining' => max(0, $quota->capacity - $usedCount), 'available' => $reason === null, 'unavailable_reason' => $reason];
         })->all());
     }
 

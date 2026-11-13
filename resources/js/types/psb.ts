@@ -28,6 +28,12 @@ export type Period = {
     contact_whatsapp_putri: string | null;
     info_note: string | null;
 };
+export type QuotaUnavailableReason =
+    | 'closed'
+    | 'period_closed'
+    | 'program_inactive'
+    | 'no_capacity'
+    | 'full';
 export type Quota = {
     id: number;
     registration_period_id: number;
@@ -38,6 +44,7 @@ export type Quota = {
     used: number;
     remaining: number;
     available: boolean;
+    unavailable_reason: QuotaUnavailableReason | null;
     program: Program;
 };
 export type ApplicantDocument = {

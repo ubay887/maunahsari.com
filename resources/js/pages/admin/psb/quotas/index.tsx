@@ -19,7 +19,55 @@ import { Switch } from '@/components/ui/switch';
 import { index, store } from '@/routes/admin/psb/quotas';
 import { index as programsIndex } from '@/routes/admin/psb/programs';
 import { index as periodsIndex } from '@/routes/admin/psb/periods';
-import type { FormOptions, Pondok, Program, Quota } from '@/types/psb';
+import type {
+    FormOptions,
+    Pondok,
+    Program,
+    Quota,
+    QuotaUnavailableReason,
+} from '@/types/psb';
+
+type QuotaStatus = {
+    variant: 'success-light' | 'warning-light' | 'destructive-light';
+    label: string;
+    reason: string | null;
+};
+
+const unavailableStatus: Record<QuotaUnavailableReason, QuotaStatus> = {
+    closed: {
+        variant: 'destructive-light',
+        label: 'Ditutup',
+        reason: 'Pendaftaran dimatikan. Nyalakan lalu simpan untuk membuka.',
+    },
+    period_closed: {
+        variant: 'warning-light',
+        label: 'Periode tutup',
+        reason: 'Periode pendaftaran sedang tidak dibuka. Atur di menu Periode.',
+    },
+    program_inactive: {
+        variant: 'warning-light',
+        label: 'Program nonaktif',
+        reason: 'Program ini nonaktif. Aktifkan di menu Program.',
+    },
+    no_capacity: {
+        variant: 'warning-light',
+        label: 'Kapasitas 0',
+        reason: 'Isi kapasitas lebih dari 0 agar pendaftar bisa masuk.',
+    },
+    full: {
+        variant: 'warning-light',
+        label: 'Penuh',
+        reason: 'Kapasitas sudah terpakai semua. Tambah kapasitas untuk membuka.',
+    },
+};
+
+function quotaStatus(quota?: Quota): QuotaStatus {
+    if (!quota) return unavailableStatus.closed;
+    if (quota.unavailable_reason === null) {
+        return { variant: 'success-light', label: 'Tersedia', reason: null };
+    }
+    return unavailableStatus[quota.unavailable_reason];
+}
 function QuotaCell({
     quota,
     program,
@@ -38,6 +86,7 @@ function QuotaCell({
         capacity: quota?.capacity ?? 0,
         is_open: quota?.is_open ?? false,
     });
+    const status = quotaStatus(quota);
     return (
         <form
             className="flex flex-col gap-4"
@@ -51,25 +100,18 @@ function QuotaCell({
         >
             <div className="flex items-center justify-between gap-2">
                 <span className="font-medium capitalize">{pondok}</span>
-                <Badge
-                    variant={
-                        quota?.available
-                            ? 'success-light'
-                            : quota?.is_open
-                              ? 'warning-light'
-                              : 'destructive-light'
-                    }
-                >
-                    {quota?.available
-                        ? 'Tersedia'
-                        : quota?.is_open
-                          ? 'Penuh'
-                          : 'Ditutup'}
-                </Badge>
+                <Badge variant={status.variant}>{status.label}</Badge>
             </div>
-            <p className="text-sm tabular-nums">
-                Terpakai {quota?.used ?? 0} · Sisa {quota?.remaining ?? 0}
-            </p>
+            <div className="flex flex-col gap-0.5">
+                <p className="text-sm tabular-nums">
+                    Terpakai {quota?.used ?? 0} · Sisa {quota?.remaining ?? 0}
+                </p>
+                {status.reason && (
+                    <p className="text-xs text-muted-foreground">
+                        {status.reason}
+                    </p>
+                )}
+            </div>
             <Field>
                 <FieldLabel htmlFor={`capacity-${program.id}-${pondok}`}>
                     Kapasitas
