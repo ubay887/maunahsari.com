@@ -22,7 +22,7 @@ import { useAppearance } from '@/hooks/use-appearance';
 import { cn, toUrl } from '@/lib/utils';
 import { images, site } from '@/lib/site';
 import { home } from '@/routes';
-import { home as alumniHome, publicMap } from '@/routes/alumni';
+import { publicMap } from '@/routes/alumni';
 import { index as articlesIndex } from '@/routes/articles';
 import { index as eventsIndex } from '@/routes/events';
 import { index as psbIndex } from '@/routes/psb';
@@ -371,7 +371,6 @@ function SiteFooter() {
         { label: 'Artikel', href: articlesIndex() },
         { label: 'Event', href: eventsIndex() },
         { label: 'Sebaran alumni', href: publicMap() },
-        { label: 'Portal alumni', href: alumniHome() },
         { label: 'Narahubung', href: contact() },
     ];
 

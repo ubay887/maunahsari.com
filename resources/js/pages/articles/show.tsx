@@ -101,13 +101,7 @@ export default function Show({
                     <div className="flex flex-wrap gap-2">
                         {article.categories.map((category) => (
                             <Badge variant="outline" key={category.id}>
-                                <Link
-                                    href={index({
-                                        query: { category: category.slug },
-                                    })}
-                                >
-                                    {category.name}
-                                </Link>
+                                {category.name}
                             </Badge>
                         ))}
                     </div>
@@ -136,9 +130,7 @@ export default function Show({
                 <div className="flex flex-wrap gap-2">
                     {article.tags.map((tag) => (
                         <Badge variant="outline" key={tag.id}>
-                            <Link href={index({ query: { tag: tag.slug } })}>
-                                #{tag.name}
-                            </Link>
+                            #{tag.name}
                         </Badge>
                     ))}
                 </div>

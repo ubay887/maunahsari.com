@@ -1,4 +1,5 @@
 import { Head, Link, router } from '@inertiajs/react';
+import { Search, X } from 'lucide-react';
 import { PageHeader } from '@/components/page-header';
 import { EmptyState } from '@/components/empty-state';
 import { useState } from 'react';
@@ -6,29 +7,23 @@ import { ArticleCard } from '@/components/article-card';
 import { ArticlePageError } from '@/components/article-page-error';
 import { Button } from '@/components/ui/button';
 import { Field, FieldLabel } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
+    InputGroup,
+    InputGroupAddon,
+    InputGroupButton,
+    InputGroupInput,
+} from '@/components/ui/input-group';
 import { useArticlePageState } from '@/hooks/use-article-page-state';
 import { index } from '@/routes/articles';
 import { feed } from '@/routes/articles';
-import type { Article, Paginated, Taxonomy } from '@/types/article';
-type Filters = { search: string; category: string; tag: string };
+import type { Article, Paginated } from '@/types/article';
+type Filters = { search: string };
 export default function Index({
     articles,
-    categories,
-    tags,
     filters,
     canonical,
 }: {
     articles: Paginated<Article>;
-    categories: Taxonomy[];
-    tags: Taxonomy[];
     filters: Filters;
     canonical: string;
 }) {
@@ -62,73 +57,43 @@ export default function Index({
                 description="Kabar, pendidikan, dan cerita dari pesantren."
             />
             <form
+                role="search"
                 onSubmit={(event) => {
                     event.preventDefault();
                     visit({ page: 1, search });
                 }}
-                className="flex flex-wrap items-end gap-3"
+                className="flex w-full max-w-xl items-center gap-2"
             >
-                <Field className="min-w-0 flex-1 basis-full sm:basis-auto">
-                    <FieldLabel htmlFor="public-search">
+                <Field className="min-w-0 flex-1">
+                    <FieldLabel htmlFor="public-search" className="sr-only">
                         Cari artikel
                     </FieldLabel>
-                    <Input
-                        id="public-search"
-                        value={search}
-                        onChange={(event) => setSearch(event.target.value)}
-                        placeholder="Judul atau ringkasan…"
-                    />
-                </Field>
-                <Field className="w-auto">
-                    <FieldLabel htmlFor="public-category">Kategori</FieldLabel>
-                    <Select
-                        value={filters.category || 'all'}
-                        onValueChange={(value) =>
-                            visit({
-                                page: 1,
-                                category: value === 'all' ? '' : value,
-                            })
-                        }
-                    >
-                        <SelectTrigger id="public-category">
-                            <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">Semua kategori</SelectItem>
-                            {categories.map((category) => (
-                                <SelectItem
-                                    key={category.id}
-                                    value={category.slug}
+                    <InputGroup>
+                        <InputGroupAddon>
+                            <Search aria-hidden="true" />
+                        </InputGroupAddon>
+                        <InputGroupInput
+                            id="public-search"
+                            type="search"
+                            value={search}
+                            onChange={(event) => setSearch(event.target.value)}
+                            placeholder="Cari judul atau ringkasan…"
+                        />
+                        {search && (
+                            <InputGroupAddon align="inline-end">
+                                <InputGroupButton
+                                    size="icon-xs"
+                                    aria-label="Hapus pencarian"
+                                    onClick={() => {
+                                        setSearch('');
+                                        visit({ page: 1, search: '' });
+                                    }}
                                 >
-                                    {category.name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </Field>
-                <Field className="w-auto">
-                    <FieldLabel htmlFor="public-tag">Tag</FieldLabel>
-                    <Select
-                        value={filters.tag || 'all'}
-                        onValueChange={(value) =>
-                            visit({
-                                page: 1,
-                                tag: value === 'all' ? '' : value,
-                            })
-                        }
-                    >
-                        <SelectTrigger id="public-tag">
-                            <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">Semua tag</SelectItem>
-                            {tags.map((tag) => (
-                                <SelectItem key={tag.id} value={tag.slug}>
-                                    {tag.name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                                    <X aria-hidden="true" />
+                                </InputGroupButton>
+                            </InputGroupAddon>
+                        )}
+                    </InputGroup>
                 </Field>
                 <Button type="submit">Cari</Button>
             </form>
@@ -150,12 +115,7 @@ export default function Index({
                             variant="outline"
                             onClick={() => {
                                 setSearch('');
-                                visit({
-                                    page: 1,
-                                    search: '',
-                                    category: '',
-                                    tag: '',
-                                });
+                                visit({ page: 1, search: '' });
                             }}
                         >
                             Lihat semua artikel

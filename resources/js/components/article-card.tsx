@@ -7,11 +7,13 @@ import {
     CardDescription,
     CardFooter,
 } from '@/components/ui/card';
+import { Badge } from '@/components/reui/badge';
 import { IslamicPattern } from '@/components/site/islamic-pattern';
 import { articleDate, readingMinutes } from '@/lib/articles';
 import { images } from '@/lib/site';
 import { show } from '@/routes/articles';
 import type { Article } from '@/types/article';
+const MAX_CATEGORIES = 2;
 /** Cover bermerek untuk artikel yang belum punya gambar. */
 function ArticleCoverFallback() {
     return (
@@ -54,11 +56,6 @@ export function ArticleCard({ article }: { article: Article }) {
                 )}
             </Link>
             <CardHeader>
-                <p className="text-xs text-muted-foreground">
-                    {article.categories
-                        .map((category) => category.name)
-                        .join(' · ')}
-                </p>
                 <CardTitle className="font-display font-bold text-primary">
                     <Link href={show(article.slug)} className="hover:underline">
                         {article.title}
@@ -75,8 +72,25 @@ export function ArticleCard({ article }: { article: Article }) {
                         'Baca kabar selengkapnya dari pesantren.'}
                 </p>
             </CardContent>
-            <CardFooter className="mt-auto">
-                <p className="text-xs text-muted-foreground">
+            <CardFooter className="mt-auto flex-wrap justify-between gap-x-3 gap-y-2">
+                <div className="flex min-w-0 flex-wrap items-center gap-1">
+                    {article.categories
+                        .slice(0, MAX_CATEGORIES)
+                        .map((category) => (
+                            <Badge variant="outline" key={category.id}>
+                                {category.name}
+                            </Badge>
+                        ))}
+                    {article.categories.length > MAX_CATEGORIES && (
+                        <Badge
+                            variant="outline"
+                            aria-label={`${article.categories.length - MAX_CATEGORIES} kategori lainnya`}
+                        >
+                            +{article.categories.length - MAX_CATEGORIES}
+                        </Badge>
+                    )}
+                </div>
+                <p className="min-w-0 truncate text-xs text-muted-foreground">
                     Oleh {article.author.name}
                 </p>
             </CardFooter>
