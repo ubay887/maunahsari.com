@@ -66,7 +66,7 @@ class AlumniPortalTest extends TestCase
 
         $this->actingAs($user)->get(route('alumni.home'))->assertOk()->assertInertia(fn (Assert $page) => $page
             ->where('profile.full_name', $profile->full_name)
-            ->where('completeness.percent', 55)
+            ->where('completeness.percent', 44)
             ->has('completeness.missing', 5)
             ->where('stats.pendingRequests', 1)
             ->where('stats.alumniTotal', 4));
@@ -99,27 +99,12 @@ class AlumniPortalTest extends TestCase
         $this->assertDatabaseHas('consent_records', ['type' => 'directory_display', 'granted' => false]);
     }
 
-    public function test_claim_is_hashed_single_use_and_resets_privacy(): void
-    {
-        $code = str_repeat('a', 40);
-        $import = AlumniProfile::factory()->create(['user_id' => null, 'source' => 'import', 'claim_code_hash' => hash('sha256', $code)]);
-        $user = User::factory()->create();
-        $this->actingAs($user)->post(route('alumni.claim.store'), ['code' => $code])->assertSessionHasNoErrors()->assertRedirect(route('alumni.privacy.edit'));
-        $this->assertSame($user->id, $import->fresh()->user_id);
-        $this->assertNull($import->fresh()->claim_code_hash);
-        $this->assertNull($import->fresh()->map_mode);
-        $this->assertNull($import->fresh()->directory_visible);
-        $this->assertSame('import', $import->fresh()->source);
-        $this->actingAs(User::factory()->create())->post(route('alumni.claim.store'), ['code' => $code])->assertSessionHasErrors('code');
-    }
-
-    public function test_wrong_claim_is_rejected_and_throttled(): void
+    public function test_profile_claim_is_no_longer_available(): void
     {
         $this->actingAs(User::factory()->create());
-        for ($i = 0; $i < 5; $i++) {
-            $this->post(route('alumni.claim.store'), ['code' => str_repeat('z', 40)])->assertSessionHasErrors('code');
-        }
-        $this->post(route('alumni.claim.store'), ['code' => str_repeat('z', 40)])->assertTooManyRequests();
+
+        $this->get('/alumni/klaim')->assertNotFound();
+        $this->post('/alumni/klaim', ['code' => str_repeat('a', 40)])->assertNotFound();
     }
 
     public function test_contact_is_only_revealed_to_requester_after_owner_approval_and_audited(): void
@@ -148,9 +133,9 @@ class AlumniPortalTest extends TestCase
         $this->post(route('alumni.contacts.store', $targets[1]), ['message' => 'Salam'])->assertTooManyRequests();
     }
 
-    public function test_download_contains_only_own_profile_and_no_claim_hash(): void
+    public function test_download_contains_only_own_profile(): void
     {
-        $own = AlumniProfile::factory()->create(['claim_code_hash' => 'secret-hash']);
+        $own = AlumniProfile::factory()->create();
         $other = AlumniProfile::factory()->create(['full_name' => 'RAHASIA ORANG LAIN']);
         ContactRequest::create(['requester_profile_id' => $own->id, 'target_profile_id' => $other->id, 'message' => 'PESAN SAYA']);
         $third = AlumniProfile::factory()->create();
@@ -182,5 +167,63 @@ class AlumniPortalTest extends TestCase
         $this->assertNull($audit->actor_id);
         $this->assertNull($audit->subject_id);
         $this->assertStringNotContainsString($own->full_name, $audit->toJson());
+    }
+
+    public function test_entry_and_leave_years_are_optional_but_leave_year_cannot_precede_entry_year(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user)->post(route('alumni.profile.update'), [...$this->data(), 'entry_year' => null, 'leave_year' => null])->assertSessionHasNoErrors();
+        $profile = $user->alumniProfile()->firstOrFail();
+        $this->assertNull($profile->entry_year);
+        $this->assertNull($profile->leave_year);
+
+        $this->post(route('alumni.profile.update'), [...$this->data(), 'entry_year' => null, 'leave_year' => 2016])->assertSessionHasNoErrors();
+        $this->assertSame(2016, $profile->fresh()->leave_year);
+
+        $this->post(route('alumni.profile.update'), [...$this->data(), 'entry_year' => 2016, 'leave_year' => 2010])->assertSessionHasErrors('leave_year');
+    }
+
+    public function test_pondok_follows_gender_and_cannot_be_submitted_directly(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user)->post(route('alumni.profile.update'), [...$this->data(), 'gender' => 'female', 'pondok' => 'putra'])->assertSessionHasNoErrors();
+        $this->assertSame('putri', $user->alumniProfile()->firstOrFail()->pondok->value);
+
+        $this->post(route('alumni.profile.update'), [...$this->data(), 'gender' => 'male'])->assertSessionHasNoErrors();
+        $this->assertSame('putra', $user->alumniProfile()->firstOrFail()->pondok->value);
+    }
+
+    public function test_nickname_is_saved_and_limited_in_length(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user)->post(route('alumni.profile.update'), [...$this->data(), 'nickname' => 'Kang Udin'])->assertSessionHasNoErrors();
+        $this->assertSame('Kang Udin', $user->alumniProfile()->firstOrFail()->nickname);
+
+        $this->post(route('alumni.profile.update'), [...$this->data(), 'nickname' => str_repeat('a', 61)])->assertSessionHasErrors('nickname');
+    }
+
+    public function test_open_to_only_accepts_seeking_job_and_hiring(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user)->post(route('alumni.profile.update'), [...$this->data(), 'open_to' => ['seeking_job', 'hiring']])->assertSessionHasNoErrors();
+        $this->assertSame(['seeking_job', 'hiring'], $user->alumniProfile()->firstOrFail()->open_to);
+
+        foreach (['ready_to_help', 'mentoring'] as $removed) {
+            $this->post(route('alumni.profile.update'), [...$this->data(), 'open_to' => [$removed]])->assertSessionHasErrors('open_to.0');
+        }
+    }
+
+    public function test_birth_place_and_date_are_required_validated_and_returned_as_a_plain_date(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user)->post(route('alumni.profile.update'), [...$this->data(), 'birth_place' => null, 'birth_date' => null])->assertSessionHasErrors(['birth_place', 'birth_date']);
+        $this->assertDatabaseEmpty('alumni_profiles');
+
+        $this->post(route('alumni.profile.update'), [...$this->data(), 'birth_place' => 'Kediri', 'birth_date' => '1990-05-17'])->assertSessionHasNoErrors();
+        $this->assertSame('Kediri', $user->alumniProfile()->firstOrFail()->birth_place);
+        $this->assertSame('1990-05-17', app(AlumniPrivacy::class)->profile($user->alumniProfile()->firstOrFail(), $user)['birth_date']);
+
+        $this->post(route('alumni.profile.update'), [...$this->data(), 'birth_date' => now()->addDay()->toDateString()])->assertSessionHasErrors('birth_date');
+        $this->post(route('alumni.profile.update'), [...$this->data(), 'birth_date' => '17/05/1990'])->assertSessionHasErrors('birth_date');
     }
 }

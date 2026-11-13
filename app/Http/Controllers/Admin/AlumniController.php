@@ -44,20 +44,6 @@ class AlumniController extends Controller
         ]);
     }
 
-    public function create(AlumniOptions $options): Response
-    {
-        Gate::authorize('create', AlumniProfile::class);
-
-        return Inertia::render('admin/alumni/form', ['profile' => null, ...$options->get()]);
-    }
-
-    public function store(AdminProfileRequest $request, SaveAdminProfile $save): RedirectResponse
-    {
-        $profile = $save->handle($request->validated(), photo: $request->file('photo'));
-
-        return redirect()->route('admin.alumni.edit', $profile)->with('success', 'Profil tersimpan.');
-    }
-
     public function edit(#[CurrentUser] User $admin, AlumniProfile $profile, AlumniPrivacy $privacy, AlumniOptions $options): Response
     {
         Gate::authorize('update', $profile);
@@ -92,11 +78,11 @@ class AlumniController extends Controller
             if ($file === false) {
                 return;
             }
-            fputcsv($file, ['full_name', 'angkatan', 'pondok', 'alumni_status', 'province', 'regency', 'activity_status', 'profession', 'verification_status'], escape: '');
+            fputcsv($file, ['full_name', 'angkatan', 'pondok', 'alumni_status', 'province', 'regency', 'profession', 'verification_status'], escape: '');
             foreach ($profiles->lazyById(100) as $profile) {
                 $data = $privacy->profile($profile, $admin, false);
                 $row = [];
-                foreach (['full_name', 'angkatan', 'pondok', 'alumni_status', 'province', 'regency', 'activity_status', 'profession', 'verification_status'] as $key) {
+                foreach (['full_name', 'angkatan', 'pondok', 'alumni_status', 'province', 'regency', 'profession', 'verification_status'] as $key) {
                     $value = (string) ($data[$key] ?? '');
                     $row[] = preg_match('/^[\x00-\x20]*[=+@\-]/', $value) ? "'".$value : $value;
                 }

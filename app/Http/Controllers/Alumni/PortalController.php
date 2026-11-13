@@ -14,7 +14,7 @@ use Inertia\Response;
 class PortalController extends Controller
 {
     /** Isian profil yang dihitung dalam kelengkapan, berurutan dari yang paling berpengaruh. */
-    private const COMPLETENESS_FIELDS = ['full_name', 'gender', 'entry_year', 'pondok', 'regency', 'activity_status', 'profession', 'bio', 'skills', 'photo', 'phone_whatsapp'];
+    private const COMPLETENESS_FIELDS = ['full_name', 'gender', 'entry_year', 'regency', 'profession', 'bio', 'skills', 'photo', 'phone_whatsapp'];
 
     public function index(#[CurrentUser] User $user, AlumniPrivacy $privacy): Response
     {

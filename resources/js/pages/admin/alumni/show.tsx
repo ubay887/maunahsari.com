@@ -45,7 +45,10 @@ export default function Show({
 }) {
     const biodata: DetailItem[] = [
         { label: 'Nama lengkap', value: profile.full_name },
+        { label: 'Nama panggilan / lakop', value: profile.nickname },
         { label: 'Jenis kelamin', value: label(profile.gender) },
+        { label: 'Tempat lahir', value: profile.birth_place },
+        { label: 'Tanggal lahir', value: profile.birth_date },
         { label: 'Angkatan', value: profile.angkatan },
         { label: 'Pondok', value: label(profile.pondok) },
         { label: 'Program', value: profile.program },
@@ -57,7 +60,6 @@ export default function Show({
         { label: 'WhatsApp', value: profile.phone_whatsapp },
     ];
     const career: DetailItem[] = [
-        { label: 'Aktivitas', value: label(profile.activity_status) },
         { label: 'Profesi', value: profile.profession },
         { label: 'Organisasi', value: profile.organization },
         { label: 'Bidang', value: profile.field },
@@ -86,7 +88,7 @@ export default function Show({
     return (
         <AlumniAdminPage
             title={profile.full_name ?? 'Detail alumni'}
-            description="Biodata, aktivitas, verifikasi, dan pengaturan privasi alumni."
+            description="Biodata, pekerjaan, verifikasi, dan pengaturan privasi alumni."
             actions={
                 <>
                     <Button type="button" variant="outline" asChild>
@@ -116,7 +118,7 @@ export default function Show({
                     </Frame>
                     <Frame spacing="default">
                         <FrameHeader>
-                            <FrameTitle>Aktivitas dan keahlian</FrameTitle>
+                            <FrameTitle>Pekerjaan dan keahlian</FrameTitle>
                         </FrameHeader>
                         <FramePanel>
                             <DetailList items={career} />
@@ -176,10 +178,6 @@ export default function Show({
                                         value: account
                                             ? `${account.name} (${account.email})`
                                             : 'Belum ada akun',
-                                    },
-                                    {
-                                        label: 'Akun ditautkan',
-                                        value: formatDate(profile.claimed_at),
                                     },
                                 ]}
                             />

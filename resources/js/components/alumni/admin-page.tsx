@@ -2,8 +2,7 @@ import { usePage } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 import { AdminPage, type AdminNavItem } from '@/components/admin/admin-page';
 import { alumniAdminSection, type AlumniAdminSection } from '@/lib/alumni';
-import { index, create, statistics } from '@/routes/admin/alumni';
-import { index as imports } from '@/routes/admin/alumni/import';
+import { index, statistics } from '@/routes/admin/alumni';
 
 const sections: {
     key: AlumniAdminSection;
@@ -17,8 +16,6 @@ const sections: {
         label: 'Antrean verifikasi',
         route: index({ query: { verification_status: 'pending' } }),
     },
-    { key: 'create', label: 'Input manual', route: create() },
-    { key: 'import', label: 'Impor', route: imports() },
 ];
 
 export function AlumniAdminPage({

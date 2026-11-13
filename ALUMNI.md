@@ -4,10 +4,10 @@ Tanggal: 3 November 2026. Versi backend yang diperiksa: Laravel 13.39.0, Inertia
 
 ## Hasil
 
-- Role `admin` / `alumni` diterapkan; migrasi mengangkat semua akun lama menjadi admin. Registrasi publik hanya membuat alumni, mengabaikan input role, dan mewajibkan verifikasi email.
+- Role `admin` / `alumni` diterapkan; migrasi mengangkat semua akun lama menjadi admin. Registrasi publik hanya membuat alumni, mengabaikan input role.
 - Dashboard, showcase, Artikel, Event, PSB, santri, dan seluruh administrasi alumni dilindungi role. Pengaturan akun pribadi tetap dapat dipakai alumni.
-- Wizard profil empat langkah, status verifikasi, edit, pengaturan privasi, klaim profil impor, permintaan kontak, unduh JSON, dan penghapusan permanen tersedia.
-- Admin mendapat tabel TanStack server-side, antrean verifikasi, input/edit, pengaitan santri manual, CSV export, pratinjau dan konfirmasi impor CSV/.xlsx, kode klaim sekali tampil, dan statistik.
+- Wizard profil empat langkah, status verifikasi, edit, pengaturan privasi, permintaan kontak, unduh JSON, dan penghapusan permanen tersedia.
+- Admin mendapat tabel TanStack server-side, antrean verifikasi, edit, pengaitan santri manual, CSV export, dan statistik. Admin tidak dapat menambah alumni secara manual maupun mengimpor; pendataan hanya lewat alumni sendiri.
 - Peta publik hanya agregat. Peta portal menambahkan kartu yang diizinkan pada kelompok yang memenuhi ambang. Radar hanya memakai pusat wilayah dan pita jarak.
 - Lapisan `AlumniPrivacy` menjadi DTO/query keluaran profil, foto, kontak, dan ekspor data sendiri; setiap keluaran profil memakai whitelist. Model tidak dikirim langsung sebagai props alumni.
 
@@ -19,10 +19,10 @@ Daftar berikut memuat perubahan bermakna. Formatter penuh juga menormalkan forma
 
 Dibuat:
 
-- `app/UserRole.php`, `app/AlumniStatus.php`, `app/ActivityStatus.php`, `app/VerificationStatus.php`, `app/MapMode.php`, `app/Visibility.php`, `app/ContactRequestStatus.php`.
+- `app/UserRole.php`, `app/AlumniStatus.php`, `app/VerificationStatus.php`, `app/MapMode.php`, `app/Visibility.php`, `app/ContactRequestStatus.php`.
 - `database/migrations/2026_11_03_060740_add_role_to_users_table.php`.
 - `database/migrations/2026_11_03_060741_create_alumni_tables.php`.
-- Model: `app/Models/Province.php`, `Regency.php`, `AlumniProfile.php`, `ContactRequest.php`, `ConsentRecord.php`, `AuditLog.php`, `AlumniImportBatch.php`.
+- Model: `app/Models/Province.php`, `Regency.php`, `AlumniProfile.php`, `ContactRequest.php`, `ConsentRecord.php`, `AuditLog.php`.
 - `database/factories/AlumniProfileFactory.php`.
 - `app/Http/Middleware/EnsureUserIsAdmin.php`, `EnsureApprovedAlumni.php`, `SetRoleRedirects.php`, `ThrottleAlumniRegistration.php`.
 - `app/Http/Responses/RoleHomeResponse.php`, `RolePasskeyResponse.php`.
@@ -44,18 +44,18 @@ Diubah:
 
 Registrasi ditutup saat pengerjaan fondasi, kemudian dibuka setelah pemeriksaan fondasi lulus. Tes HTTP registrasi membuktikan role admin tidak dapat disisipkan.
 
-### Fase 2 — portal, privasi, klaim, kontak, hak data
+### Fase 2 — portal, privasi, kontak, hak data
 
 Dibuat:
 
 - `app/Services/AlumniPrivacy.php`, `AlumniOptions.php`, `AlumniPhotos.php`.
 - `app/Policies/AlumniProfilePolicy.php`.
-- Actions dalam `app/Actions/Alumni/`: `SaveProfile.php`, `ClaimProfile.php`, `ManageContactRequest.php`, `DeleteAccount.php`.
-- Form Requests dalam `app/Http/Requests/Alumni/`: `ProfileRequest.php`, `PrivacyRequest.php`, `ClaimRequest.php`, `ContactRequestRequest.php`, `RespondContactRequest.php`, `DeleteAccountRequest.php`.
-- Controllers dalam `app/Http/Controllers/Alumni/`: `ProfileController.php`, `PrivacyController.php`, `ClaimController.php`, `ContactController.php`, `DataController.php`, `PhotoController.php`.
+- Actions dalam `app/Actions/Alumni/`: `SaveProfile.php`, `ManageContactRequest.php`, `DeleteAccount.php`.
+- Form Requests dalam `app/Http/Requests/Alumni/`: `ProfileRequest.php`, `PrivacyRequest.php`, `ContactRequestRequest.php`, `RespondContactRequest.php`, `DeleteAccountRequest.php`.
+- Controllers dalam `app/Http/Controllers/Alumni/`: `ProfileController.php`, `PrivacyController.php`, `ContactController.php`, `DataController.php`, `PhotoController.php`.
 - `resources/js/layouts/alumni-layout.tsx`, `resources/js/types/alumni.ts`, `resources/js/lib/alumni.ts`.
 - Komposisi komponen terpasang dalam `resources/js/components/alumni/`: `select-field.tsx`, `privacy-fields.tsx`.
-- Halaman `resources/js/pages/alumni/`: `profile.tsx`, `privacy.tsx`, `claim.tsx`, `contacts.tsx`, `data.tsx`.
+- Halaman `resources/js/pages/alumni/`: `profile.tsx`, `privacy.tsx`, `contacts.tsx`, `data.tsx`.
 - `tests/Feature/AlumniPortalTest.php`.
 
 Diubah: `routes/alumni.php`, `resources/js/app.tsx`, `resources/js/layouts/app-layout.tsx`, `resources/js/pages/auth/register.tsx`, `verify-email.tsx`, `app/Http/Middleware/HandleInertiaRequests.php`, dan `app/Http/Controllers/Settings/ProfileController.php`. Penghapusan akun dari pengaturan lama juga membersihkan data alumni.
@@ -64,10 +64,10 @@ Diubah: `routes/alumni.php`, `resources/js/app.tsx`, `resources/js/layouts/app-l
 
 Dibuat:
 
-- `app/Services/AlumniQuery.php`, `AlumniImport.php`, `AlumniSpreadsheet.php`, `AlumniClaimCodes.php`.
+- `app/Services/AlumniQuery.php`.
 - Actions `SaveAdminProfile.php`, `VerifyProfile.php`, `DeleteProfile.php` dalam `app/Actions/Alumni/`.
-- Requests `QueryRequest.php`, `AdminProfileRequest.php`, `VerificationRequest.php`, `ImportRequest.php`, `ConfirmImportRequest.php` dalam `app/Http/Requests/Alumni/`.
-- Controllers dalam `app/Http/Controllers/Admin/`: `AlumniController.php`, `AlumniVerificationController.php`, `AlumniImportController.php`, `AlumniClaimCodeController.php`.
+- Requests `QueryRequest.php`, `AdminProfileRequest.php`, `VerificationRequest.php` dalam `app/Http/Requests/Alumni/`.
+- Controllers dalam `app/Http/Controllers/Admin/`: `AlumniController.php`, `AlumniVerificationController.php`.
 - `app/Http/Controllers/Alumni/DirectoryController.php`.
 - `resources/js/components/alumni/admin-page.tsx`, `filter-bar.tsx`, `cards.tsx`.
 - `resources/js/lib/alumni-request.ts`.
@@ -141,7 +141,7 @@ Demo pengembangan saja (data fiktif yang realistis, bukan data alumni sungguhan)
 php artisan db:seed --class=AlumniDemoSeeder --no-interaction
 ```
 
-Seeder demo hanya berjalan pada `local` / `testing`, menyiapkan satu admin demo dan 171 profil alumni yang deterministik (hasilnya sama di setiap mesin) dengan sebaran di 35 kota/kabupaten, termasuk kota yang hanya berisi satu alumni. Profil bervariasi dalam angkatan 2008–2021, status kesantrian, aktivitas, profesi, program, status verifikasi, sumber (self/import/admin), dan pilihan privasi. Menjalankannya kembali memperbarui profil yang sama tanpa menggandakan; jangan menggunakannya untuk data nyata. `DemoSeeder` menjalankan seluruh data demo sekaligus dan berurutan sesuai ketergantungan data: akun staf, alumni, persetujuan privasi, permintaan kontak, riwayat impor, PSB (4 periode), santri, dan jejak audit. Akun admin lama dipertahankan, sehingga total admin lokal dapat melebihi satu.
+Seeder demo hanya berjalan pada `local` / `testing`, menyiapkan satu admin demo dan 171 profil alumni yang deterministik (hasilnya sama di setiap mesin) dengan sebaran di 35 kota/kabupaten, termasuk kota yang hanya berisi satu alumni. Profil bervariasi dalam angkatan 2008–2021, status kesantrian, profesi, program, status verifikasi, dan pilihan privasi. Menjalankannya kembali memperbarui profil yang sama tanpa menggandakan; jangan menggunakannya untuk data nyata. `DemoSeeder` menjalankan seluruh data demo sekaligus dan berurutan sesuai ketergantungan data: akun staf, alumni, persetujuan privasi, permintaan kontak, PSB (4 periode), santri, dan jejak audit. Akun admin lama dipertahankan, sehingga total admin lokal dapat melebihi satu.
 
 - Admin demo: `alumni-admin@example.test`.
 - Alumni demo yang dapat menggunakan portal: `alumni-demo-1@example.test` (terverifikasi, peta dan direktori aktif, Kota Kediri).
@@ -215,13 +215,11 @@ Cache agregat memakai cache aplikasi (lokal: database), TTL 10 menit, key filter
 6. `angkatan` berupa string (maksimal 40 karakter), terpisah dari tahun masuk/keluar. Enum `App/Pondok.php` dipakai ulang.
 7. PSB, `santris`, dan `programs` memang tersedia. `santri_id` memakai foreign key nullable; tidak perlu fallback kolom tanpa foreign key. Pengaitan dilakukan manual melalui ID atau kandidat nama, tanpa auto-link.
 8. Perubahan biodata oleh alumni mengajukan profil kembali sebagai pending. Perubahan privasi saja mempertahankan status verifikasi dan mencatat consent baru.
-9. Profil input admin/impor berawal tanpa izin peta/direktori. Klaim dibatasi ke profil `source=import` sesuai spesifikasi; source tetap import dan izin direset NULL. Data manual `source=admin` tidak mendapat kode klaim impor.
-10. Klaim memakai token acak 40 karakter, hash SHA-256, sekali pakai; kode baru membatalkan kode lama. Kode tidak masuk props atau audit log. Export kode adalah POST ber-CSRF dan diaudit.
-11. Permintaan kontak pending memiliki unique index per pasangan, maksimum default 10/hari, dan kedaluwarsa setelah 30 hari. Kedaluwarsa diproses saat daftar/send diakses. Penolakan atau kedaluwarsa tidak membuka kontak.
-12. Impor mendukung CSV UTF-8 dan Excel `.xlsx`, lembar pertama, nilai tanpa formula, maksimal 1.000 baris/5 MB. `.xls` lama tidak didukung. Template memuat kolom dasar; data tambahan dapat dilengkapi lewat edit profil. Tidak menambah library spreadsheet: parser memakai ZipArchive/SimpleXML yang tersedia. Foto memerlukan GD/WebP, juga sudah tersedia lokal.
-13. Pratinjau impor di cache privat selama 30 menit, terikat admin dan token; konfirmasi sekali pakai. Duplikat nama+angkatan+wilayah diperiksa lagi saat konfirmasi. Hanya baris valid dibuat; batch menyimpan hasil/error per baris. Konfirmasi hanya membuat batch berstatus `queued` dan mengantrekan job `ProcessAlumniImport`; job membuat seluruh profil dalam satu transaksi (gagal berarti tidak ada profil yang dibuat dan batch berstatus `failed`), lalu mengosongkan cache peta sekali. Halaman impor memperbarui riwayat otomatis selama ada batch aktif. Foto profil sengaja tetap diproses sinkron karena kesalahan gambar harus langsung terlihat oleh pengguna.
-14. Kelengkapan statistik berarti data wajib tersedia serta WhatsApp, profesi, bio, dan minimal satu keahlian telah diisi. Angka dilaporkan per angkatan.
-15. Kebijakan privasi awal berbahasa Indonesia, versi `2026-11-03`; teks hukum final masih perlu ditinjau pengurus. Nama/email/WhatsApp penanggung jawab memakai konfigurasi sederhana, tanpa menambah sistem pengaturan situs.
+9. Fitur klaim profil dan kode klaim dihapus bersama impor; kolom `claim_code_hash` dan `claimed_at` di-drop. Profil baru selalu dibuat sendiri oleh alumni (`source=self`) dan berawal tanpa izin peta/direktori.
+10. Permintaan kontak pending memiliki unique index per pasangan, maksimum default 10/hari, dan kedaluwarsa setelah 30 hari. Kedaluwarsa diproses saat daftar/send diakses. Penolakan atau kedaluwarsa tidak membuka kontak.
+11. Impor alumni (CSV/.xlsx, pratinjau, antrean job, riwayat batch) dan input manual oleh admin dihapus; tabel `alumni_import_batches` di-drop. Alumni mendata diri sendiri lewat halaman publik; admin hanya memverifikasi, mengedit, mengaitkan santri, dan menghapus. Foto memerlukan GD/WebP, sudah tersedia lokal.
+12. Kelengkapan statistik berarti data wajib tersedia serta WhatsApp, profesi, bio, dan minimal satu keahlian telah diisi. Angka dilaporkan per angkatan.
+13. Kebijakan privasi awal berbahasa Indonesia, versi `2026-11-03`; teks hukum final masih perlu ditinjau pengurus. Nama/email/WhatsApp penanggung jawab memakai konfigurasi sederhana, tanpa menambah sistem pengaturan situs.
 
 ## Verifikasi
 
@@ -268,7 +266,6 @@ Screenshot: `storage/app/alumni-qa/admin-alumni-desktop.png`, `directory-desktop
 
 - Isi kontak penanggung jawab data dan tinjau teks kebijakan privasi oleh pengurus.
 - Isi URL/key tile dan atribusi sesuai penyedia/paket; verifikasi tile nyata dengan konfigurasi produksi.
-- Jalankan queue worker di produksi (`php artisan queue:work --tries=1`, dikelola supervisor atau sejenisnya) karena `QUEUE_CONNECTION=database`; tanpa worker, impor berhenti pada status "Dalam antrean". Batas waktu job (80 detik) sengaja di bawah `retry_after` koneksi (90 detik).
 - Konfigurasikan pengiriman email produksi. Alur email diuji dengan notification fake; SMTP produksi tidak dihubungi.
 - Jalankan migrasi/seeder wilayah dan build pada lingkungan tujuan. Demo hanya untuk pengembangan, dan kredensial demo tidak untuk produksi.
 - Tidak ada deployment, integrasi Event/RSVP, lowongan, donasi, chat, feed, OTP/notifikasi WhatsApp, alamat rumah, atau kecamatan baru yang dibuat.

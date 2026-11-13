@@ -43,7 +43,6 @@ const titles: Record<string, string> = {
     angkatan: 'Per angkatan',
     province_id: 'Per provinsi',
     program_id: 'Per program',
-    activity_status: 'Per aktivitas',
     profession: 'Per profesi',
     map_mode: 'Pilihan peta',
     directory_visible: 'Izin direktori',
@@ -70,7 +69,10 @@ function MeterCard({ card }: { card: MeterCardData }) {
                     >
                         <ul className="flex flex-col gap-3">
                             {rows.map((row) => (
-                                <li key={row.key} className="flex flex-col gap-1.5">
+                                <li
+                                    key={row.key}
+                                    className="flex flex-col gap-1.5"
+                                >
                                     <div className="flex items-baseline justify-between gap-2 text-sm">
                                         <span className="min-w-0 break-words">
                                             {row.name}

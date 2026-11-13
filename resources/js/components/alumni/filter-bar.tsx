@@ -10,7 +10,7 @@ import {
     DataGridResetButton,
 } from '@/components/admin/data-grid-filters';
 import { DataGridSearch } from '@/components/admin/data-grid-search';
-import { alumniLabels } from '@/lib/alumni';
+import { alumniLabels, openToOptions } from '@/lib/alumni';
 import type { AlumniOptions } from '@/types/alumni';
 export function AlumniFilterBar({
     filters,
@@ -59,18 +59,6 @@ export function AlumniFilterBar({
                 )
                 .map((item) => ({ value: String(item.id), label: item.name })),
         },
-        {
-            id: 'activity_status',
-            label: 'Aktivitas',
-            type: 'select' as const,
-            options: [
-                'bekerja',
-                'wirausaha',
-                'studi',
-                'mengabdi',
-                'lainnya',
-            ].map((value) => ({ value, label: alumniLabels[value] })),
-        },
         { id: 'profession', label: 'Profesi', type: 'text' as const },
         {
             id: 'program_id',
@@ -85,12 +73,10 @@ export function AlumniFilterBar({
             id: 'open_to',
             label: 'Kesediaan',
             type: 'select' as const,
-            options: [
-                'ready_to_help',
-                'seeking_job',
-                'hiring',
-                'mentoring',
-            ].map((value) => ({ value, label: alumniLabels[value] })),
+            options: openToOptions.map((value) => ({
+                value,
+                label: alumniLabels[value],
+            })),
         },
         ...(admin
             ? [
@@ -117,9 +103,7 @@ export function AlumniFilterBar({
     const availableConfig = config.filter(
         (field) =>
             !radarMode ||
-            ['angkatan', 'profession', 'activity_status', 'open_to'].includes(
-                field.id,
-            ),
+            ['angkatan', 'profession', 'open_to'].includes(field.id),
     );
     const fields: FilterField[] = availableConfig.map((field) => ({
         ...field,

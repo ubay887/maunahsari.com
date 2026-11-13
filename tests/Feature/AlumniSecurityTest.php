@@ -6,7 +6,7 @@ use App\Models\AlumniProfile;
 use App\Models\ContactRequest;
 use App\Models\User;
 use App\Services\AlumniPrivacy;
-use Illuminate\Auth\Notifications\VerifyEmail;
+use App\UserRole;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
@@ -14,7 +14,6 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 use Laravel\Passkeys\Contracts\PasskeyLoginResponse;
 use Tests\TestCase;
 
@@ -45,16 +44,12 @@ class AlumniSecurityTest extends TestCase
         $this->assertDatabaseEmpty('users');
     }
 
-    public function test_complete_registration_verification_rejection_resubmission_and_approval_flow(): void
+    public function test_complete_registration_rejection_resubmission_and_approval_flow(): void
     {
-        Notification::fake();
-        $this->post(route('register.store'), ['name' => 'Alumni Baru', 'email' => 'flow@example.test', 'password' => 'password', 'password_confirmation' => 'password', 'role' => 'admin', 'email_verified_at' => now()->toISOString()])->assertRedirect(route('alumni.home'));
+        $this->post(route('register.store'), ['name' => 'Alumni Baru', 'email' => 'flow@example.test', 'password' => 'password', 'password_confirmation' => 'password', 'role' => 'admin'])->assertRedirect(route('alumni.home'));
         $user = User::where('email', 'flow@example.test')->firstOrFail();
-        $this->assertFalse($user->hasVerifiedEmail());
-        Notification::assertSentTo($user, VerifyEmail::class);
-        $this->get(route('alumni.profile.edit'))->assertRedirect(route('verification.notice'));
-        $signed = URL::temporarySignedRoute('verification.verify', now()->addMinutes(30), ['id' => $user->id, 'hash' => sha1($user->email)]);
-        $this->get($signed)->assertRedirect(route('alumni.profile.edit'));
+        $this->assertSame(UserRole::Alumni, $user->role);
+        $this->get(route('alumni.profile.edit'))->assertOk();
         $data = $this->data();
         $this->post(route('alumni.profile.update'), $data)->assertSessionHasNoErrors();
         $profile = $user->alumniProfile()->firstOrFail();

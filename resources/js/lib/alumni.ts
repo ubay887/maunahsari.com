@@ -10,7 +10,10 @@ export const alumniLabels: Record<string, string> = {
     declined: 'Ditolak',
     expired: 'Kedaluwarsa',
     full_name: 'Nama lengkap',
+    nickname: 'Nama panggilan / lakop',
     gender: 'Jenis kelamin',
+    birth_place: 'Tempat lahir',
+    birth_date: 'Tanggal lahir',
     photo: 'Foto',
     phone_whatsapp: 'WhatsApp',
     entry_year: 'Tahun masuk',
@@ -21,7 +24,6 @@ export const alumniLabels: Record<string, string> = {
     angkatan: 'Angkatan',
     province: 'Provinsi',
     regency: 'Kota/kabupaten',
-    activity_status: 'Aktivitas',
     profession: 'Profesi',
     organization: 'Organisasi',
     field: 'Bidang',
@@ -36,10 +38,8 @@ export const alumniLabels: Record<string, string> = {
     wirausaha: 'Wirausaha',
     studi: 'Studi',
     lainnya: 'Lainnya',
-    ready_to_help: 'Siap membantu',
     seeking_job: 'Mencari pekerjaan',
     hiring: 'Membuka kesempatan',
-    mentoring: 'Mentoring',
     visible: 'Tampil',
     anonymous: 'Anonim',
     hidden: 'Sembunyi',
@@ -52,6 +52,9 @@ export const alumniLabels: Record<string, string> = {
     approved: 'Disetujui',
     rejected: 'Ditolak',
 };
+/** Kesediaan yang dapat dipilih alumni. */
+export const openToOptions = ['seeking_job', 'hiring'];
+
 export function privacyDefaults(
     profile: AlumniProfile | null,
     options: AlumniOptions,
@@ -81,24 +84,27 @@ export function profileDefaults(
     return {
         ...privacyDefaults(profile, options),
         full_name: profile?.full_name ?? '',
+        nickname: profile?.nickname ?? '',
         gender: profile?.gender ?? '',
+        birth_place: profile?.birth_place ?? '',
+        birth_date: profile?.birth_date?.slice(0, 10) ?? '',
         phone_whatsapp: profile?.phone_whatsapp ?? '',
         entry_year: String(profile?.entry_year ?? ''),
         leave_year: String(profile?.leave_year ?? ''),
-        pondok: profile?.pondok ?? '',
         program_id: String(profile?.program_id ?? ''),
         alumni_status: profile?.alumni_status ?? '',
         angkatan: profile?.angkatan ?? '',
         province_id: String(profile?.province_id ?? ''),
         regency_id: String(profile?.regency_id ?? ''),
-        activity_status: profile?.activity_status ?? '',
         profession: profile?.profession ?? '',
         organization: profile?.organization ?? '',
         field: profile?.field ?? '',
         skills: profile?.skills ?? [],
         bio: profile?.bio ?? '',
         social_links: profile?.social_links ?? {},
-        open_to: profile?.open_to ?? [],
+        open_to: (profile?.open_to ?? []).filter((value) =>
+            openToOptions.includes(value),
+        ),
         photo: null,
         remove_photo: false,
     };
@@ -109,12 +115,7 @@ export function distanceBand(distance: number): string {
     return `dalam ${distance <= 25 ? 25 : distance <= 50 ? 50 : 100} km`;
 }
 
-export type AlumniAdminSection =
-    | 'statistics'
-    | 'list'
-    | 'queue'
-    | 'create'
-    | 'import';
+export type AlumniAdminSection = 'statistics' | 'list' | 'queue';
 
 /**
  * Resolve which admin alumni section a URL belongs to, so the sidebar and the
@@ -123,8 +124,6 @@ export type AlumniAdminSection =
 export function alumniAdminSection(url: string): AlumniAdminSection | null {
     const [pathname = '', search = ''] = url.split('?');
     if (pathname === '/admin/alumni/statistik') return 'statistics';
-    if (pathname === '/admin/alumni/buat') return 'create';
-    if (pathname.startsWith('/admin/alumni/impor')) return 'import';
     if (pathname === '/admin/alumni') {
         return new URLSearchParams(search).get('verification_status') ===
             'pending'

@@ -44,7 +44,6 @@ class AlumniFoundationTest extends TestCase
     {
         $user = app(CreateNewUser::class)->create(['name' => 'Alumni', 'email' => 'new@example.test', 'password' => 'password', 'password_confirmation' => 'password', 'role' => 'admin']);
         $this->assertSame(UserRole::Alumni, $user->fresh()->role);
-        $this->assertNull($user->email_verified_at);
     }
 
     public function test_login_redirects_by_role_even_with_an_admin_intended_url(): void
@@ -53,11 +52,10 @@ class AlumniFoundationTest extends TestCase
         $this->withSession(['url.intended' => '/dashboard'])->post(route('login.store'), ['email' => $alumni->email, 'password' => 'password'])->assertRedirect(route('alumni.home'));
     }
 
-    public function test_guests_redirect_to_login_and_alumni_must_verify_email(): void
+    public function test_guests_redirect_to_login(): void
     {
         $this->get(route('dashboard'))->assertRedirect(route('login'));
         $this->get(route('alumni.home'))->assertRedirect(route('login'));
-        $this->actingAs(User::factory()->unverified()->create())->get(route('alumni.home'))->assertRedirect(route('verification.notice'));
     }
 
     public function test_region_seeding_is_idempotent_and_sample_coordinates_are_in_the_expected_area(): void

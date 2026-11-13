@@ -82,7 +82,7 @@ class AdminDetailPagesTest extends TestCase
     {
         $this->actingAs(User::factory()->admin()->create());
 
-        foreach (['admin.alumni.create', 'admin.alumni.statistics', 'admin.alumni.import.index'] as $route) {
+        foreach (['admin.alumni.statistics'] as $route) {
             $this->get(route($route))->assertOk();
         }
     }

@@ -14,16 +14,14 @@ import { Field, FieldLabel } from '@/components/ui/field';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/input-error';
-import { store, update, verify } from '@/routes/admin/alumni';
-import { store as claimCode } from '@/routes/admin/alumni/claims';
-import { alumniRequest } from '@/lib/alumni-request';
+import { update, verify } from '@/routes/admin/alumni';
 import type { AlumniProfile, AlumniOptions } from '@/types/alumni';
 export default function AdminAlumniForm({
     profile,
     santriCandidates = [],
     ...options
 }: AlumniOptions & {
-    profile: AlumniProfile | null;
+    profile: AlumniProfile;
     santriCandidates?: { id: number; full_name: string; entry_year: number }[];
 }) {
     const form = useForm({
@@ -31,34 +29,12 @@ export default function AdminAlumniForm({
         rejection_reason: '',
         santri_id: String(profile?.santri_id ?? ''),
     });
-    const [code, setCode] = useState<string | null>(null);
-    const [pending, setPending] = useState(false);
-    async function generateCode() {
-        if (!profile) return;
-        setPending(true);
-        try {
-            const response = await alumniRequest(claimCode(profile.id));
-            const data: unknown = await response.json();
-            if (
-                typeof data !== 'object' ||
-                data === null ||
-                !('code' in data) ||
-                typeof data.code !== 'string'
-            )
-                throw new Error();
-            setCode(data.code);
-        } catch {
-            toast.error('Kode gagal dibuat');
-        } finally {
-            setPending(false);
-        }
-    }
     return (
-        <AlumniAdminPage title={profile ? 'Detail alumni' : 'Input alumni'}>
+        <AlumniAdminPage title="Detail alumni">
             <ProfileEditor
                 profile={profile}
                 options={options}
-                adminSubmit={profile ? update(profile.id) : store()}
+                adminSubmit={update(profile.id)}
             />
             {profile && (
                 <Frame spacing="default">
@@ -131,31 +107,6 @@ export default function AdminAlumniForm({
                                 Simpan keputusan
                             </Button>
                         </form>
-                        {profile.source === 'import' &&
-                            profile.user_id === null && (
-                                <div className="flex flex-col gap-4">
-                                    <p>
-                                        Kode baru mengganti kode sebelumnya dan
-                                        hanya tampil sekali.
-                                    </p>
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        disabled={pending}
-                                        onClick={() => void generateCode()}
-                                    >
-                                        Buat kode klaim
-                                    </Button>
-                                    {code && (
-                                        <p
-                                            role="status"
-                                            className="font-mono break-all"
-                                        >
-                                            {code}
-                                        </p>
-                                    )}
-                                </div>
-                            )}
                     </FramePanel>
                 </Frame>
             )}

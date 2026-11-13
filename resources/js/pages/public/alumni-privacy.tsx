@@ -31,7 +31,7 @@ export default function AlumniPrivacy({
                         </h2>
                         <p>
                             Pengurus mengelola data kesantrian, domisili
-                            kota/kabupaten, aktivitas, keahlian, foto opsional,
+                            kota/kabupaten, profesi, keahlian, foto opsional,
                             serta kontak untuk verifikasi dan silaturahmi
                             alumni. Kami tidak meminta alamat rumah lengkap atau
                             koordinat rumah.

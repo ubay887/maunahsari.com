@@ -13,7 +13,7 @@ class AlumniStatistics
         $total = AlumniProfile::count();
         $approved = AlumniProfile::where('verification_status', VerificationStatus::Approved)->count();
         $dimensions = [];
-        foreach (['angkatan', 'province_id', 'program_id', 'activity_status', 'profession', 'map_mode', 'directory_visible'] as $field) {
+        foreach (['angkatan', 'province_id', 'program_id', 'profession', 'map_mode', 'directory_visible'] as $field) {
             $relation = match ($field) {
                 'province_id' => 'province', 'program_id' => 'program', default => null
             };

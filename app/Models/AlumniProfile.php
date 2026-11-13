@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\ActivityStatus;
 use App\AlumniStatus;
 use App\MapMode;
 use App\Pondok;
@@ -17,7 +16,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property AlumniStatus $alumni_status
- * @property ActivityStatus $activity_status
  * @property VerificationStatus $verification_status
  * @property MapMode|null $map_mode
  * @property Pondok $pondok
@@ -26,17 +24,26 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property list<string>|null $open_to
  * @property array<string, string>|null $social_links
  */
-#[Fillable(['user_id', 'santri_id', 'full_name', 'gender', 'photo_path', 'phone_whatsapp', 'entry_year', 'leave_year', 'pondok', 'program_id', 'alumni_status', 'angkatan', 'province_id', 'regency_id', 'activity_status', 'profession', 'organization', 'field', 'skills', 'bio', 'social_links', 'open_to', 'verification_status', 'verified_at', 'verified_by', 'rejection_reason', 'map_mode', 'directory_visible', 'field_visibility', 'source', 'claim_code_hash', 'claimed_at'])]
-#[Hidden(['photo_path', 'phone_whatsapp', 'claim_code_hash'])]
+#[Fillable(['user_id', 'santri_id', 'full_name', 'nickname', 'gender', 'birth_place', 'birth_date', 'photo_path', 'phone_whatsapp', 'entry_year', 'leave_year', 'pondok', 'program_id', 'alumni_status', 'angkatan', 'province_id', 'regency_id', 'profession', 'organization', 'field', 'skills', 'bio', 'social_links', 'open_to', 'verification_status', 'verified_at', 'verified_by', 'rejection_reason', 'map_mode', 'directory_visible', 'field_visibility', 'source'])]
+#[Hidden(['photo_path', 'phone_whatsapp'])]
 class AlumniProfile extends Model
 {
     /** @use HasFactory<AlumniProfileFactory> */
     use HasFactory, SoftDeletes;
 
+    protected static function booted(): void
+    {
+        static::saving(function (AlumniProfile $profile): void {
+            if ($profile->gender !== null && $profile->gender !== '') {
+                $profile->pondok = Pondok::fromGender($profile->gender);
+            }
+        });
+    }
+
     /** @return array<string, string> */
     protected function casts(): array
     {
-        return ['entry_year' => 'integer', 'leave_year' => 'integer', 'pondok' => Pondok::class, 'alumni_status' => AlumniStatus::class, 'activity_status' => ActivityStatus::class, 'verification_status' => VerificationStatus::class, 'map_mode' => MapMode::class, 'directory_visible' => 'boolean', 'field_visibility' => 'array', 'skills' => 'array', 'social_links' => 'array', 'open_to' => 'array', 'verified_at' => 'immutable_datetime', 'claimed_at' => 'immutable_datetime'];
+        return ['birth_date' => 'immutable_date:Y-m-d', 'entry_year' => 'integer', 'leave_year' => 'integer', 'pondok' => Pondok::class, 'alumni_status' => AlumniStatus::class, 'verification_status' => VerificationStatus::class, 'map_mode' => MapMode::class, 'directory_visible' => 'boolean', 'field_visibility' => 'array', 'skills' => 'array', 'social_links' => 'array', 'open_to' => 'array', 'verified_at' => 'immutable_datetime'];
     }
 
     /** @return BelongsTo<User, $this> */

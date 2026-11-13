@@ -1,7 +1,6 @@
 import { usePage } from '@inertiajs/react';
 import {
     Home,
-    Link2,
     Map,
     MessageSquare,
     Radar,
@@ -15,7 +14,6 @@ import type { ReactNode } from 'react';
 import PortalShell from '@/layouts/portal-shell';
 import type { PortalNavItem } from '@/layouts/portal-shell';
 import { directory, home, map, radar } from '@/routes/alumni';
-import { index as claim } from '@/routes/alumni/claim';
 import { index as contacts } from '@/routes/alumni/contacts';
 import { index as data } from '@/routes/alumni/data';
 import { edit as privacy } from '@/routes/alumni/privacy';
@@ -49,9 +47,9 @@ export default function AlumniLayout({ children }: { children: ReactNode }) {
         : [
               beranda,
               profil,
-              access.hasProfile
-                  ? { label: 'Privasi', href: privacy(), icon: ShieldCheck }
-                  : { label: 'Klaim', href: claim(), icon: Link2 },
+              ...(access.hasProfile
+                  ? [{ label: 'Privasi', href: privacy(), icon: ShieldCheck }]
+                  : []),
           ];
 
     const more: PortalNavItem[] = [

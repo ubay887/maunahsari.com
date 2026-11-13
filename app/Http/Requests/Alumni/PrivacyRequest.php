@@ -19,6 +19,6 @@ class PrivacyRequest extends FormRequest
     /** @return array<string, mixed> */
     public function rules(): array
     {
-        return ['map_mode' => ['required', Rule::enum(MapMode::class)], 'directory_visible' => ['required', 'boolean'], 'field_visibility' => ['required', 'array:'.implode(',', AlumniPrivacy::FIELDS)], 'field_visibility.*' => ['required', Rule::enum(Visibility::class)], 'privacy_consent' => ['accepted'], 'privacy_version' => ['required', Rule::in([config('alumni.privacy_version')])]];
+        return ['map_mode' => ['required', Rule::enum(MapMode::class)], 'directory_visible' => ['required', 'boolean'], 'field_visibility' => ['required', 'array:'.implode(',', AlumniPrivacy::VISIBILITY_FIELDS)], 'field_visibility.*' => ['required', Rule::enum(Visibility::class)], 'privacy_consent' => ['accepted'], 'privacy_version' => ['required', Rule::in([config('alumni.privacy_version')])]];
     }
 }

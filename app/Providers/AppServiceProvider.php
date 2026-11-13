@@ -38,7 +38,6 @@ class AppServiceProvider extends ServiceProvider
         AlumniProfile::observe(AlumniProfileObserver::class);
         $this->configureDefaults();
         $this->configureErrorPages();
-        RateLimiter::for('alumni-claim', fn (Request $request) => Limit::perMinute(5)->by('alumni-claim:'.$request->user()?->id.'|'.$request->ip()));
         RateLimiter::for('alumni-contact', fn (Request $request) => Limit::perDay((int) config('alumni.contact_daily_limit'))->by('alumni-contact:'.$request->user()?->id));
         RateLimiter::for('psb-submit', fn (Request $request) => Limit::perMinute(5)->by('psb-submit:'.$request->ip()));
         RateLimiter::for('psb-portal', fn (Request $request) => Limit::perMinute(20)->by('psb-portal:'.$request->user()?->id));

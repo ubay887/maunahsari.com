@@ -29,7 +29,6 @@ const chipKeys = [
     'pondok',
     'regency',
     'province',
-    'activity_status',
     'program',
 ] as const;
 
@@ -42,6 +41,7 @@ function AlumniCardItem({
 }) {
     const getInitials = useInitials();
     const name = profile.full_name ?? 'Alumni';
+    const nickname = profile.nickname?.trim();
     const subtitle = [profile.profession, profile.organization]
         .filter(Boolean)
         .join(' · ');
@@ -70,6 +70,12 @@ function AlumniCardItem({
                     <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                         <h3 className="text-sm font-semibold break-words">
                             {name}
+                            {nickname && (
+                                <span className="font-normal text-muted-foreground">
+                                    {' '}
+                                    ({nickname})
+                                </span>
+                            )}
                         </h3>
                         {subtitle && (
                             <p className="text-xs text-muted-foreground">

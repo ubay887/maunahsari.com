@@ -13,9 +13,8 @@ class SaveAdminProfile
     public function __construct(private AlumniPhotos $photos) {}
 
     /** @param array<string, mixed> $data */
-    public function handle(array $data, ?AlumniProfile $profile = null, ?UploadedFile $photo = null): AlumniProfile
+    public function handle(array $data, AlumniProfile $profile, ?UploadedFile $photo = null): AlumniProfile
     {
-        $profile ??= new AlumniProfile(['source' => 'admin', 'verification_status' => 'pending']);
         $oldPhoto = $profile->photo_path;
         $profile->fill(array_intersect_key($data, array_flip([...AlumniPrivacy::EDITABLE, 'santri_id'])));
         if ($photo) {

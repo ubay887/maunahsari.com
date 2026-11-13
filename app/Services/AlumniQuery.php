@@ -14,18 +14,22 @@ class AlumniQuery
      */
     public function apply(Builder $query, array $filters, bool $member = false): Builder
     {
-        foreach (['angkatan', 'verification_status', 'pondok', 'province_id', 'regency_id', 'activity_status', 'source', 'profession', 'program_id'] as $field) {
+        foreach (['angkatan', 'verification_status', 'pondok', 'province_id', 'regency_id', 'source', 'profession', 'program_id'] as $field) {
             if (isset($filters[$field]) && $filters[$field] !== '') {
                 $query->where($field, $filters[$field]);
-                if ($member && in_array($field, ['profession', 'angkatan', 'pondok', 'activity_status'], true)) {
+                if ($member && in_array($field, ['profession', 'angkatan', 'pondok'], true)) {
                     $this->fieldVisible($query, $field);
                 }
             }
         }
         if (! empty($filters['search'])) {
-            $query->where('full_name', 'like', '%'.$filters['search'].'%');
+            $term = '%'.$filters['search'].'%';
             if ($member) {
-                $this->fieldVisible($query, 'full_name');
+                $query->where(fn (Builder $scope) => $scope
+                    ->where(fn (Builder $name) => $this->fieldVisible($name->where('full_name', 'like', $term), 'full_name'))
+                    ->orWhere(fn (Builder $nickname) => $this->fieldVisible($nickname->where('nickname', 'like', $term), 'nickname')));
+            } else {
+                $query->where(fn (Builder $scope) => $scope->where('full_name', 'like', $term)->orWhere('nickname', 'like', $term));
             }
         }
         if (! empty($filters['open_to'])) {

@@ -1,7 +1,10 @@
 export type AlumniCard = {
     id: number;
     full_name?: string;
+    nickname?: string | null;
     gender?: string;
+    birth_place?: string | null;
+    birth_date?: string | null;
     photo?: string | null;
     entry_year?: number;
     leave_year?: number | null;
@@ -11,7 +14,6 @@ export type AlumniCard = {
     angkatan?: string;
     province?: string;
     regency?: string;
-    activity_status?: string;
     profession?: string | null;
     organization?: string | null;
     field?: string | null;
@@ -35,7 +37,6 @@ export type AlumniProfile = AlumniCard & {
     field_visibility: Record<string, string> | null;
     source: string;
     verified_at?: string | null;
-    claimed_at?: string | null;
 };
 export type AlumniOptions = {
     provinces: { id: number; name: string; code: string }[];
@@ -58,17 +59,18 @@ export type PrivacyData = {
 };
 export type ProfileData = PrivacyData & {
     full_name: string;
+    nickname: string;
     gender: string;
+    birth_place: string;
+    birth_date: string;
     phone_whatsapp: string;
     entry_year: string;
     leave_year: string;
-    pondok: string;
     program_id: string;
     alumni_status: string;
     angkatan: string;
     province_id: string;
     regency_id: string;
-    activity_status: string;
     profession: string;
     organization: string;
     field: string;
@@ -117,7 +119,6 @@ export type AlumniAdminRow = Pick<
     | 'alumni_status'
     | 'province'
     | 'regency'
-    | 'activity_status'
     | 'profession'
     | 'organization'
     | 'field'
@@ -126,5 +127,4 @@ export type AlumniAdminRow = Pick<
     | 'map_mode'
     | 'directory_visible'
     | 'source'
-    | 'claimed_at'
 > & { created_at: string | null };

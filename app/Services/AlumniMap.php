@@ -19,7 +19,7 @@ class AlumniMap
      */
     public function get(array $filters): array
     {
-        $filters = array_intersect_key($filters, array_flip(['angkatan', 'pondok', 'program_id', 'profession', 'activity_status']));
+        $filters = array_intersect_key($filters, array_flip(['angkatan', 'pondok', 'program_id', 'profession']));
         ksort($filters);
         $key = 'alumni-map:'.AlumniMapCache::version().':'.hash('sha256', json_encode($filters, JSON_THROW_ON_ERROR));
 

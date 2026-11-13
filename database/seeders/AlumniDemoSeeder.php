@@ -74,7 +74,7 @@ class AlumniDemoSeeder extends Seeder
 
     private const SKILLS = ['Tahfidz', 'Qira’at', 'Mengajar', 'Public Speaking', 'Kaligrafi', 'Desain Grafis', 'Pemrograman', 'Akuntansi', 'Manajemen Organisasi', 'Penulisan', 'Bahasa Arab', 'Bahasa Inggris', 'Kewirausahaan', 'Pemasaran Digital'];
 
-    private const OPEN_TO = ['ready_to_help', 'mentoring', 'seeking_job', 'hiring'];
+    private const OPEN_TO = ['seeking_job', 'hiring'];
 
     public function run(): void
     {
@@ -107,7 +107,6 @@ class AlumniDemoSeeder extends Seeder
         if (! $admin->exists) {
             $admin->fill(['name' => 'Admin Alumni', 'password' => 'password']);
         }
-        $admin->forceFill(['email_verified_at' => now()]);
         $admin->assignStaffRole(AdminRole::Admin);
 
         return $admin;
@@ -148,26 +147,24 @@ class AlumniDemoSeeder extends Seeder
         $activity = $this->activity($number, $leaveYear ?? 2020);
         [$profession, $field, $places] = $this->pick('career', $number, self::CAREERS[$activity]);
         $verification = $number === 1 ? 'approved' : $this->verification($number);
-        $source = $number === 1 ? 'self' : $this->pick('source', $number, ['self', 'self', 'self', 'self', 'self', 'self', 'self', 'import', 'import', 'admin']);
-        $privacy = $this->privacy($number, $verification, $source);
+        $privacy = $this->privacy($number, $verification);
 
         $name = $this->fullName($number, $male, $names);
-        $user = null;
-        if ($source === 'self') {
-            $user = User::firstOrCreate(['email' => 'alumni-demo-'.$number.'@example.test'], ['name' => $name, 'password' => $password]);
-            $user->role = UserRole::Alumni;
-            $user->forceFill(['name' => $name, 'email_verified_at' => now()])->save();
-        }
+        $user = User::firstOrCreate(['email' => 'alumni-demo-'.$number.'@example.test'], ['name' => $name, 'password' => $password]);
+        $user->role = UserRole::Alumni;
+        $user->forceFill(['name' => $name])->save();
 
         $phone = '628125550'.str_pad((string) $number, 3, '0', STR_PAD_LEFT);
 
         AlumniProfile::unguarded(fn () => AlumniProfile::updateOrCreate(
-            $user !== null ? ['user_id' => $user->id] : ['phone_whatsapp' => $phone],
+            ['user_id' => $user->id],
             [
-                'user_id' => $user?->id,
+                'user_id' => $user->id,
                 'phone_whatsapp' => $phone,
                 'full_name' => $name,
                 'gender' => $male ? 'male' : 'female',
+                'birth_place' => $regency->name,
+                'birth_date' => now()->subYears(2026 - $entryYear + 12 + $this->roll('birth', $number, 4))->subDays($this->roll('birthday', $number, 365))->toDateString(),
                 'entry_year' => $entryYear,
                 'leave_year' => $leaveYear,
                 'pondok' => $male ? 'putra' : 'putri',
@@ -176,7 +173,6 @@ class AlumniDemoSeeder extends Seeder
                 'angkatan' => (string) $entryYear,
                 'province_id' => $regency->province_id,
                 'regency_id' => $regency->id,
-                'activity_status' => $activity,
                 'profession' => $profession,
                 'organization' => $places === [] ? null : $this->pick('org', $number, $places),
                 'field' => $field,
@@ -190,8 +186,7 @@ class AlumniDemoSeeder extends Seeder
                 'map_mode' => $privacy['map_mode'],
                 'directory_visible' => $privacy['directory_visible'],
                 'field_visibility' => $privacy['field_visibility'],
-                'source' => $source,
-                'claimed_at' => null,
+                'source' => 'self',
             ],
         ));
     }
@@ -216,12 +211,12 @@ class AlumniDemoSeeder extends Seeder
     /**
      * @return array{map_mode: string|null, directory_visible: bool|null, field_visibility: array<string, string>}
      */
-    private function privacy(int $number, string $verification, string $source): array
+    private function privacy(int $number, string $verification): array
     {
         if ($number === 1) {
             return ['map_mode' => 'visible', 'directory_visible' => true, 'field_visibility' => $this->visibleFields($number, true)];
         }
-        if ($source !== 'self' || $verification === 'pending') {
+        if ($verification === 'pending') {
             return ['map_mode' => null, 'directory_visible' => null, 'field_visibility' => []];
         }
         if ($verification === 'rejected') {
@@ -240,7 +235,7 @@ class AlumniDemoSeeder extends Seeder
     /** @return array<string, string> */
     private function visibleFields(int $number, bool $all = false): array
     {
-        $fields = ['full_name', 'angkatan', 'regency', 'pondok', 'activity_status', 'profession', 'organization', 'field', 'skills', 'bio', 'open_to'];
+        $fields = ['full_name', 'nickname', 'angkatan', 'regency', 'profession', 'organization', 'field', 'skills', 'bio', 'open_to'];
 
         return collect($fields)
             ->filter(fn (string $field): bool => $all || in_array($field, ['full_name', 'angkatan', 'regency'], true) || $this->roll('vis'.$field, $number, 100) < 75)
@@ -266,7 +261,7 @@ class AlumniDemoSeeder extends Seeder
     /** @return list<string> */
     private function openTo(int $number, string $activity): array
     {
-        $options = $activity === 'studi' ? ['ready_to_help', 'seeking_job'] : self::OPEN_TO;
+        $options = $activity === 'studi' ? ['seeking_job'] : self::OPEN_TO;
         $open = [$this->pick('open0', $number, $options)];
         if ($this->roll('open1', $number, 100) < 40) {
             $open[] = $this->pick('open1b', $number, $options);

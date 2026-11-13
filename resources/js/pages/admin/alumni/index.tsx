@@ -33,24 +33,12 @@ import { formatDate, formatDateTime } from '@/lib/format';
 import { useArticlePageState } from '@/hooks/use-article-page-state';
 import {
     index,
-    create,
     edit,
     show,
     destroy,
     exportMethod,
 } from '@/routes/admin/alumni';
-import { exportMethod as codes } from '@/routes/admin/alumni/claims';
 import { alumniLabels } from '@/lib/alumni';
-import { downloadClaimCodes } from '@/lib/alumni-request';
-import {
-    AlertDialog,
-    AlertDialogContent,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogCancel,
-} from '@/components/ui/alert-dialog';
 import type { AlumniAdminRow, AlumniOptions } from '@/types/alumni';
 import type { Paginated } from '@/types/article';
 const hiddenByDefault = {
@@ -59,14 +47,12 @@ const hiddenByDefault = {
     leave_year: false,
     program: false,
     alumni_status: false,
-    activity_status: false,
     profession: false,
     organization: false,
     field: false,
     map_mode: false,
     directory_visible: false,
     source: false,
-    claimed_at: false,
     verified_at: false,
     created_at: false,
 };
@@ -84,7 +70,6 @@ export default function AdminAlumniIndex({
     const page = useArticlePageState();
     const [deleting, setDeleting] = useState<AlumniAdminRow | null>(null);
     const [pending, setPending] = useState(false);
-    const [exporting, setExporting] = useState(false);
     function visit(next: Record<string, string | number>) {
         router.get(
             index.url(),
@@ -199,13 +184,6 @@ export default function AdminAlumniIndex({
             cell: ({ row }) => label(row.original.alumni_status),
         },
         {
-            accessorKey: 'activity_status',
-            header: 'Aktivitas',
-            enableSorting: false,
-            size: 130,
-            cell: ({ row }) => label(row.original.activity_status),
-        },
-        {
             accessorKey: 'profession',
             header: 'Profesi',
             enableSorting: false,
@@ -251,13 +229,6 @@ export default function AdminAlumniIndex({
             enableSorting: false,
             size: 110,
             cell: ({ row }) => label(row.original.source),
-        },
-        {
-            accessorKey: 'claimed_at',
-            header: 'Akun tertaut',
-            enableSorting: false,
-            size: 170,
-            cell: ({ row }) => formatDate(row.original.claimed_at),
         },
         {
             accessorKey: 'verified_at',
@@ -339,23 +310,13 @@ export default function AdminAlumniIndex({
     return (
         <AlumniAdminPage
             title="Alumni"
-            description="Kelola profil alumni, verifikasi, dan kode klaim."
+            description="Kelola profil alumni dan verifikasi."
             actions={
                 <>
                     <Button type="button" variant="outline" asChild>
                         <a href={exportMethod.url({ query: filters })}>
                             Ekspor CSV
                         </a>
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => setExporting(true)}
-                    >
-                        Ekspor kode klaim
-                    </Button>
-                    <Button type="button" asChild>
-                        <Link href={create()}>Input manual</Link>
                     </Button>
                 </>
             }
@@ -413,46 +374,6 @@ export default function AdminAlumniIndex({
                     });
                 }}
             />
-            <AlertDialog
-                open={exporting}
-                onOpenChange={(value) => {
-                    if (!pending) setExporting(value);
-                }}
-            >
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>
-                            Buat dan unduh kode klaim?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                            Semua kode lama untuk profil impor yang belum
-                            diklaim akan diganti. Simpan CSV di tempat aman dan
-                            bagikan melalui pengurus. Kode tidak dapat dilihat
-                            kembali.
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel disabled={pending}>
-                            Batal
-                        </AlertDialogCancel>
-                        <Button
-                            type="button"
-                            disabled={pending}
-                            onClick={() => {
-                                setPending(true);
-                                void downloadClaimCodes(codes())
-                                    .then(() => setExporting(false))
-                                    .catch(() =>
-                                        toast.error('Kode gagal diunduh'),
-                                    )
-                                    .finally(() => setPending(false));
-                            }}
-                        >
-                            Buat dan unduh
-                        </Button>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
         </AlumniAdminPage>
     );
 }

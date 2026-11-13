@@ -17,7 +17,7 @@ class AlumniProfilePolicy
 
     public function create(User $user): bool
     {
-        return $user->isAdmin() || ($user->role === UserRole::Alumni && $user->hasVerifiedEmail());
+        return $user->role === UserRole::Alumni;
     }
 
     public function update(User $user, AlumniProfile $profile): bool

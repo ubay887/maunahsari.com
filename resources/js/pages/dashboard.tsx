@@ -37,7 +37,6 @@ import {
 import { index as periods } from '@/routes/admin/psb/periods';
 import { index as santris } from '@/routes/admin/santri';
 import { edit as editAlumni, index as alumniList } from '@/routes/admin/alumni';
-import { index as alumniImport } from '@/routes/admin/alumni/import';
 import {
     index as articles,
     create as createArticle,
@@ -463,7 +462,7 @@ function Overview({ data }: { data: DashboardOverview }) {
                                             title="Tidak ada antrean verifikasi"
                                             description={
                                                 alumni.total === 0
-                                                    ? 'Belum ada profil alumni. Impor data atau tambahkan secara manual.'
+                                                    ? 'Belum ada alumni yang mengisi pendataan melalui halaman publik.'
                                                     : 'Semua profil alumni sudah diputuskan.'
                                             }
                                             action={
@@ -472,16 +471,8 @@ function Overview({ data }: { data: DashboardOverview }) {
                                                     variant="outline"
                                                     asChild
                                                 >
-                                                    <Link
-                                                        href={
-                                                            alumni.total === 0
-                                                                ? alumniImport()
-                                                                : alumniList()
-                                                        }
-                                                    >
-                                                        {alumni.total === 0
-                                                            ? 'Impor data alumni'
-                                                            : 'Lihat daftar alumni'}
+                                                    <Link href={alumniList()}>
+                                                        Lihat daftar alumni
                                                     </Link>
                                                 </Button>
                                             }

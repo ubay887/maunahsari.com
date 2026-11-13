@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\ImportStatus;
-use App\Models\AlumniImportBatch;
 use App\Models\AlumniProfile;
 use App\Models\AuditLog;
 use App\Models\ConsentRecord;
@@ -13,7 +11,7 @@ use Database\Seeders\Concerns\DeterministicData;
 use Illuminate\Database\Seeder;
 
 /**
- * Jejak audit yang sesuai dengan data alumni yang ada: keputusan verifikasi, impor, kode klaim,
+ * Jejak audit yang sesuai dengan data alumni yang ada: keputusan verifikasi,
  * ekspor, akses kontak oleh admin, dan unduhan data oleh alumni. Dibuat setelah seeder alumni.
  * Hanya berjalan di local/testing.
  */
@@ -35,23 +33,11 @@ class AuditLogSeeder extends Seeder
             $this->log($profile->verified_by, 'profile.'.$profile->verification_status->value, 'alumni_profile', $profile->id, null, $profile->verified_at);
         });
 
-        AlumniImportBatch::query()->whereIn('status', [ImportStatus::Completed, ImportStatus::Failed])->orderBy('id')->each(function (AlumniImportBatch $batch): void {
-            if ($batch->status === ImportStatus::Completed) {
-                $this->log($batch->imported_by, 'alumni.imported', 'alumni_import_batch', $batch->id, ['created' => $batch->created_count, 'failed' => $batch->failed_count], $batch->updated_at);
-            }
-        });
-
-        AlumniProfile::query()->where('source', 'import')->orderBy('id')->get()->each(function (AlumniProfile $profile, int $index) use ($admin): void {
-            if ($index % 2 === 0) {
-                $this->log($admin->id, 'claim.generated', 'alumni_profile', $profile->id, null, now()->subDays(12 + $index % 9)->setTime(10, $index % 60));
-            }
-        });
-
         $approved = AlumniProfile::query()->where('verification_status', VerificationStatus::Approved)->whereNotNull('phone_whatsapp')->orderBy('id')->limit(40)->pluck('id')->all();
         foreach ([3, 9, 14, 22, 31, 36] as $n => $at) {
             $this->log($admin->id, 'contact.viewed', 'alumni_profile', $approved[$at % max(count($approved), 1)] ?? null, ['purpose' => 'administration'], now()->subDays(2 + $n * 3)->setTime(9 + $n, 20));
         }
-        foreach ([['alumni.exported', 'alumni_profile', 40], ['alumni.exported', 'alumni_profile', 11], ['claims.exported', 'alumni_profile', 12]] as $n => [$action, $subject, $days]) {
+        foreach ([['alumni.exported', 'alumni_profile', 40], ['alumni.exported', 'alumni_profile', 11]] as $n => [$action, $subject, $days]) {
             $this->log($admin->id, $action, $subject, null, null, now()->subDays($days)->setTime(14, 5 + $n));
         }
 

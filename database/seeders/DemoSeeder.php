@@ -27,7 +27,6 @@ class DemoSeeder extends Seeder
             AlumniDemoSeeder::class,
             AlumniConsentSeeder::class,
             AlumniContactSeeder::class,
-            AlumniImportBatchSeeder::class,
             PsbDemoSeeder::class,
             SantriSeeder::class,
             AuditLogSeeder::class,

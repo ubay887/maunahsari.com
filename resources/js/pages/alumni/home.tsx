@@ -22,7 +22,6 @@ import { Button } from '@/components/ui/button';
 import { useInitials } from '@/hooks/use-initials';
 import { alumniLabels } from '@/lib/alumni';
 import { directory, map, radar } from '@/routes/alumni';
-import { index as claim } from '@/routes/alumni/claim';
 import { index as contacts } from '@/routes/alumni/contacts';
 import { edit as editPrivacy } from '@/routes/alumni/privacy';
 import { edit as editProfile } from '@/routes/alumni/profile';
@@ -60,16 +59,12 @@ function Welcome() {
                         Assalamu&apos;alaikum, {name}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                        Lengkapi profil agar alumni lain dapat menemukan Anda,
-                        atau klaim data lama yang sudah dicatat pengurus.
+                        Lengkapi profil agar alumni lain dapat menemukan Anda.
                     </p>
                 </div>
                 <div className="flex flex-col gap-2 sm:flex-row">
                     <Button type="button" asChild>
                         <Link href={editProfile()}>Isi profil</Link>
-                    </Button>
-                    <Button type="button" variant="outline" asChild>
-                        <Link href={claim()}>Klaim profil lama</Link>
                     </Button>
                 </div>
             </FramePanel>

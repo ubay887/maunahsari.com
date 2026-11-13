@@ -15,7 +15,6 @@ import {
 } from '@/components/reui/frame';
 import { SelectField } from '@/components/select-field';
 import { Button } from '@/components/ui/button';
-import { alumniLabels } from '@/lib/alumni';
 import { sameRegion, summarizeGroups } from '@/lib/alumni-map';
 import { login } from '@/routes';
 import { map, publicMap } from '@/routes/alumni';
@@ -37,7 +36,6 @@ export type MapProps = AlumniOptions & {
 };
 
 const REGION_RESET = { region_id: '', region_level: '', page: '' };
-const ACTIVITIES = ['bekerja', 'wirausaha', 'studi', 'mengabdi', 'lainnya'];
 
 export function AlumniMapView({
     aggregate,
@@ -100,7 +98,7 @@ export function AlumniMapView({
             description="Jumlah alumni per kota atau kabupaten, tanpa identitas."
         >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-                <div className="grid min-w-0 grow gap-3 sm:grid-cols-3">
+                <div className="grid min-w-0 grow gap-3 sm:grid-cols-2">
                     <SelectField
                         label="Angkatan"
                         value={filters.angkatan || 'all'}
@@ -125,22 +123,6 @@ export function AlumniMapView({
                             { value: 'all', label: 'Semua pondok' },
                             { value: 'putra', label: 'Putra' },
                             { value: 'putri', label: 'Putri' },
-                        ]}
-                    />
-                    <SelectField
-                        label="Aktivitas"
-                        value={filters.activity_status || 'all'}
-                        onChange={(value) =>
-                            change({
-                                activity_status: value === 'all' ? '' : value,
-                            })
-                        }
-                        options={[
-                            { value: 'all', label: 'Semua aktivitas' },
-                            ...ACTIVITIES.map((value) => ({
-                                value,
-                                label: alumniLabels[value] ?? value,
-                            })),
                         ]}
                     />
                 </div>

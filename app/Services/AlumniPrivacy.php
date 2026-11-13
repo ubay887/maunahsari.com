@@ -22,12 +22,18 @@ class AlumniPrivacy
     {
         $profile = $user->alumniProfile;
 
-        return $user->role === UserRole::Alumni && $user->hasVerifiedEmail() && $profile?->verification_status === VerificationStatus::Approved && $profile->map_mode !== null && $profile->directory_visible !== null;
+        return $user->role === UserRole::Alumni && $profile?->verification_status === VerificationStatus::Approved && $profile->map_mode !== null && $profile->directory_visible !== null;
     }
 
-    public const FIELDS = ['full_name', 'gender', 'photo', 'entry_year', 'leave_year', 'pondok', 'program', 'alumni_status', 'angkatan', 'province', 'regency', 'activity_status', 'profession', 'organization', 'field', 'skills', 'bio', 'social_links', 'open_to'];
+    public const FIELDS = ['full_name', 'nickname', 'gender', 'birth_place', 'birth_date', 'photo', 'entry_year', 'leave_year', 'pondok', 'program', 'alumni_status', 'angkatan', 'province', 'regency', 'profession', 'organization', 'field', 'skills', 'bio', 'social_links', 'open_to'];
 
-    public const EDITABLE = ['full_name', 'gender', 'phone_whatsapp', 'entry_year', 'leave_year', 'pondok', 'program_id', 'alumni_status', 'angkatan', 'province_id', 'regency_id', 'activity_status', 'profession', 'organization', 'field', 'skills', 'bio', 'social_links', 'open_to'];
+    /** Bidang yang dapat diatur privasinya. Pondok mengikuti jenis kelamin sehingga tidak berdiri sendiri. */
+    public const VISIBILITY_FIELDS = ['full_name', 'nickname', 'gender', 'birth_place', 'birth_date', 'photo', 'entry_year', 'leave_year', 'program', 'alumni_status', 'angkatan', 'province', 'regency', 'profession', 'organization', 'field', 'skills', 'bio', 'social_links', 'open_to'];
+
+    /** Pilihan kesediaan yang dapat dipilih alumni. */
+    public const OPEN_TO = ['seeking_job', 'hiring'];
+
+    public const EDITABLE = ['full_name', 'nickname', 'gender', 'birth_place', 'birth_date', 'phone_whatsapp', 'entry_year', 'leave_year', 'program_id', 'alumni_status', 'angkatan', 'province_id', 'regency_id', 'profession', 'organization', 'field', 'skills', 'bio', 'social_links', 'open_to'];
 
     /** @return Builder<AlumniProfile> */
     public function discoverable(): Builder
@@ -55,6 +61,8 @@ class AlumniPrivacy
 
     public function fieldAllowed(AlumniProfile $profile, string $field): bool
     {
+        $field = $field === 'pondok' ? 'gender' : $field;
+
         return in_array(($profile->field_visibility ?? [])[$field] ?? Visibility::Private->value, [Visibility::Alumni->value, Visibility::Public->value], true);
     }
 
@@ -73,6 +81,7 @@ class AlumniPrivacy
                 continue;
             }
             $data[$field] = match ($field) {
+                'birth_date' => $profile->birth_date?->toDateString(),
                 'photo' => $profile->photo_path ? route('alumni.photo', $profile) : null,
                 'province' => $profile->province?->name,
                 'regency' => $profile->regency?->name,
@@ -82,7 +91,7 @@ class AlumniPrivacy
             };
         }
         if ($privileged) {
-            foreach (['user_id', 'santri_id', 'program_id', 'province_id', 'regency_id', 'phone_whatsapp', 'verification_status', 'verified_at', 'rejection_reason', 'map_mode', 'directory_visible', 'field_visibility', 'source', 'claimed_at'] as $field) {
+            foreach (['user_id', 'santri_id', 'program_id', 'province_id', 'regency_id', 'phone_whatsapp', 'verification_status', 'verified_at', 'rejection_reason', 'map_mode', 'directory_visible', 'field_visibility', 'source'] as $field) {
                 if ($field === 'phone_whatsapp' && ! $includeContact) {
                     continue;
                 }
@@ -103,7 +112,7 @@ class AlumniPrivacy
     {
         Gate::forUser($viewer)->authorize('viewAny', AlumniProfile::class);
 
-        return array_intersect_key($this->profile($profile, $viewer, false), array_flip(['id', 'full_name', 'gender', 'entry_year', 'leave_year', 'angkatan', 'pondok', 'program', 'alumni_status', 'province', 'regency', 'activity_status', 'profession', 'organization', 'field', 'verification_status', 'verified_at', 'map_mode', 'directory_visible', 'source', 'claimed_at'])) + ['created_at' => $profile->created_at?->toISOString()];
+        return array_intersect_key($this->profile($profile, $viewer, false), array_flip(['id', 'full_name', 'gender', 'entry_year', 'leave_year', 'angkatan', 'pondok', 'program', 'alumni_status', 'province', 'regency', 'profession', 'organization', 'field', 'verification_status', 'verified_at', 'map_mode', 'directory_visible', 'source'])) + ['created_at' => $profile->created_at?->toISOString()];
     }
 
     /** @return array<string, mixed> */
@@ -127,7 +136,7 @@ class AlumniPrivacy
         $profile = $user->alumniProfile()->withTrashed()->first();
         $contacts = $profile ? ContactRequest::where(fn ($query) => $query->where('requester_profile_id', $profile->id)->orWhere('target_profile_id', $profile->id))->get()->map(fn (ContactRequest $contact): array => ['id' => $contact->id, 'direction' => $contact->requester_profile_id === $profile->id ? 'outgoing' : 'incoming', 'message' => $contact->message, 'status' => $contact->status->value, 'responded_at' => $contact->responded_at, 'expires_at' => $contact->expires_at, 'created_at' => $contact->created_at])->all() : [];
 
-        return ['account' => $user->only(['name', 'email', 'email_verified_at', 'created_at']), 'profile' => $profile ? $this->profile($profile, $user) : null, 'consents' => ConsentRecord::where('user_id', $user->id)->get(['type', 'version', 'granted', 'recorded_at'])->toArray(), 'contact_requests' => $contacts];
+        return ['account' => $user->only(['name', 'email', 'created_at']), 'profile' => $profile ? $this->profile($profile, $user) : null, 'consents' => ConsentRecord::where('user_id', $user->id)->get(['type', 'version', 'granted', 'recorded_at'])->toArray(), 'contact_requests' => $contacts];
     }
 
     /** @return array{phone_whatsapp: string|null, email: string|null} */
