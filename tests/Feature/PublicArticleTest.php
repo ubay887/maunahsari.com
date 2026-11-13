@@ -31,15 +31,17 @@ class PublicArticleTest extends TestCase
         $this->get(route('articles.show', $published->slug))->assertNotFound();
     }
 
-    public function test_search_category_and_tag_filters_can_be_combined(): void
+    public function test_search_filters_published_articles_and_category_and_tag_filters_are_gone(): void
     {
         $category = Category::factory()->create();
         $tag = Tag::factory()->create();
-        $match = Article::factory()->published()->hasAttached($category)->hasAttached($tag)->create(['title' => 'Santri Berprestasi']);
-        Article::factory()->published()->create(['title' => 'Santri lainnya']);
-        Article::factory()->hasAttached($category)->hasAttached($tag)->create(['title' => 'Santri draf']);
-        $this->get(route('articles.index', ['search' => 'Santri', 'category' => $category->slug, 'tag' => $tag->slug]))
-            ->assertInertia(fn (Assert $page) => $page->has('articles.data', 1)->where('articles.data.0.id', $match->id)->where('filters.category', $category->slug));
+        $match = Article::factory()->published()->hasAttached($category)->create(['title' => 'Santri Berprestasi']);
+        Article::factory()->published()->hasAttached($tag)->create(['title' => 'Santri lainnya']);
+        Article::factory()->hasAttached($category)->create(['title' => 'Santri draf']);
+        $this->get(route('articles.index', ['search' => 'Berprestasi']))
+            ->assertInertia(fn (Assert $page) => $page->has('articles.data', 1)->where('articles.data.0.id', $match->id)->where('filters', ['search' => 'Berprestasi'])->has('articles.data.0.categories.0.name')->missing('categories')->missing('tags'));
+        $this->get(route('articles.index', ['category' => $category->slug, 'tag' => $tag->slug]))
+            ->assertInertia(fn (Assert $page) => $page->has('articles.data', 2)->where('canonical', route('articles.index')));
         $this->get(route('articles.index', ['search' => 'tidak-ada']))->assertInertia(fn (Assert $page) => $page->has('articles.data', 0));
     }
 
@@ -71,11 +73,10 @@ class PublicArticleTest extends TestCase
         $this->get(route('articles.show', $article->slug))->assertInertia(fn (Assert $page) => $page->component('articles/show')->where('description', 'Deskripsi SEO')->where('article.meta_title', 'Judul SEO')->where('canonical', route('articles.show', $article->slug))->has('related', 3));
     }
 
-    public function test_unverified_author_cannot_preview_private_articles(): void
+    public function test_guests_cannot_preview_private_articles(): void
     {
-        $author = User::factory()->author()->unverified()->create();
-        $draft = Article::factory()->for($author, 'author')->create();
-        $this->actingAs($author)->get(route('articles.show', ['article' => $draft->slug, 'preview' => 1]))->assertNotFound();
+        $draft = Article::factory()->create();
+        $this->get(route('articles.show', ['article' => $draft->slug, 'preview' => 1]))->assertNotFound();
     }
 
     public function test_views_increment_for_readers_but_ignore_bots(): void

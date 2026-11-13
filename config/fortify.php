@@ -163,7 +163,6 @@ return [
     'features' => [
         ...(env('ALUMNI_REGISTRATION_ENABLED', true) ? [Features::registration()] : []),
         Features::resetPasswords(),
-        Features::emailVerification(),
         Features::twoFactorAuthentication([
             'confirm' => true,
             'confirmPassword' => true,

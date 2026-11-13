@@ -60,12 +60,6 @@ class AdminArticleTest extends TestCase
         $this->get(route('admin.taxonomies.index'))->assertInertia(fn (Assert $page) => $page->component('admin/articles/taxonomies')->has('categories')->has('tags'));
     }
 
-    public function test_unverified_admin_cannot_enter_the_cms(): void
-    {
-        $admin = User::factory()->admin()->unverified()->create(['email' => 'admin@example.test']);
-        $this->actingAs($admin)->get(route('admin.articles.index'))->assertRedirect(route('verification.notice'));
-    }
-
     public function test_empty_sanitized_content_is_rejected_and_new_upload_is_cleaned_up(): void
     {
         Storage::fake('public');

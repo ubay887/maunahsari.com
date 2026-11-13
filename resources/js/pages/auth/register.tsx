@@ -117,6 +117,5 @@ export default function Register({ passwordRules }: Props) {
 
 Register.layout = {
     title: 'Daftar alumni',
-    description:
-        'Buat akun alumni. Verifikasi email dan persetujuan pengurus diperlukan.',
+    description: 'Buat akun alumni. Persetujuan pengurus diperlukan.',
 };

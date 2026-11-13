@@ -35,7 +35,6 @@ class MakeAdmin extends Command
             Validator::make(compact('name', 'email', 'password'), ['name' => ['required', 'string', 'max:255'], 'email' => ['required', 'email', 'max:255'], 'password' => ['required', Password::defaults()]])->validate();
             $user = new User(compact('name', 'email', 'password'));
         }
-        $user->forceFill(['email_verified_at' => $user->email_verified_at ?? now()]);
         $user->assignStaffRole($role);
         $this->info("Staff account ready with role {$role->value}.");
 

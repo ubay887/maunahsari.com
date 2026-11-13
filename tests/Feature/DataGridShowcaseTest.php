@@ -42,13 +42,4 @@ class DataGridShowcaseTest extends TestCase
         );
         $this->assertDatabaseCount('users', 1);
     }
-
-    public function test_unverified_users_cannot_load_the_showcase(): void
-    {
-        $user = User::factory()->admin()->unverified()->create();
-
-        $response = $this->actingAs($user)->get(route('showcase.data-grid'));
-
-        $response->assertRedirect(route('verification.notice'));
-    }
 }

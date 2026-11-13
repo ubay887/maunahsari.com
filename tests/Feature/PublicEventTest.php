@@ -30,7 +30,7 @@ class PublicEventTest extends TestCase
         $this->get(route('events.show', $future->slug))->assertOk()->assertInertia(fn (Assert $page) => $page->component('events/show')->where('preview', false));
     }
 
-    public function test_only_verified_admin_can_preview_drafts_and_preview_is_noindex(): void
+    public function test_only_admin_can_preview_drafts_and_preview_is_noindex(): void
     {
         $draft = Event::factory()->create();
         $url = route('events.show', ['event' => $draft->slug, 'preview' => 1]);
@@ -38,10 +38,8 @@ class PublicEventTest extends TestCase
         $this->actingAs(User::factory()->create())->get($url)->assertNotFound();
         $editor = User::factory()->editor()->create();
         $this->actingAs($editor)->get($url)->assertNotFound();
-        $admin = User::factory()->admin()->unverified()->create(['email' => 'admin@example.test']);
-        $this->actingAs($admin)->get($url)->assertNotFound();
-        $admin->markEmailAsVerified();
-        $this->actingAs($admin->refresh())->get($url)->assertOk()->assertSee('noindex,nofollow', false)->assertInertia(fn (Assert $page) => $page->where('preview', true)->where('schema', null));
+        $admin = User::factory()->admin()->create(['email' => 'admin@example.test']);
+        $this->actingAs($admin)->get($url)->assertOk()->assertSee('noindex,nofollow', false)->assertInertia(fn (Assert $page) => $page->where('preview', true)->where('schema', null));
     }
 
     public function test_search_category_and_type_filters_combine_without_leaking_drafts(): void

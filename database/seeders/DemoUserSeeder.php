@@ -20,7 +20,7 @@ class DemoUserSeeder extends Seeder
             return;
         }
 
-        $verifiedAccounts = [
+        $accounts = [
             'admin@example.test' => 'Demo Admin',
             'demo@example.test' => 'Demo User',
             'test@example.com' => 'Test User',
@@ -28,7 +28,7 @@ class DemoUserSeeder extends Seeder
             'farhan@example.test' => 'Farhan Pratama',
         ];
 
-        foreach ($verifiedAccounts as $email => $name) {
+        foreach ($accounts as $email => $name) {
             $this->ensureStaff(User::query()->firstOrCreate(
                 ['email' => $email],
                 User::factory()->admin()->make([
@@ -37,14 +37,6 @@ class DemoUserSeeder extends Seeder
                 ])->getAttributes(),
             ));
         }
-
-        $this->ensureStaff(User::query()->firstOrCreate(
-            ['email' => 'unverified@example.test'],
-            User::factory()->admin()->unverified()->make([
-                'name' => 'Unverified Demo User',
-                'email' => 'unverified@example.test',
-            ])->getAttributes(),
-        ));
     }
 
     /**

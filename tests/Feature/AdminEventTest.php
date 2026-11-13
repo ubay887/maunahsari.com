@@ -50,9 +50,8 @@ class AdminEventTest extends TestCase
         $this->assertSame(1, Event::count());
     }
 
-    public function test_unverified_admin_is_redirected_and_article_editors_are_not_event_admins(): void
+    public function test_article_editors_are_not_event_admins(): void
     {
-        $this->actingAs(User::factory()->admin()->unverified()->create(['email' => 'admin@example.test']))->get(route('admin.events.index'))->assertRedirect(route('verification.notice'));
         $editor = User::factory()->editor()->create();
         $this->actingAs($editor)->get(route('admin.events.index'))->assertForbidden();
     }

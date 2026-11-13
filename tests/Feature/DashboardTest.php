@@ -127,11 +127,6 @@ class DashboardTest extends TestCase
         );
     }
 
-    public function test_unverified_users_are_redirected_before_dashboard_data_is_loaded(): void
-    {
-        $this->actingAs(User::factory()->admin()->unverified()->create())->get(route('dashboard'))->assertRedirect(route('verification.notice'));
-    }
-
     public function test_admin_dashboard_lists_the_oldest_pending_alumni_verifications_first(): void
     {
         $pending = AlumniProfile::factory()->count(10)->create();

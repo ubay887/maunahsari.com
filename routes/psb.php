@@ -16,7 +16,7 @@ Route::prefix('psb')->name('psb.')->group(function (): void {
     Route::get('status', [PsbStatusController::class, 'index'])->name('status.index');
     Route::post('status', [PsbStatusController::class, 'store'])->middleware('throttle:psb-status')->name('status.store');
 });
-Route::middleware(['auth', 'verified', 'applicant.only'])->prefix('psb/portal')->name('psb.portal.')->group(function (): void {
+Route::middleware(['auth', 'applicant.only'])->prefix('psb/portal')->name('psb.portal.')->group(function (): void {
     Route::get('/', [Psb\PortalController::class, 'index'])->name('home');
     Route::get('bukti', [Psb\PortalController::class, 'receipt'])->name('receipt');
     Route::get('data', [Psb\PortalProfileController::class, 'edit'])->name('profile.edit');
@@ -26,7 +26,7 @@ Route::middleware(['auth', 'verified', 'applicant.only'])->prefix('psb/portal')-
     Route::get('dokumen/{document}', [Psb\PortalDocumentController::class, 'show'])->name('documents.show');
     Route::get('administrasi', [Psb\PortalPaymentController::class, 'index'])->name('payments.index');
 });
-Route::middleware(['auth', 'admin', 'verified'])->prefix('admin')->name('admin.')->group(function (): void {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function (): void {
     Route::get('santri', [Admin\SantriController::class, 'index'])->name('santri.index');
     Route::get('santri/{santri}', [Admin\SantriController::class, 'show'])->name('santri.show');
     Route::get('santri/{santri}/photo', [Admin\SantriController::class, 'photo'])->name('santri.photo');

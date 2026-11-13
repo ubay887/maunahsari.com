@@ -1,28 +1,20 @@
-import { Form, Head, Link, usePage } from '@inertiajs/react';
+import { Form, Head, usePage } from '@inertiajs/react';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/delete-user';
 import InputError from '@/components/input-error';
-import { Alert, AlertDescription } from '@/components/reui/alert';
 import { SettingsSection } from '@/components/settings-section';
 import { Button } from '@/components/ui/button';
 import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
 import { edit } from '@/routes/profile';
-import { send } from '@/routes/verification';
 import type { Auth } from '@/types';
 
 type PageProps = {
     auth: Auth;
 };
 
-export default function Profile({
-    mustVerifyEmail,
-    status,
-}: {
-    mustVerifyEmail: boolean;
-    status?: string;
-}) {
+export default function Profile() {
     const { auth } = usePage<PageProps>().props;
 
     return (
@@ -70,31 +62,6 @@ export default function Profile({
                                 />
                                 <InputError message={errors.email} />
                             </Field>
-
-                            {mustVerifyEmail &&
-                                auth.user.email_verified_at === null && (
-                                    <Alert variant="warning">
-                                        <AlertDescription>
-                                            Email Anda belum diverifikasi.{' '}
-                                            <Link
-                                                href={send()}
-                                                as="button"
-                                                className="underline underline-offset-4"
-                                            >
-                                                Kirim ulang email verifikasi.
-                                            </Link>
-                                        </AlertDescription>
-                                    </Alert>
-                                )}
-
-                            {status === 'verification-link-sent' && (
-                                <Alert variant="success">
-                                    <AlertDescription>
-                                        Tautan verifikasi baru telah dikirim ke
-                                        email Anda.
-                                    </AlertDescription>
-                                </Alert>
-                            )}
 
                             <div>
                                 <Button

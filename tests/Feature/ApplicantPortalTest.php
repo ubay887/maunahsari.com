@@ -10,10 +10,8 @@ use App\Models\ApplicantPayment;
 use App\Models\ProgramQuota;
 use App\Models\User;
 use App\UserRole;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -56,10 +54,9 @@ class ApplicantPortalTest extends TestCase
         ];
     }
 
-    public function test_online_registration_creates_a_verified_login_ready_applicant_account(): void
+    public function test_online_registration_creates_a_login_ready_applicant_account(): void
     {
         Storage::fake('local');
-        Notification::fake();
         $quota = ProgramQuota::factory()->create();
 
         $this->post(route('psb.store'), $this->registrationPayload($quota))->assertRedirect(route('psb.success'));
@@ -68,9 +65,7 @@ class ApplicantPortalTest extends TestCase
         $user = User::where('email', 'calon.santri@example.test')->firstOrFail();
         $this->assertSame($user->id, $applicant->user_id);
         $this->assertSame(UserRole::Applicant, $user->role);
-        $this->assertNull($user->email_verified_at);
         $this->assertAuthenticatedAs($user);
-        Notification::assertSentTo($user, VerifyEmail::class);
         $this->get(route('psb.success'))->assertInertia(fn (Assert $page) => $page->where('accountEmail', 'calon.santri@example.test'));
     }
 
@@ -121,11 +116,9 @@ class ApplicantPortalTest extends TestCase
     }
 
     #[DataProvider('portalPages')]
-    public function test_guests_are_sent_to_login_and_unverified_accounts_to_email_verification(string $route): void
+    public function test_guests_are_sent_to_login(string $route): void
     {
         $this->get(route($route))->assertRedirect(route('login'));
-
-        $this->actingAs(User::factory()->applicant()->unverified()->create())->get(route($route))->assertRedirect(route('verification.notice'));
     }
 
     #[DataProvider('portalPages')]

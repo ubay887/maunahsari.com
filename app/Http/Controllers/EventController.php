@@ -47,7 +47,7 @@ class EventController extends Controller
     {
         $published = Event::published()->whereKey($event->id)->exists();
         $user = $request->user();
-        $canPreview = $user !== null && $user->hasVerifiedEmail() && $user->can('view', $event);
+        $canPreview = $user !== null && $user->can('view', $event);
         abort_unless($published || $canPreview, 404);
         $preview = ! $published || ($canPreview && $request->boolean('preview'));
         $event->load(['organizer:id,name', 'categories:id,name,slug']);

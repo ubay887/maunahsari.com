@@ -18,13 +18,13 @@ class DatabaseSeederTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_seeding_creates_demo_accounts_with_working_passwords_and_verification_states(): void
+    public function test_seeding_creates_demo_accounts_with_working_passwords(): void
     {
         Notification::fake();
 
         $this->seed();
 
-        $this->assertDatabaseCount('users', 10);
+        $this->assertDatabaseCount('users', 9);
         $this->assertDatabaseCount('provinces', 38);
         $this->assertDatabaseCount('regencies', 514);
         $this->assertDatabaseHas('users', ['email' => 'admin@example.test', 'name' => 'Demo Admin']);
@@ -32,14 +32,9 @@ class DatabaseSeederTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'test@example.com', 'name' => 'Test User']);
         $this->assertDatabaseHas('users', ['email' => 'nabila@example.test', 'name' => 'Nabila Rahma']);
         $this->assertDatabaseHas('users', ['email' => 'farhan@example.test', 'name' => 'Farhan Pratama']);
-        $this->assertDatabaseHas('users', [
-            'email' => 'unverified@example.test',
-            'email_verified_at' => null,
-        ]);
 
         foreach (User::query()->get() as $user) {
             $this->assertTrue(Hash::check('password', $user->password));
-            $this->assertSame($user->email !== 'unverified@example.test', $user->hasVerifiedEmail());
             $this->assertNull($user->two_factor_secret);
             $this->assertNull($user->two_factor_recovery_codes);
             $this->assertNull($user->two_factor_confirmed_at);
@@ -91,7 +86,7 @@ class DatabaseSeederTest extends TestCase
 
     public function test_reseeding_does_not_duplicate_or_modify_existing_users(): void
     {
-        $existingUser = User::factory()->unverified()->create([
+        $existingUser = User::factory()->create([
             'name' => 'Existing Account',
             'email' => 'admin@example.test',
             'password' => 'existing-password',
@@ -102,12 +97,11 @@ class DatabaseSeederTest extends TestCase
 
         $this->seed();
 
-        $this->assertDatabaseCount('users', 11);
+        $this->assertDatabaseCount('users', 10);
         $this->assertModelExists($unrelatedUser);
         $this->assertSame($originalAccounts, User::query()->orderBy('id')->get()->map->getAttributes()->all());
         $this->assertSame('Existing Account', $existingUser->fresh()->name);
         $this->assertTrue(Hash::check('existing-password', $existingUser->fresh()->password));
-        $this->assertFalse($existingUser->fresh()->hasVerifiedEmail());
     }
 
     #[DataProvider('nonDemoEnvironments')]

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use App\Models\Category;
-use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -15,27 +13,19 @@ class ArticleController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = Article::published()->with(['author:id,name', 'categories:id,name,slug', 'tags:id,name,slug'])->search($request->string('search')->toString());
-        if ($request->filled('category')) {
-            $query->whereHas('categories', fn (Builder $query): Builder => $query->where('slug', $request->string('category')->toString()));
-        }
-        if ($request->filled('tag')) {
-            $query->whereHas('tags', fn (Builder $query): Builder => $query->where('slug', $request->string('tag')->toString()));
-        }
+        $query = Article::published()->with(['author:id,name', 'categories:id,name,slug'])->search($request->string('search')->toString());
 
         return Inertia::render('articles/index', [
             'articles' => $query->orderByDesc('published_at')->orderByDesc('id')->paginate(12)->withQueryString(),
-            'categories' => Category::whereHas('articles', fn (Builder $query): Builder => $query->published())->orderBy('name')->get(['id', 'name', 'slug']),
-            'tags' => Tag::whereHas('articles', fn (Builder $query): Builder => $query->published())->orderBy('name')->get(['id', 'name', 'slug']),
-            'filters' => ['search' => $request->string('search')->toString(), 'category' => $request->string('category')->toString(), 'tag' => $request->string('tag')->toString()],
-            'canonical' => route('articles.index', $request->only(['search', 'category', 'tag', 'page'])),
+            'filters' => ['search' => $request->string('search')->toString()],
+            'canonical' => route('articles.index', $request->only(['search', 'page'])),
         ]);
     }
 
     public function show(Request $request, Article $article): Response
     {
         $published = Article::published()->whereKey($article->id)->exists();
-        $preview = $request->boolean('preview') && ($request->user()?->hasVerifiedEmail() ?? false) && $request->user()->can('view', $article);
+        $preview = $request->boolean('preview') && $request->user() !== null && $request->user()->can('view', $article);
         abort_unless($published || $preview, 404);
         $article->load(['author:id,name', 'categories:id,name,slug', 'tags:id,name,slug']);
         if ($published && ! $preview && ! preg_match('/bot|crawl|spider|slurp|preview|facebookexternalhit|whatsapp/i', $request->userAgent() ?? '')) {

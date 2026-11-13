@@ -12,7 +12,7 @@ Route::get('sitemap.xml', [ArticleSyndicationController::class, 'sitemap'])->nam
 Route::get('artikel', [App\Http\Controllers\ArticleController::class, 'index'])->name('articles.index');
 Route::get('artikel/{article:slug}', [App\Http\Controllers\ArticleController::class, 'show'])->name('articles.show');
 
-Route::middleware(['auth', 'admin', 'verified'])->prefix('admin')->name('admin.')->group(function (): void {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function (): void {
     Route::get('articles/taxonomies', [TaxonomyController::class, 'index'])->name('taxonomies.index');
     Route::post('taxonomies/{taxonomy}', [TaxonomyController::class, 'store'])->whereIn('taxonomy', ['categories', 'tags'])->name('taxonomies.store');
     Route::put('taxonomies/{taxonomy}/{id}', [TaxonomyController::class, 'update'])->whereIn('taxonomy', ['categories', 'tags'])->whereNumber('id')->name('taxonomies.update');

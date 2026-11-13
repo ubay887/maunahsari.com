@@ -24,7 +24,7 @@ class AdminPsbTest extends TestCase
         return User::factory()->admin()->create(['email' => 'admin@example.test']);
     }
 
-    public function test_admin_routes_refuse_guests_non_admins_and_unverified_admins(): void
+    public function test_admin_routes_refuse_guests_and_non_admins(): void
     {
         foreach (['admin.psb.dashboard', 'admin.psb.applicants.index', 'admin.psb.periods.index', 'admin.psb.programs.index', 'admin.psb.quotas.index', 'admin.santri.index'] as $route) {
             $this->get(route($route))->assertRedirect(route('login'));
@@ -33,7 +33,6 @@ class AdminPsbTest extends TestCase
         foreach (['admin.psb.dashboard', 'admin.psb.applicants.index', 'admin.psb.periods.index', 'admin.psb.programs.index', 'admin.psb.quotas.index', 'admin.santri.index'] as $route) {
             $this->get(route($route))->assertForbidden();
         }
-        $this->actingAs(User::factory()->admin()->unverified()->create(['email' => 'admin@example.test']))->get(route('admin.psb.applicants.index'))->assertRedirect(route('verification.notice'));
     }
 
     public function test_offline_registration_allows_missing_documents_and_ignores_sensitive_fields(): void
@@ -85,6 +84,28 @@ class AdminPsbTest extends TestCase
         Applicant::factory()->create(['registration_period_id' => $quota->registration_period_id, 'program_id' => $quota->program_id]);
         $this->actingAs($this->admin())->post(route('admin.psb.quotas.store'), ['registration_period_id' => $quota->registration_period_id, 'program_id' => $quota->program_id, 'pondok' => 'putra', 'capacity' => 0, 'is_open' => true])->assertSessionHasErrors('capacity');
         $this->assertSame(2, $quota->fresh()->capacity);
+    }
+
+    public function test_quota_list_explains_why_a_quota_is_unavailable(): void
+    {
+        $period = RegistrationPeriod::factory()->create();
+        $program = Program::factory()->create();
+        $closedPeriod = RegistrationPeriod::factory()->create(['is_open' => false]);
+        $make = fn (array $attributes, string $pondok = 'putra'): ProgramQuota => ProgramQuota::factory()->create(['registration_period_id' => $period->id, 'program_id' => $program->id, 'pondok' => $pondok, ...$attributes]);
+        $this->actingAs($this->admin());
+        $reason = fn (ProgramQuota $quota): ?string => $this->get(route('admin.psb.quotas.index', ['registration_period_id' => $quota->registration_period_id]))->viewData('page')['props']['quotas'][0]['unavailable_reason'];
+
+        $this->assertNull($reason($make([])));
+        ProgramQuota::query()->delete();
+        $this->assertSame('closed', $reason($make(['is_open' => false])));
+        ProgramQuota::query()->delete();
+        $this->assertSame('no_capacity', $reason($make(['capacity' => 0])));
+        ProgramQuota::query()->delete();
+        $this->assertSame('full', $reason(tap($make(['capacity' => 1]), fn (ProgramQuota $quota) => Applicant::factory()->create(['registration_period_id' => $quota->registration_period_id, 'program_id' => $quota->program_id, 'pondok' => 'putra']))));
+        ProgramQuota::query()->delete();
+        $program->update(['is_active' => false]);
+        $this->assertSame('program_inactive', $reason($make([])));
+        $this->assertSame('period_closed', $reason(ProgramQuota::factory()->create(['registration_period_id' => $closedPeriod->id])));
     }
 
     public function test_sowan_and_manual_payment_and_soft_delete(): void
