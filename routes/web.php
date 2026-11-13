@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardFeedController;
-use App\Http\Controllers\DataGridShowcaseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SitePageController;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +16,6 @@ Route::get('narahubung', [SitePageController::class, 'contact'])->name('site.con
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
     Route::get('dashboard/feeds/{feed}', DashboardFeedController::class)->name('dashboard.feed');
-    Route::get('showcase/data-grid', DataGridShowcaseController::class)->name('showcase.data-grid');
 });
 
 require __DIR__.'/settings.php';

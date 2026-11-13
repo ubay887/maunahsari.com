@@ -5,7 +5,7 @@ Tanggal: 3 November 2026. Versi backend yang diperiksa: Laravel 13.39.0, Inertia
 ## Hasil
 
 - Role `admin` / `alumni` diterapkan; migrasi mengangkat semua akun lama menjadi admin. Registrasi publik hanya membuat alumni, mengabaikan input role.
-- Dashboard, showcase, Artikel, Event, PSB, santri, dan seluruh administrasi alumni dilindungi role. Pengaturan akun pribadi tetap dapat dipakai alumni.
+- Dashboard, Artikel, Event, PSB, santri, dan seluruh administrasi alumni dilindungi role. Pengaturan akun pribadi tetap dapat dipakai alumni.
 - Wizard profil empat langkah, status verifikasi, edit, pengaturan privasi, permintaan kontak, unduh JSON, dan penghapusan permanen tersedia.
 - Admin mendapat tabel TanStack server-side, antrean verifikasi, edit, pengaitan santri manual, CSV export, dan statistik. Admin tidak dapat menambah alumni secara manual maupun mengimpor; pendataan hanya lewat alumni sendiri.
 - Peta publik hanya agregat. Peta portal menambahkan kartu yang diizinkan pada kelompok yang memenuhi ambang. Radar hanya memakai pusat wilayah dan pita jarak.
@@ -40,7 +40,7 @@ Diubah:
 - `app/Services/ArticleAccess.php`: role menjadi batas utama; pembatasan editorial lama tetap berlaku bagi admin yang ditetapkan sebagai author/editor.
 - `routes/web.php`, `routes/articles.php`, `routes/events.php`, `routes/psb.php`; ditambah `routes/alumni.php` yang berkembang pada fase berikutnya.
 - `database/factories/UserFactory.php`, `database/seeders/DemoUserSeeder.php`, `DatabaseSeeder.php`.
-- Fixture/pengharapan akses pada tes lama: `AdminArticleTest`, `AdminEventTest`, `AdminPsbTest`, `DashboardTest`, `DataGridShowcaseTest`, `PsbFormDataTest`, `PsbLifecycleTest`, `PsbPolicyTest`, `PublicArticleTest`, `PublicEventTest`, `RegistrationPeriodTest`; tes autentikasi `AuthenticationTest`, `RegistrationTest`, `EmailVerificationTest`, `PasswordConfirmationTest`, `VerificationNotificationTest`; `DatabaseSeederTest`.
+- Fixture/pengharapan akses pada tes lama: `AdminArticleTest`, `AdminEventTest`, `AdminPsbTest`, `DashboardTest`, `PsbFormDataTest`, `PsbLifecycleTest`, `PsbPolicyTest`, `PublicArticleTest`, `PublicEventTest`, `RegistrationPeriodTest`; tes autentikasi `AuthenticationTest`, `RegistrationTest`, `EmailVerificationTest`, `PasswordConfirmationTest`, `VerificationNotificationTest`; `DatabaseSeederTest`.
 
 Registrasi ditutup saat pengerjaan fondasi, kemudian dibuka setelah pemeriksaan fondasi lulus. Tes HTTP registrasi membuktikan role admin tidak dapat disisipkan.
 
@@ -242,7 +242,7 @@ Build masih menampilkan pemberitahuan toolchain tentang optional `fontaine`, dir
 
 ### Audit route admin
 
-- 68 definisi ber-prefix `admin/`, ditambah dashboard dan showcase: **70 definisi**.
+- 68 definisi ber-prefix `admin/`, ditambah dashboard: **69 definisi**.
 - Seluruhnya memiliki middleware role `admin`; tidak ada route yang lolos audit tanpa gate role.
 - Tes mengiterasi **106 kombinasi method termasuk HEAD** dan membuktikan akun alumni mendapat 403 sebelum model binding, termasuk ID yang tidak ada.
 - Tes guest mengiterasi route administrasi dan membuktikan redirect login. Pengaturan akun pribadi diuji tetap tersedia untuk alumni.

@@ -28,7 +28,7 @@ class AlumniFoundationTest extends TestCase
         $this->actingAs(User::factory()->create());
         $count = 0;
         foreach (Route::getRoutes() as $route) {
-            if (! str_starts_with($route->uri(), 'admin/') && ! in_array($route->getName(), ['dashboard', 'showcase.data-grid'], true)) {
+            if (! str_starts_with($route->uri(), 'admin/') && ! in_array($route->getName(), ['dashboard'], true)) {
                 continue;
             }
             $uri = preg_replace_callback('/\{([^}]+)\}/', fn (array $match): string => str_starts_with($match[1], 'taxonomy') ? 'tags' : '999999', $route->uri());

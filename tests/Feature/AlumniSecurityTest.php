@@ -113,7 +113,7 @@ class AlumniSecurityTest extends TestCase
     public function test_all_admin_routes_redirect_guests_to_login(): void
     {
         foreach (Route::getRoutes() as $route) {
-            if (! str_starts_with($route->uri(), 'admin/') && ! in_array($route->getName(), ['dashboard', 'showcase.data-grid'], true)) {
+            if (! str_starts_with($route->uri(), 'admin/') && ! in_array($route->getName(), ['dashboard'], true)) {
                 continue;
             }
             $uri = preg_replace_callback('/\{([^}]+)\}/', fn (array $match): string => str_starts_with($match[1], 'taxonomy') ? 'tags' : '999999', $route->uri());
